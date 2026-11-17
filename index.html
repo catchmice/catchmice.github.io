@@ -263,6 +263,14 @@ main{padding-block:16px 8px;padding-left:var(--gut-l);padding-right:var(--gut-r)
 .crew-teaser{display:grid;gap:12px;align-items:center;color:inherit;text-decoration:none}
 .crew-teaser img{border-radius:12px;display:block;width:100%;height:auto}
 
+/* KakaoTalk CTA */
+.kakao{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#fee500;color:#191600;border:0;border-radius:16px;padding:14px 16px;text-decoration:none}
+.kakao b{font-size:15px}
+.kakao span{font-size:13px;opacity:.8;display:block;margin-top:2px}
+.kakao .go{background:#191600;color:#fee500;border-radius:10px;padding:8px 12px;font-weight:700;font-size:13px;white-space:nowrap}
+.kakao.mini{padding:10px 12px}
+.kakao.mini b{font-size:14px}
+
 /* Footer */
 footer.foot{padding-block:18px 8px;padding-left:var(--gut-l);padding-right:var(--gut-r)}
 footer.foot .wrap{border-top:1px solid var(--line);padding-top:16px;display:grid;gap:8px;font-size:12.5px;color:var(--muted)}
@@ -398,6 +406,7 @@ nav.tabbar a[aria-current="page"]{color:var(--accent)}
         <div class="home-mid">
           <div>
             <div class="sec-head"><h2>마감 임박 채용</h2><button class="link" data-go="jobs">공고 전체 보기</button></div>
+            <a class="kakao mini" href="https://open.kakao.com/o/gWhFOuXi" target="_blank" rel="noopener" data-kakao="home"><div><b>MICE 채용, 카톡으로 매일 받기</b></div><span class="go">참여</span></a>
             <div class="stack" id="homeJobs"></div>
           </div>
           <div>
@@ -497,6 +506,7 @@ nav.tabbar a[aria-current="page"]{color:var(--accent)}
           <div class="filters" id="jobR" role="group" aria-label="지역"></div>
           <p class="sub count" id="jobCount" style="margin:0"></p>
         </div>
+        <a class="kakao" href="https://open.kakao.com/o/gWhFOuXi" target="_blank" rel="noopener" data-kakao="jobs"><div><b>오늘 마감·새 공고, 카톡으로 받아보세요</b><span>매일 출근길·퇴근길에 MICE 채용과 업계 소식을 정리해 드려요</span></div><span class="go">오픈채팅 참여</span></a>
         <div class="stack grid2 grid3" id="jobList"></div>
         <div class="card" style="display:grid;gap:10px">
           <h3 style="font-size:15px">실시간 공고 바로 검색</h3>
@@ -608,7 +618,7 @@ nav.tabbar a[aria-current="page"]{color:var(--accent)}
         <p>기사·공고·논문의 저작권은 각 원문 출처에 있어요. 요약은 CatchMICE가 직접 썼고, 행사 일정과 채용 조건은 바뀔 수 있으니 원문에서 꼭 다시 확인하세요.</p>
         <p>문의 <span style="user-select:all;color:var(--ink)">ihm12526@naver.com</span></p>
         <p id="statNote" hidden>방문 통계를 위해 Google Analytics를 사용해요. 이름이나 연락처 같은 개인정보는 모으지 않아요.</p>
-        <div class="links"><button data-act="about">기자단 소개</button><button data-act="contact">광고·제휴 문의</button><button data-act="share">링크 복사</button></div>
+        <div class="links"><a href="https://open.kakao.com/o/gWhFOuXi" target="_blank" rel="noopener" data-kakao="footer" style="border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:600;color:var(--muted);text-decoration:none">카톡 오픈채팅</a><button data-act="about">기자단 소개</button><button data-act="contact">광고·제휴 문의</button><button data-act="share">링크 복사</button></div>
       </div>
     </footer>
   </div>
@@ -1209,7 +1219,8 @@ document.addEventListener("input",e=>{
 document.addEventListener("click",ev=>{
   const a=ev.target.closest("a[href^='http']"); if(!a||!ANALYTICS_ON) return;
   const h=a.href, sec=(location.hash||"#home").slice(1);
-  if(/saramin|jobkorea|visitkorea|incruit/.test(h)&&a.closest(".job,.res")) track("job_click",{link_url:h,section:sec,label:((a.closest(".job")&&a.closest(".job").querySelector(".co")||a).textContent||"").trim().slice(0,80)});
+  if(/open\.kakao\.com/.test(h)) track("kakao_join",{section:sec,placement:a.dataset.kakao||""});
+  else if(/saramin|jobkorea|visitkorea|incruit/.test(h)&&a.closest(".job,.res")) track("job_click",{link_url:h,section:sec,label:((a.closest(".job")&&a.closest(".job").querySelector(".co")||a).textContent||"").trim().slice(0,80)});
   else if(a.closest(".news")||(a.closest(".res")&&sec==="home")) track("news_click",{link_url:h,section:sec});
   else if(a.closest(".paper")) track("paper_click",{link_url:h,section:sec});
   else if(/calendar\.google\.com/.test(h)) track("calendar_add",{link_url:h});
