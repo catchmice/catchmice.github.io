@@ -3,14 +3,21 @@
   "short_name": "CatchMICE",
   "description": "MICE를 캐치하는 기자단: 전시·컨벤션 일정, 한입뉴스, 채용, 논문",
   "lang": "ko",
+  "dir": "ltr",
   "start_url": "./#home",
   "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#faf6ef",
   "theme_color": "#1d4ee8",
   "icons": [
     {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
     {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
     {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "캐릭터 브리핑", "short_name": "브리핑", "url": "./#briefing", "description": "Micy·Veny·Exy·Aily에게 오늘 소식을 물어보기"},
+    {"name": "MICE 채용", "short_name": "채용", "url": "./#jobs", "description": "마감 임박 공고와 내 지원 현황"},
+    {"name": "캘린더", "short_name": "캘린더", "url": "./#calendar", "description": "다가오는 전시·컨벤션 일정"}
   ]
 }
