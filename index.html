@@ -423,7 +423,7 @@ nav.tabbar a[aria-current="page"]{color:var(--accent)}
           </div>
           <div class="card feature">
             <h2>Aily의 AI 스터디</h2>
-            <p class="sub">오늘의 AI 용어, 단계별 코스, 업무 프롬프트와 퀴즈</p>
+            <p class="sub">오늘의 AI 용어, 업무 프롬프트, 퀴즈와 용어 사전</p>
             <div><button class="btn" data-go="ai">오늘의 AI 공부</button></div>
           </div>
           <div class="card feature">
@@ -433,7 +433,7 @@ nav.tabbar a[aria-current="page"]{color:var(--accent)}
           </div>
           <div class="card feature">
             <h2>MICE 취업 가이드</h2>
-            <p class="sub">직무 소개, 컨벤션기획사 자격증, 꼭 알아야 할 업계 용어와 준비 체크리스트</p>
+            <p class="sub">직무 소개, 컨벤션기획사 자격증, 꼭 알아야 할 업계 용어</p>
             <div><button class="btn" data-go="guide">가이드 보기</button></div>
           </div>
         </div>
@@ -525,11 +525,6 @@ nav.tabbar a[aria-current="page"]{color:var(--accent)}
           <div class="card" style="display:grid;gap:12px" id="quiz"></div>
         </div>
         <div>
-          <div class="sec-head"><h2>단계별 코스</h2><span class="sub count" id="lessonCount"></span></div>
-          <div class="progress" style="margin-top:8px"><div id="lessonBar"></div></div>
-        </div>
-        <div class="stack grid2" id="lessons"></div>
-        <div>
           <div class="sec-head"><h2>MICE 업무 프롬프트</h2></div>
           <p class="sub">복사해서 AI 챗봇에 붙여 넣고 [ ] 부분만 바꿔 쓰세요</p>
         </div>
@@ -594,11 +589,6 @@ nav.tabbar a[aria-current="page"]{color:var(--accent)}
       <section class="view" id="v-guide" aria-label="MICE 취업 가이드">
         <div class="page-head"><h1>MICE 취업 가이드</h1><p class="sub">MICE 업계에 처음 들어가려는 사람을 위한 기본 정리예요</p></div>
         <div id="deskGuide"></div>
-        <div>
-          <div class="sec-head"><h2>나의 준비 체크리스트</h2><span class="sub count" id="prepCount"></span></div>
-          <div class="progress" style="margin-top:8px"><div id="prepBar"></div></div>
-        </div>
-        <div class="card" id="prepList" style="padding:4px 14px"></div>
         <div class="sec-head"><h2>어떤 일을 할 수 있을까요</h2></div>
         <div class="stack grid2 grid3" id="roles"></div>
         <div class="card cta" id="certCard"></div>
@@ -942,6 +932,7 @@ function renderNews(){
 
 /* ---------- JOBS ---------- */
 let jobCareer="전체", jobRegion="전체", jobQ="";
+const isListUrl=u=>/search|Search|mainHome|func_name=list|stext=|searchword=/.test(u||"");
 const jobKey=j=>"job|"+j.company+"|"+j.title;
 function openJobs(){
   const dated=j=>/^\d{4}-/.test(j.deadline);
@@ -968,7 +959,7 @@ function jobCard(j){
     <div class="ev-top">${newBadge(jobKey(j))}<span class="chip region">${esc(j.place)}</span>${j.newbie?'<span class="chip new">신입 가능</span>':''}${jobDday(j)}</div>
     <span class="co">${esc(j.company)}</span><h3>${esc(j.title)}</h3>
     <div class="meta"><span>${esc(j.career)}${j.pay?' · '+esc(j.pay):''}${dl}</span></div>
-    <div class="actions"><a class="btn" href="${safeUrl(j.url)}" target="_blank" rel="noopener">${esc(j.site)}에서 보기 ↗</a>${saveBtn(jobKey(j),j.title)}</div></article>`;
+    <div class="actions"><a class="btn" href="${safeUrl(j.url)}" target="_blank" rel="noopener">${isListUrl(j.url)?esc(j.site)+"에서 찾아보기":esc(j.site)+"에서 공고 보기"} ↗</a>${saveBtn(jobKey(j),j.title)}</div></article>`;
 }
 function renderJobs(){
   $("#deskJobs").innerHTML=desk(C.exy,"MICE 업계 새 채용공고, 제가 매일 아침 모아 올게요!");
@@ -987,12 +978,9 @@ function renderJobs(){
 /* ---------- AI ---------- */
 let lessonsDone=new Set(store.get("cm_lessons",[])), promptCat="전체", quizI=0, quizScore=0, quizAns=null, dictQ="";
 function renderAI(){
-  $("#deskAi").innerHTML=desk(C.aily,"하루 5분! 용어 하나, 레슨 하나, 퀴즈 하나씩 같이 해봐요.");
+  $("#deskAi").innerHTML=desk(C.aily,"하루 5분! 용어 하나, 프롬프트 하나, 퀴즈 하나씩 같이 해봐요.");
   const idx=Math.floor(TODAY.getTime()/86400000)%TERMS.length, w=TERMS[idx];
   $("#todayWord").innerHTML=`<span class="eyebrow">오늘의 AI 용어 · ${TODAY.getMonth()+1}월 ${TODAY.getDate()}일</span><h3>${w[0]}</h3><span class="en">${w[1]}</span><p style="margin:0">${w[2]}</p><div class="ex"><b>MICE에선 이렇게</b><br>${w[3]}</div>`;
-  $("#lessonCount").textContent=`${lessonsDone.size}/${LESSONS.length} 완료`;
-  $("#lessonBar").style.width=(lessonsDone.size/LESSONS.length*100)+"%";
-  $("#lessons").innerHTML=LESSONS.map((l,i)=>`<details class="card lesson ${lessonsDone.has(i)?'done':''}"><summary><span class="lv" style="background:${LEVEL[l.lv]}">${l.lv}</span><span><h3>${l.t}</h3><span class="min">${l.m}분</span></span><span class="tick" aria-hidden="true">${lessonsDone.has(i)?'✓':''}</span></summary><div class="body">${l.b}<div><button class="btn ${lessonsDone.has(i)?'ghost':''}" data-lesson="${i}">${lessonsDone.has(i)?'완료 취소':'학습 완료'}</button></div></div></details>`).join("");
   chips($("#promptF"),["전체",...new Set(PROMPTS.map(p=>p.cat))],promptCat,"pcat");
   $("#prompts").innerHTML=PROMPTS.map((p,i)=>[p,i]).filter(([p])=>promptCat==="전체"||p.cat===promptCat).map(([p,i])=>`<article class="card prompt"><div class="ev-top"><span class="chip">${p.cat}</span></div><h3 style="margin-top:6px">${p.t}</h3><pre>${esc(p.p)}</pre><button class="btn" data-copyp="${i}">프롬프트 복사</button></article>`).join("");
   renderQuiz(); renderDict();
@@ -1081,9 +1069,6 @@ const PREP=[
 let prepDone=new Set(store.get("cm_prep",[])), mtermQ="";
 function renderGuide(){
   $("#deskGuide").innerHTML=desk(C.exy,"MICE 업계 첫걸음, 직무부터 용어까지 같이 정리해 봐요!");
-  $("#prepCount").textContent=`${prepDone.size}/${PREP.length} 완료`;
-  $("#prepBar").style.width=(prepDone.size/PREP.length*100)+"%";
-  $("#prepList").innerHTML=PREP.map((p,i)=>`<div class="check"><input type="checkbox" id="prep${i}" data-prep="${i}" ${prepDone.has(i)?'checked':''}><label for="prep${i}"><b>${p[0]}</b><span>${p[1]}</span></label></div>`).join("");
   $("#roles").innerHTML=ROLES.map(r=>`<article class="card role"><h3>${r.t}</h3><p>${r.d}</p><ul>${r.l.map(x=>`<li>${x}</li>`).join("")}</ul><span class="chip" style="justify-self:start;white-space:normal">필요 역량 · ${r.k}</span></article>`).join("");
   $("#certCard").innerHTML=`<h3>컨벤션기획사 자격증</h3><p>한국산업인력공단이 시행하는 MICE 분야 국가기술자격이에요. 1급과 2급이 있고, 1급은 실무 경력 같은 응시 자격이 따로 있어요. 시험 일정과 자세한 조건은 해마다 바뀌니 Q-Net에서 확인하세요.</p><div class="quick"><a class="btn" href="https://www.q-net.or.kr" target="_blank" rel="noopener">Q-Net 바로가기 ↗</a><a class="btn ghost" href="https://academy.visitkorea.or.kr/mainHome.do" target="_blank" rel="noopener">관광in 교육·일자리 ↗</a><a class="btn ghost" href="https://k-mice.visitkorea.or.kr/noti.kto?func_name=list&pgbn=2" target="_blank" rel="noopener">K-MICE 인턴십·채용 ↗</a></div>`;
   renderMterms();
