@@ -1147,7 +1147,7 @@ function route(keepScroll){
   document.querySelectorAll("#tabbar [data-tab]").forEach(a=>{if(a.dataset.tab===v||(v==="papers"&&a.dataset.tab==="ai")||(v==="guide"&&a.dataset.tab==="jobs")) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current")});
   document.querySelectorAll("#sidenav [data-tab]").forEach(a=>{if(a.dataset.tab===v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current")});
   R[v]();
-  if(v!==curView){ track("page_view",{page_title:"CatchMICE · "+(VIEW_TITLE[v]||v),page_location:location.origin+location.pathname+"#"+v}); }
+  if(v!==curView){ track("page_view",{page_title:"CatchMICE · "+(VIEW_TITLE[v]||v),page_location:location.origin+location.pathname+location.search+"#"+v}); }
   if(v!==curView&&!keepScroll) window.scrollTo(0,0);
   curView=v;
   const latest=[DATA.news.updated,DATA.jobs.updated,DATA.papers.updated].filter(Boolean).sort().pop();
