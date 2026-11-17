@@ -1,0 +1,118 @@
+name: Android APK build
+
+# CatchMICE 안드로이드 앱(APK)을 GitHub Actions 무료 러너에서 자동으로 빌드합니다.
+#  - Actions 탭 > Android APK build > Run workflow : 손으로 빌드
+#  - main 에 웹 파일·앱 설정이 올라오면 자동 빌드
+# 결과물: 이 실행(Artifacts) 안의 CatchMICE-debug-apk (5~7분 소요)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "404.html"
+      - "sw.js"
+      - "manifest.webmanifest"
+      - "*.json"
+      - "icons/**"
+      - "img/**"
+      - "home/**"
+      - "jobs/**"
+      - "news/**"
+      - "papers/**"
+      - "guide/**"
+      - "calendar/**"
+      - "crew/**"
+      - "walk/**"
+      - "android/**"
+      - "capacitor.config.json"
+      - "package.json"
+      - "package-lock.json"
+      - "scripts/prepare-web.mjs"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: APK 빌드 (디버그)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Node.js 20 준비
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: JDK 21 준비 (Capacitor 7 Android 는 Java 21 로 컴파일)
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      - name: 필요한 안드로이드 SDK 구성요소 확인
+        run: |
+          set -euo pipefail
+          SDK="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-$HOME/android-sdk}}"
+          echo "ANDROID SDK: $SDK"
+          ls "$SDK/platforms" 2>/dev/null || true
+          if [ ! -d "$SDK/platforms/android-35" ]; then
+            SDKMANAGER="$(command -v sdkmanager || true)"
+            if [ -z "$SDKMANAGER" ] && [ -x "$SDK/cmdline-tools/latest/bin/sdkmanager" ]; then
+              SDKMANAGER="$SDK/cmdline-tools/latest/bin/sdkmanager"
+            fi
+            if [ -n "$SDKMANAGER" ]; then
+              yes | "$SDKMANAGER" --sdk_root="$SDK" "platforms;android-35" "build-tools;35.0.0" "platform-tools" > /dev/null
+            else
+              echo "sdkmanager 를 찾지 못했습니다. 러너에 이미 설치된 SDK 를 사용합니다."
+            fi
+          fi
+
+      - name: Gradle 캐시
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('android/gradle/wrapper/gradle-wrapper.properties', 'android/**/*.gradle') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: 의존성 설치
+        run: npm ci --no-audit --no-fund
+
+      - name: 웹 번들 만들기 (www/)
+        run: npm run prepare:web
+
+      - name: Capacitor 안드로이드 동기화
+        run: npx cap sync android
+
+      - name: APK 빌드
+        run: |
+          set -euo pipefail
+          chmod +x android/gradlew
+          cd android
+          ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: APK 정보 확인
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          ls -lh "$APK"
+          echo "빌드 커밋: ${GITHUB_SHA}"
+
+      - name: APK 업로드 (CatchMICE-debug-apk)
+        uses: actions/upload-artifact@v4
+        with:
+          name: CatchMICE-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 30

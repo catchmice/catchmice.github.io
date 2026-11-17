@@ -1,0 +1,20 @@
+{
+  "appId": "io.github.catchmice.app",
+  "appName": "CatchMICE",
+  "webDir": "www",
+  "loggingBehavior": "debug",
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false,
+    "backgroundColor": "#faf6ef"
+  },
+  "ios": {
+    "contentInset": "always",
+    "backgroundColor": "#faf6ef",
+    "backgroundColorDark": "#0f1220"
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}
