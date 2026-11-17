@@ -1,0 +1,1152 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1220" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CatchMICE">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CatchMICE">
+<meta property="og:title" content="CatchMICE · MICE를 캐치하는 기자단">
+<meta property="og:description" content="전시·컨벤션 일정, MICE 한입뉴스, 채용공고, 논문, 취업 가이드를 매일 아침 모아요.">
+<meta property="og:image" content="https://catchmice.github.io/img/hero.jpg">
+<meta property="og:url" content="https://catchmice.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<script>window.CM_STANDALONE=true;</script>
+<title>CatchMICE</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="MICE를 캐치하는 기자단 CatchMICE: 전시·컨벤션 일정, 한입뉴스, MICE 채용공고, 논문과 AI 스터디를 한곳에서 봐요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: phone = sticky header + bottom tab bar; tablet = wider single column; desktop (>=1000px) = left sidebar nav + multi-column card grids */
+:root{
+  --paper:#faf6ef; --card:#ffffff; --ink:#141a3a; --muted:#5f6582; --line:#ece4d7;
+  --accent:#1d4ee8; --accent-ink:#ffffff; --sun:#ffc23a; --sun-ink:#3a2a00;
+  --soft:#e7edff; --hot:#d93a4a; --ok:#1f8a5b; --ok-soft:#e5f6ee; --hot-soft:#fde8ea; --scrim:rgba(10,12,25,.45);
+  --display:"Black Han Sans","IBM Plex Sans KR",system-ui,sans-serif;
+  --body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --side:248px;
+  --gut-l:max(16px, env(safe-area-inset-left, 0px));
+  --gut-r:max(16px, env(safe-area-inset-right, 0px));
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0f1220; --card:#191d31; --ink:#eef0f8; --muted:#a2a9c6; --line:#2b3150;
+    --accent:#7d93ff; --accent-ink:#0f1220; --sun:#ffd25c; --sun-ink:#2a1e00;
+    --soft:#232a4d; --hot:#ff6b78; --ok:#4fd197; --ok-soft:#173a2d; --hot-soft:#3d1c24; --scrim:rgba(0,0,0,.6); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0f1220; --card:#191d31; --ink:#eef0f8; --muted:#a2a9c6; --line:#2b3150;
+  --accent:#7d93ff; --accent-ink:#0f1220; --sun:#ffd25c; --sun-ink:#2a1e00;
+  --soft:#232a4d; --hot:#ff6b78; --ok:#4fd197; --ok-soft:#173a2d; --hot-soft:#3d1c24; --scrim:rgba(0,0,0,.6); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px;border-radius:8px}
+a{color:var(--accent)}
+h1,h2,h3{text-wrap:balance;margin:0}
+h2{font-family:var(--display);font-weight:400;font-size:21px;letter-spacing:.3px}
+.sub{color:var(--muted);font-size:13px;margin:2px 0 0}
+.count,.meta,.tab{font-variant-numeric:tabular-nums}
+
+/* Shell */
+.shell{display:block}
+.side{display:none}
+.app{min-width:0;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);padding-block:10px;padding-left:var(--gut-l);padding-right:var(--gut-r);border-bottom:1px solid var(--line)}
+header.top .in{max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.logo{font-family:var(--display);font-size:24px;letter-spacing:.5px;background:none;border:0;padding:0;color:var(--ink)}
+.logo b{color:var(--accent);font-weight:400}
+.top-actions{display:flex;gap:6px}
+.icon-btn{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+main{padding-block:16px 8px;padding-left:var(--gut-l);padding-right:var(--gut-r)}
+.wrap{max-width:760px;margin:0 auto}
+.view{display:none;gap:22px}
+.view.on{display:grid}
+.view>*{min-width:0}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.sec-head .link{background:none;border:0;color:var(--accent);font-weight:600;font-size:13px;padding:4px}
+.page-head{display:grid;gap:2px}
+.page-head h1{font-family:var(--display);font-weight:400;font-size:26px;letter-spacing:.3px}
+
+/* Characters */
+.guide{display:flex;gap:12px;align-items:flex-end}
+.guide .av{flex:0 0 auto}
+.av{border-radius:50%;object-fit:cover;background:var(--card);border:3px solid var(--ring,var(--accent));display:block;max-width:100%}
+.hero{border-radius:20px;overflow:hidden;border:1px solid var(--line);background:#f7f2ea;position:relative}
+.hero img{display:block;width:100%;height:auto}
+.hero .cap{position:absolute;left:14px;top:12px;font-family:var(--display);font-size:clamp(20px,3.4vw,30px);line-height:1.2;color:#141a3a;text-shadow:0 0 8px #fff,0 0 4px #fff}
+.hero .cap b{color:#1d4ee8;font-weight:400}
+.namepill{display:inline-block;color:#fff;font-weight:700;border-radius:999px;padding:2px 12px;font-size:14px}
+.desk{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.desk p{margin:0;font-size:13px;color:var(--muted)}
+.desk b{font-size:14px;color:var(--ink)}
+.bubble{background:var(--accent);color:var(--accent-ink);border-radius:18px 18px 18px 4px;padding:14px 16px;font-weight:600;flex:1;min-width:0}
+.bubble small{display:block;font-weight:500;opacity:.85;margin-top:4px}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;min-width:0}
+.stack{display:grid;gap:12px}
+.stack>*{min-width:0}
+.hscroll{display:grid;grid-auto-flow:column;grid-auto-columns:80%;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px;margin-left:calc(-1 * var(--gut-l));margin-right:calc(-1 * var(--gut-r));padding-left:var(--gut-l);padding-right:var(--gut-r)}
+.hscroll>*{scroll-snap-align:start}
+.ev{display:grid;gap:8px;align-content:start}
+.ev-top{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip{font-size:12px;font-weight:600;border-radius:999px;padding:2px 9px;background:var(--soft);color:var(--accent);white-space:nowrap}
+.chip.region{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.chip.new{background:var(--ok-soft);color:var(--ok)}
+.dday{font-size:12px;font-weight:700;border-radius:6px;padding:2px 7px;background:var(--hot);color:#fff;margin-left:auto;white-space:nowrap}
+.dday.calm{background:var(--line);color:var(--ink)}
+.dday.live{background:var(--ok);color:#fff}
+.dday.closed{background:var(--line);color:var(--muted)}
+.ev h3,.job h3,.paper h3{font-size:16px;line-height:1.4;overflow-wrap:anywhere}
+.meta{font-size:13px;color:var(--muted);display:grid;gap:2px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.btn{border:0;border-radius:10px;padding:8px 12px;font-weight:600;font-size:13px;background:var(--accent);color:var(--accent-ink);text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.btn.ghost{background:var(--soft);color:var(--accent)}
+.btn.saved{background:var(--sun);color:var(--sun-ink)}
+.star{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:6px 10px;font-size:13px;font-weight:600;color:var(--muted)}
+.star[aria-pressed="true"]{background:var(--sun);border-color:var(--sun);color:var(--sun-ink)}
+.empty{color:var(--muted);text-align:center;padding:22px 8px;font-size:14px}
+.skel{height:84px;border-radius:16px;background:linear-gradient(90deg,var(--card),var(--soft),var(--card));background-size:200% 100%;animation:sh 1.4s infinite;border:1px solid var(--line)}
+@keyframes sh{to{background-position:-200% 0}}
+
+/* Toolbar: search + filters */
+.toolbar{display:grid;gap:10px}
+.search{width:100%;font:inherit;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 12px}
+.filters{display:flex;gap:8px;overflow-x:auto;margin-left:calc(-1 * var(--gut-l));margin-right:calc(-1 * var(--gut-r));padding:0 var(--gut-r) 2px var(--gut-l)}
+.f{flex:0 0 auto;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 13px;font-size:13px;font-weight:600;color:var(--muted)}
+.f[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.resultline{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.toggle{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.toggle input{width:18px;height:18px;accent-color:var(--accent)}
+
+/* Month calendar */
+.month-nav{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.month-nav button{border:1px solid var(--line);background:var(--card);border-radius:10px;min-width:36px;height:32px;padding:0 10px;font-size:13px;font-weight:600}
+.month-nav b{font-size:16px}
+.mgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.mgrid .dow{font-size:11px;color:var(--muted);text-align:center;font-weight:600;padding-bottom:2px}
+.mgrid .dow:first-child{color:var(--hot)}
+.cell{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:5px 2px 6px;min-height:52px;display:grid;align-content:start;justify-items:center;gap:3px;text-align:center;min-width:0}
+.cell.out{opacity:.35}
+.cell b{font-size:14px;line-height:1.2}
+.cell.today b{background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:0 6px}
+.cell .dots{display:flex;gap:2px;justify-content:center;flex-wrap:wrap}
+.cell .dots i{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.cell .mini{display:none}
+.cell[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
+
+/* News */
+.news{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;align-items:start;color:inherit;text-decoration:none}
+.thumb{width:64px;height:64px;border-radius:12px;display:grid;place-items:center;font-family:var(--display);font-size:13px;line-height:1.1;text-align:center;padding:4px;color:#fff}
+.news h3{font-size:15px;line-height:1.4}
+.news p{margin:4px 0 0;font-size:13px;color:var(--muted)}
+.news .go{display:inline-block;margin-top:6px;font-size:12px;font-weight:700;color:var(--accent)}
+.news-row{display:grid;gap:8px}
+.news-row .actions{justify-content:flex-end;margin-top:-4px}
+
+/* Walk */
+.tabs-inline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.tabs-inline .f{padding:6px 4px;font-size:12.5px;text-align:center}
+.places{display:grid}
+.place{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);color:inherit;text-decoration:none}
+.place:last-child{border-bottom:0}
+.pin{width:34px;height:34px;border-radius:50%;display:grid;place-items:center}
+.pinfo{display:grid;gap:1px}
+.pinfo b{font-size:15px}
+.pcat{font-size:12px;font-weight:700}
+.pdesc{font-size:13px;color:var(--muted)}
+.nbtn{font-size:11px;font-weight:700;line-height:1.25;text-align:center;color:#fff;background:#03c75a;border-radius:10px;padding:6px 8px}
+.quick{display:flex;gap:8px;flex-wrap:wrap}
+.quick a.btn{font-size:12.5px}
+
+/* Jobs, papers */
+.job,.paper{display:grid;gap:6px;align-content:start}
+.job .co{font-size:13px;font-weight:700;color:var(--accent)}
+.paper .by{font-size:12.5px;color:var(--muted)}
+.paper p{margin:0;font-size:13.5px}
+.cta{display:grid;gap:8px;background:linear-gradient(135deg,var(--card),var(--soft))}
+.cta h3{font-size:16px}
+.cta p{margin:0;font-size:13.5px;color:var(--muted)}
+
+/* AI study */
+.word{display:grid;gap:8px;background:linear-gradient(135deg,var(--card),var(--soft))}
+.word .eyebrow{font-size:12px;font-weight:700;color:#8a5ad8;letter-spacing:.3px}
+.word h3{font-family:var(--display);font-weight:400;font-size:26px}
+.word .en{font-size:13px;color:var(--muted)}
+.word .ex{font-size:13px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.lesson summary{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;cursor:pointer;list-style:none}
+.lesson summary::-webkit-details-marker{display:none}
+.lv{font-size:11px;font-weight:700;border-radius:6px;padding:2px 7px;color:#fff}
+.lesson h3{font-size:15px}
+.lesson .min{font-size:12px;color:var(--muted)}
+.lesson .body{margin-top:10px;font-size:14px;display:grid;gap:8px}
+.lesson .body p{margin:0}
+.lesson .body ul{margin:0;padding-left:18px;color:var(--muted)}
+.lesson.done h3{color:var(--muted)}
+.lesson .tick{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:12px;color:#fff}
+.lesson.done .tick{background:var(--ok);border-color:var(--ok)}
+.progress{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.progress div{height:100%;background:var(--ok);width:0;transition:width .25s}
+.prompt pre{white-space:pre-wrap;font-family:var(--body);font-size:13px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0;overflow-wrap:anywhere}
+.prompt h3{font-size:15px}
+.qopt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 12px;font-size:14px}
+.qopt.right{border-color:var(--ok);background:var(--ok-soft);color:var(--ok)}
+.qopt.wrong{border-color:var(--hot);background:var(--hot-soft);color:var(--hot)}
+.term{padding:10px 0;border-bottom:1px solid var(--line)}
+.term:last-child{border-bottom:0}
+.term b{font-size:14px}
+.term span{font-size:12px;color:var(--muted);margin-left:6px}
+.term p{margin:3px 0 0;font-size:13px;color:var(--muted)}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--line);border-radius:12px;padding:4px;gap:4px}
+.seg a{text-align:center;padding:8px 0;border-radius:9px;font-weight:700;font-size:14px;color:var(--muted);text-decoration:none}
+.seg a[aria-selected="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+
+/* Home */
+.feature{display:grid;gap:10px;align-content:start}
+.feature p{margin:0}
+.home-top,.home-mid,.features{display:grid;gap:22px}
+.home-top>*,.home-mid>*{min-width:0;display:grid;gap:12px;align-content:start}
+
+/* Crew */
+.crew{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.member{display:grid;justify-items:center;text-align:center;gap:6px}
+.member p{margin:0;font-size:12px;color:var(--muted)}
+
+/* Search all, NEW badges, checklist */
+.search.big{padding:12px 14px;font-size:15px;border-radius:14px}
+.chip.newb{background:var(--hot);color:#fff;letter-spacing:.4px}
+.since{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13.5px}
+.since b{font-weight:700}
+.res-group{display:grid;gap:6px}
+.res-group h3{font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.3px}
+.res{display:grid;gap:1px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:inherit;text-decoration:none;text-align:left;width:100%}
+.res b{font-size:14.5px;font-weight:600;overflow-wrap:anywhere}
+.res span{font-size:12.5px;color:var(--muted)}
+.check{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.check:last-child{border-bottom:0}
+.check input{width:20px;height:20px;accent-color:var(--ok);margin-top:2px;flex:0 0 auto}
+.check label{font-size:14px;display:grid;gap:1px}
+.check label span{font-size:12.5px;color:var(--muted)}
+.check input:checked+label b{color:var(--muted);text-decoration:line-through}
+.role{display:grid;gap:6px;align-content:start}
+.role h3{font-size:16px}
+.role p{margin:0;font-size:13.5px}
+.role ul{margin:0;padding-left:18px;font-size:13px;color:var(--muted)}
+
+/* Footer */
+footer.foot{padding-block:18px 8px;padding-left:var(--gut-l);padding-right:var(--gut-r)}
+footer.foot .wrap{border-top:1px solid var(--line);padding-top:16px;display:grid;gap:8px;font-size:12.5px;color:var(--muted)}
+footer.foot p{margin:0}
+footer.foot .links{display:flex;gap:6px;flex-wrap:wrap}
+footer.foot .links button{background:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:600;color:var(--muted)}
+
+/* Bottom nav (phone/tablet) */
+nav.tabbar{position:fixed;bottom:0;left:0;right:0;z-index:6;background:var(--card);border-top:1px solid var(--line);padding-top:6px;padding-bottom:calc(6px + env(safe-area-inset-bottom,0px));padding-left:max(6px, env(safe-area-inset-left, 0px));padding-right:max(6px, env(safe-area-inset-right, 0px))}
+nav.tabbar .in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr)}
+nav.tabbar a{text-decoration:none;color:var(--muted);display:grid;justify-items:center;gap:2px;font-size:11px;font-weight:600;padding:4px 0;border-radius:10px}
+nav.tabbar svg,.side nav svg{width:22px;height:22px}
+nav.tabbar a[aria-current="page"]{color:var(--accent)}
+
+/* Sheet + toast */
+.sheet-bg{position:fixed;inset:0;background:var(--scrim);z-index:20;display:none;align-items:flex-end;justify-content:center}
+.sheet-bg.on{display:flex}
+.sheet{background:var(--card);width:100%;max-width:520px;border-radius:20px 20px 0 0;padding-top:18px;padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));padding-left:var(--gut-l);padding-right:var(--gut-r);max-height:88%;overflow:auto;display:grid;gap:12px}
+.sheet .grab{width:40px;height:4px;border-radius:9px;background:var(--line);margin:0 auto}
+.sheet p{margin:0}
+.sheet ul{margin:0;padding-left:18px;color:var(--muted);font-size:14px}
+.copybox{display:grid;gap:8px;background:var(--paper);border:1px dashed var(--line);border-radius:12px;padding:12px}
+.copybox code{font-family:var(--body);font-size:14px;user-select:all;overflow-wrap:anywhere}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:99px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s;z-index:30;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1}
+
+/* Tablet */
+@media (min-width:640px){
+  .grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hscroll{grid-auto-flow:row;grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible;margin:0;padding:0}
+  .features{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cell{min-height:64px}
+}
+/* Desktop: sidebar */
+@media (min-width:1000px){
+  .shell{display:grid;grid-template-columns:var(--side) minmax(0,1fr);min-height:100vh}
+  header.top,nav.tabbar{display:none}
+  .app{padding-bottom:24px}
+  .side{display:flex;flex-direction:column;gap:18px;position:sticky;top:0;height:100vh;overflow:auto;padding-block:22px;padding-left:max(18px, env(safe-area-inset-left, 0px));padding-right:18px;border-right:1px solid var(--line);background:var(--card)}
+  .side .logo{font-size:28px;text-align:left}
+  .side .tag{font-size:12.5px;color:var(--muted);margin:-12px 0 0}
+  .side nav{display:grid;gap:2px}
+  .side nav a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;color:var(--muted);text-decoration:none;font-weight:600;font-size:14.5px}
+  .side nav a:hover{background:var(--soft);color:var(--accent)}
+  .side nav a[aria-current="page"]{background:var(--soft);color:var(--accent)}
+  .side .bottom{margin-top:auto;display:grid;gap:8px}
+  .side .bottom button{text-align:left;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:9px 12px;font-size:13px;font-weight:600}
+  main{padding-block:28px 8px;padding-left:40px;padding-right:max(40px, env(safe-area-inset-right, 0px))}
+  footer.foot{padding-left:40px;padding-right:max(40px, env(safe-area-inset-right, 0px))}
+  .wrap{max-width:1120px}
+  .grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .hscroll{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .home-top{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:start}
+  .features{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .home-mid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+  .cal-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:22px;align-items:start}
+  .cal-layout>.card{position:sticky;top:20px}
+  .cell{min-height:92px;justify-items:stretch;padding:6px;text-align:left}
+  .cell b{justify-self:start}
+  .cell .dots{display:none}
+  .cell .mini{display:block;font-size:11px;line-height:1.3;background:var(--soft);color:var(--accent);border-radius:5px;padding:1px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cell .more{font-size:11px;color:var(--muted)}
+  .walk-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}
+  .sheet-bg{align-items:center}
+  .sheet{border-radius:20px;max-height:85vh}
+  .toast{bottom:32px}
+  .page-head h1{font-size:30px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+<body>
+<div class="shell">
+  <aside class="side" aria-label="사이드 메뉴">
+    <button class="logo" data-go="home" aria-label="홈으로"><span>Catch<b>MICE</b></span></button>
+    <p class="tag">MICE를 캐치하는 기자단</p>
+    <nav id="sidenav" aria-label="주요 메뉴"></nav>
+    <div class="bottom">
+      <button data-act="theme">화면 테마: <span class="themeLabel">시스템</span></button>
+      <button data-act="share">이 페이지 링크 복사</button>
+      <button data-act="about">기자단 소개</button>
+      <button data-act="contact">광고·제휴 / 공고 등록 문의</button>
+    </div>
+  </aside>
+
+  <div class="app">
+    <header class="top">
+      <div class="in">
+        <button class="logo" data-go="home" aria-label="홈으로"><span>Catch<b>MICE</b></span></button>
+        <div class="top-actions">
+          <button class="icon-btn" data-act="theme" aria-label="화면 테마 바꾸기"><span aria-hidden="true">◐ </span><span class="themeLabel">테마</span></button>
+          <button class="icon-btn" data-act="share" aria-label="이 페이지 링크 복사">링크 복사</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap">
+      <!-- HOME -->
+      <section class="view" id="v-home" aria-label="홈">
+        <div class="toolbar">
+          <input type="search" id="allQ" class="search big" placeholder="행사·뉴스·채용·논문 한 번에 검색 (예: 코엑스, PCO, ESG)" aria-label="전체 검색">
+          <div class="stack" id="allRes" hidden></div>
+          <div id="sinceBox" hidden></div>
+        </div>
+        <div class="home-top">
+          <div>
+            <div class="hero"><img src="img/hero.jpg" alt="Veny, Micy, Exy, Aily가 함께 달려오는 모습" width="900" height="611"><div class="cap">MICE를 <b>캐치</b>하는<br>기자단입니다</div></div>
+            <div class="guide">
+              <img class="av" src="img/micy.jpg" width="76" height="76" alt="Micy">
+              <div class="bubble" id="greet">이번 주 놓치기 아까운 행사를 알려드릴게요!<small>Micy · MICE 종합</small></div>
+            </div>
+          </div>
+          <div>
+            <div class="sec-head"><h2>오늘의 한입뉴스</h2><button class="link" data-go="news">전체 보기</button></div>
+            <div class="stack" id="homeNews"></div>
+          </div>
+        </div>
+
+        <div class="stack">
+          <div class="sec-head"><h2>다가오는 행사</h2><button class="link" data-go="calendar">캘린더 보기</button></div>
+          <div class="hscroll" id="soonList"></div>
+        </div>
+
+        <div class="home-mid">
+          <div>
+            <div class="sec-head"><h2>마감 임박 채용</h2><button class="link" data-go="jobs">공고 전체 보기</button></div>
+            <div class="stack" id="homeJobs"></div>
+          </div>
+          <div>
+            <div class="sec-head"><h2>내가 저장한 것</h2></div>
+            <div class="stack" id="savedList"></div>
+          </div>
+        </div>
+
+        <div class="features">
+          <div class="card feature">
+            <h2>행사 따라 동네 한 바퀴</h2>
+            <p class="sub">Veny가 고른 행사장 주변 핫플. 누르면 네이버 지도로 바로 열려요.</p>
+            <div><button class="btn" data-go="walk">핫플 보러 가기</button></div>
+          </div>
+          <div class="card feature">
+            <h2>Aily의 AI 스터디</h2>
+            <p class="sub">오늘의 AI 용어, 단계별 코스, 업무 프롬프트와 퀴즈</p>
+            <div><button class="btn" data-go="ai">오늘의 AI 공부</button></div>
+          </div>
+          <div class="card feature">
+            <h2>최신 MICE 논문</h2>
+            <p class="sub" id="homePapers">ESG, 빅데이터, 지역 MICE 연구를 주제별로 모았어요.</p>
+            <div><button class="btn" data-go="papers">논문 보기</button></div>
+          </div>
+          <div class="card feature">
+            <h2>MICE 취업 가이드</h2>
+            <p class="sub">직무 소개, 컨벤션기획사 자격증, 꼭 알아야 할 업계 용어와 준비 체크리스트</p>
+            <div><button class="btn" data-go="guide">가이드 보기</button></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CALENDAR -->
+      <section class="view" id="v-calendar" aria-label="MICE 캘린더">
+        <div class="page-head"><h1>MICE 캘린더</h1><p class="sub">전국 전시장·컨벤션센터의 실제 행사 일정이에요. 날짜를 누르면 그날 행사만 보여요.</p></div>
+        <div id="deskCal"></div>
+        <div class="cal-layout">
+          <div class="card" style="display:grid;gap:10px">
+            <div class="month-nav">
+              <button id="prevMonth" aria-label="이전 달">‹</button>
+              <b id="monthLabel" class="count"></b>
+              <button id="nextMonth" aria-label="다음 달">›</button>
+            </div>
+            <div class="mgrid" id="mgrid"></div>
+            <div><button class="btn ghost" id="todayBtn">이번 달로</button></div>
+          </div>
+          <div class="toolbar">
+            <div class="filters" id="periodF" role="group" aria-label="기간"></div>
+            <div class="filters" id="regionF" role="group" aria-label="지역"></div>
+            <div class="filters" id="typeF" role="group" aria-label="행사 유형"></div>
+            <div class="resultline"><p class="sub count" id="calCount" style="margin:0"></p><label class="toggle"><input type="checkbox" id="showPast"> 끝난 행사도 보기</label></div>
+            <div class="stack" id="calList"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WALK -->
+      <section class="view" id="v-walk" aria-label="동네 한 바퀴">
+        <div class="page-head"><h1>행사 따라 동네 한 바퀴</h1><p class="sub">장소를 누르면 네이버 지도에서 바로 열려요</p></div>
+        <div class="walk-layout">
+          <div style="display:grid;gap:14px;align-content:start">
+            <div id="deskWalk"></div>
+            <div class="tabs-inline" id="walkTabs" role="group" aria-label="행사장 선택"></div>
+            <div class="stack" id="walkEvents"></div>
+          </div>
+          <div class="card" id="walkCard" style="display:grid;gap:14px"></div>
+        </div>
+      </section>
+
+      <!-- NEWS -->
+      <section class="view" id="v-news" aria-label="한입뉴스">
+        <div class="page-head"><h1>MICE 한입뉴스</h1><p class="sub" id="newsUpd"></p></div>
+        <div id="deskNews"></div>
+        <div class="toolbar">
+          <input type="search" id="newsQ" class="search" placeholder="뉴스 검색 (예: 국제회의, 부산, AI)" aria-label="뉴스 검색">
+          <div class="filters" id="newsF" role="group" aria-label="뉴스 분류"></div>
+        </div>
+        <div class="stack grid2" id="newsList"></div>
+      </section>
+
+      <!-- JOBS -->
+      <section class="view" id="v-jobs" aria-label="MICE 채용">
+        <div class="page-head"><h1>MICE 채용</h1><p class="sub" id="jobsUpd"></p></div>
+        <div id="deskJobs"></div>
+        <div class="toolbar">
+          <input type="search" id="jobQ" class="search" placeholder="회사·직무 검색 (예: PCO, 전시, 부산)" aria-label="채용공고 검색">
+          <div class="filters" id="jobF" role="group" aria-label="경력"></div>
+          <div class="filters" id="jobR" role="group" aria-label="지역"></div>
+          <p class="sub count" id="jobCount" style="margin:0"></p>
+        </div>
+        <div class="stack grid2 grid3" id="jobList"></div>
+        <div class="card" style="display:grid;gap:10px">
+          <h3 style="font-size:15px">실시간 공고 바로 검색</h3>
+          <div class="quick" id="jobLinks"></div>
+        </div>
+        <div class="card cta">
+          <h3>MICE 취업, 어디서부터 준비할까요?</h3>
+          <p>PCO·전시기획·컨벤션센터 직무 차이, 컨벤션기획사 자격증, 면접에서 나오는 업계 용어를 정리해 뒀어요.</p>
+          <div><button class="btn" data-go="guide">취업 가이드 보기</button></div>
+        </div>
+        <div class="card cta">
+          <h3>우리 회사 공고도 올리고 싶다면</h3>
+          <p>PCO·전시기획사·컨벤션센터 채용공고를 CatchMICE에 직접 올릴 수 있도록 준비하고 있어요.</p>
+          <div><button class="btn" data-act="contact">공고 등록 문의</button></div>
+        </div>
+        <p class="sub">마감된 공고는 자동으로 숨겨요. 마감 여부와 자세한 조건은 공고 원문에서 꼭 확인하세요.</p>
+      </section>
+
+      <!-- AI -->
+      <section class="view" id="v-ai" aria-label="AI 스터디">
+        <div class="seg" role="tablist"><a href="#ai" role="tab" aria-selected="true">AI 스터디</a><a href="#papers" role="tab" aria-selected="false">MICE 논문</a></div>
+        <div class="page-head"><h1>AI 스터디</h1><p class="sub">MICE 일에 바로 쓰는 AI 지식을 하루 5분씩 쌓아요</p></div>
+        <div id="deskAi"></div>
+        <div class="home-mid">
+          <div class="card word" id="todayWord"></div>
+          <div class="card" style="display:grid;gap:12px" id="quiz"></div>
+        </div>
+        <div>
+          <div class="sec-head"><h2>단계별 코스</h2><span class="sub count" id="lessonCount"></span></div>
+          <div class="progress" style="margin-top:8px"><div id="lessonBar"></div></div>
+        </div>
+        <div class="stack grid2" id="lessons"></div>
+        <div>
+          <div class="sec-head"><h2>MICE 업무 프롬프트</h2></div>
+          <p class="sub">복사해서 AI 챗봇에 붙여 넣고 [ ] 부분만 바꿔 쓰세요</p>
+        </div>
+        <div class="filters" id="promptF" role="group" aria-label="업무 분류"></div>
+        <div class="stack grid2" id="prompts"></div>
+        <div>
+          <div class="sec-head"><h2>AI 용어 사전</h2><span class="sub count" id="dictCount"></span></div>
+        </div>
+        <input type="search" id="dictQ" class="search" placeholder="용어 검색 (예: RAG, 할루시네이션)" aria-label="AI 용어 검색">
+        <div class="card" id="dict" style="padding:4px 14px"></div>
+      </section>
+
+      <!-- PAPERS -->
+      <section class="view" id="v-papers" aria-label="MICE 논문">
+        <div class="seg" role="tablist"><a href="#ai" role="tab" aria-selected="false">AI 스터디</a><a href="#papers" role="tab" aria-selected="true">MICE 논문</a></div>
+        <div class="page-head"><h1>MICE 논문</h1><p class="sub" id="papersUpd"></p></div>
+        <div id="deskPapers"></div>
+        <div class="toolbar">
+          <input type="search" id="paperQ" class="search" placeholder="제목·저자·학술지 검색" aria-label="논문 검색">
+          <div class="filters" id="paperF" role="group" aria-label="주제"></div>
+        </div>
+        <div class="stack grid2" id="paperList"></div>
+        <div class="card" style="display:grid;gap:10px">
+          <h3 style="font-size:15px">논문 바로 검색</h3>
+          <div class="quick" id="paperLinks"></div>
+        </div>
+        <p class="sub">원문 열람은 사이트마다 무료·기관 구독 여부가 달라요. 학교 도서관으로 접속하면 대부분 무료로 볼 수 있어요.</p>
+      </section>
+
+      <!-- GUIDE -->
+      <section class="view" id="v-guide" aria-label="MICE 취업 가이드">
+        <div class="page-head"><h1>MICE 취업 가이드</h1><p class="sub">MICE 업계에 처음 들어가려는 사람을 위한 기본 정리예요</p></div>
+        <div id="deskGuide"></div>
+        <div>
+          <div class="sec-head"><h2>나의 준비 체크리스트</h2><span class="sub count" id="prepCount"></span></div>
+          <div class="progress" style="margin-top:8px"><div id="prepBar"></div></div>
+        </div>
+        <div class="card" id="prepList" style="padding:4px 14px"></div>
+        <div class="sec-head"><h2>어떤 일을 할 수 있을까요</h2></div>
+        <div class="stack grid2 grid3" id="roles"></div>
+        <div class="card cta" id="certCard"></div>
+        <div>
+          <div class="sec-head"><h2>MICE 업계 용어</h2><span class="sub count" id="mtermCount"></span></div>
+        </div>
+        <input type="search" id="mtermQ" class="search" placeholder="용어 검색 (예: RFP, 어트리션)" aria-label="MICE 용어 검색">
+        <div class="card" id="mterms" style="padding:4px 14px"></div>
+        <div class="actions"><button class="btn" data-go="jobs">지금 모집 중인 공고 보기</button></div>
+      </section>
+      </div>
+    </main>
+
+    <footer class="foot">
+      <div class="wrap">
+        <p><b style="color:var(--ink)">CatchMICE</b> · 뉴스·채용·논문은 매일 아침 업데이트돼요 <span id="footUpd"></span></p>
+        <p>기사·공고·논문의 저작권은 각 원문 출처에 있어요. 요약은 CatchMICE가 직접 썼고, 행사 일정과 채용 조건은 바뀔 수 있으니 원문에서 꼭 다시 확인하세요.</p>
+        <div class="links"><button data-act="about">기자단 소개</button><button data-act="contact">광고·제휴 문의</button><button data-act="share">링크 복사</button></div>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<nav class="tabbar" aria-label="주요 메뉴"><div class="in" id="tabbar"></div></nav>
+
+<div class="sheet-bg" id="sheetBg" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheet" id="sheet"></div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+/* 문의 연락처: 준비되면 여기에 이메일이나 오픈채팅 주소를 넣으세요. 비어 있으면 "준비 중"으로 보여요. */
+const CONTACT = "";
+
+/* Today in Korea time */
+const kst=new Date(Date.now()+(540+new Date().getTimezoneOffset())*60000);
+const TODAY=new Date(kst.getFullYear(),kst.getMonth(),kst.getDate());
+const store={
+  get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+/* Theme: system -> light -> dark */
+const THEMES=["system","light","dark"], TL={system:"시스템",light:"라이트",dark:"다크"};
+let theme=store.get("cm_theme","system"); if(!THEMES.includes(theme)) theme="system";
+function applyTheme(){
+  if(theme==="system") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme",theme);
+  document.querySelectorAll(".themeLabel").forEach(e=>e.textContent=TL[theme]);
+}
+applyTheme();
+/* NEW badges: compare with what this browser saw on the previous visit */
+const prevSeen=store.get("cm_seen",null);
+const isNew=k=>Array.isArray(prevSeen)&&!prevSeen.includes(k);
+const newBadge=k=>isNew(k)?'<span class="chip newb">NEW</span>':'';
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const safeUrl=u=>/^https?:\/\//.test(u||"")?esc(u):"#";
+
+/* ---------- Characters (placeholder art: replace with your own) ---------- */
+const CREW = [
+  {id:"micy", name:"Micy", animal:"쥐", role:"MICE 종합", desc:"돋보기와 취재수첩을 든 기자단 리더. 이번 주 놓치기 아까운 MICE 소식을 한입 크기로 골라줘요.", color:"#1d4ee8"},
+  {id:"veny", name:"Veny", animal:"토끼", role:"베뉴 탐방", desc:"지도를 들고 행사장과 그 주변 동네를 직접 걸어보며 취재해요.", color:"#2fae94"},
+  {id:"exy",  name:"Exy",  animal:"여우", role:"전시·비즈니스", desc:"마이크를 들고 전시장을 누비며 전시회·비즈니스 행사 일정을 챙겨요.", color:"#f0a400"},
+  {id:"aily", name:"Aily", animal:"수달", role:"AI·테크", desc:"태블릿을 든 테크 담당. AI×MICE 소식과 실무에 바로 쓰는 팁을 정리해요.", color:"#8a5ad8"}
+];
+const C=Object.fromEntries(CREW.map(c=>[c.id,c]));
+const av=(c,n)=>`<img class="av" src="img/${c.id}.jpg" width="${n}" height="${n}" alt="${c.name}" style="--ring:${c.color}">`;
+const pill=c=>`<span class="namepill" style="background:${c.color}">${c.name}</span>`;
+const desk=(c,msg)=>`<div class="desk">${av(c,52)}<div><b>${c.name}</b> <span class="sub">· ${c.role}</span><p>${msg}</p></div></div>`;
+
+const WALKS = {
+  "코엑스":{area:"삼성역",how:"지하철 2호선 삼성역에서 지하로 바로 연결",places:[
+    ["별마당 도서관","볼거리","코엑스몰 한가운데 거대한 서가. 사진 찍기 좋은 대표 스폿","코엑스 별마당 도서관"],
+    ["봉은사","산책","전시장 바로 건너편 사찰. 붐비는 전시 사이 30분 휴식","봉은사"],
+    ["코엑스 아쿠아리움","볼거리","행사 끝나고 들르기 좋은 실내 아쿠아리움","코엑스 아쿠아리움"],
+    ["현대백화점 무역센터점","쇼핑","코엑스와 이어진 백화점, 식당가도 함께","현대백화점 무역센터점"],
+    ["선릉과 정릉","산책","조선 왕릉 숲길. 지하철 한 정거장 거리","선릉과 정릉"]]},
+  "코엑스마곡":{area:"마곡나루역",how:"공항철도·9호선 마곡나루역 인근, KME 2026 개최지",places:[
+    ["서울식물원","산책","대형 온실과 호수공원. 행사 전후 산책 코스로 딱","서울식물원"],
+    ["LG아트센터 서울","볼거리","안도 다다오 설계 공연장. 건물 자체가 볼거리","LG아트센터 서울"],
+    ["스페이스K 서울","볼거리","마곡의 현대미술 전시 공간","스페이스K 서울"],
+    ["마곡나루역 일대 식당가","카페·맛집","직장인 상권이라 점심 선택지가 많아요","마곡나루역 맛집"]]},
+  "BEXCO":{area:"센텀시티역",how:"지하철 2호선 센텀시티역에서 도보 3분",places:[
+    ["신세계 센텀시티","쇼핑","벡스코 바로 옆 대형 백화점과 스파","신세계 센텀시티"],
+    ["영화의전당","볼거리","부산국제영화제 전용관. 지붕 구조물이 장관","영화의전당"],
+    ["APEC나루공원","산책","수영강 따라 걷는 강변 공원","APEC나루공원"],
+    ["F1963","카페·맛집","옛 와이어 공장을 바꾼 복합문화공간과 서점","F1963"],
+    ["해운대해수욕장","볼거리","차로 10분 남짓, 저녁 바다 산책","해운대해수욕장"]]},
+  "킨텍스":{area:"킨텍스역",how:"GTX-A 킨텍스역 이용",places:[
+    ["현대모터스튜디오 고양","볼거리","킨텍스 바로 옆 자동차 테마 전시관","현대모터스튜디오 고양"],
+    ["일산호수공원","산책","행사 뒤 걷기 좋은 넓은 호숫길","일산호수공원"],
+    ["웨스턴돔","카페·맛집","식당·카페가 모인 야외 상가 거리","일산 웨스턴돔"],
+    ["라페스타","쇼핑","로드숍과 맛집이 이어진 쇼핑 거리","일산 라페스타"]]}
+};
+const nmap=q=>"https://map.naver.com/p/search/"+encodeURIComponent(q);
+const PCOL={"볼거리":"#1d4ee8","산책":"#2fae94","쇼핑":"#e0567a","카페·맛집":"#f0a400"};
+const TERMS = [
+  ["생성형 AI","Generative AI","글, 이미지, 음성 같은 새 결과물을 만들어 내는 AI예요.","행사 안내문 초안, 포스터 시안, 홍보 문구를 몇 초 만에 뽑아볼 수 있어요."],
+  ["LLM","Large Language Model","방대한 글을 학습해 사람처럼 글을 읽고 쓰는 거대 언어 모델이에요. AI 챗봇의 두뇌예요.","참가자 문의 메일 답장, 회의록 요약에 쓰여요."],
+  ["프롬프트","Prompt","AI에게 주는 지시문이에요. 역할, 목적, 조건, 원하는 형식을 구체적으로 쓸수록 결과가 좋아져요.","\"국제학술대회 사무국 담당자로서, 해외 연사에게 보낼 영문 초청 메일을 300단어로 써줘\""],
+  ["할루시네이션","Hallucination","AI가 사실이 아닌 내용을 그럴듯하게 지어내는 현상이에요.","AI가 알려준 행사 날짜·장소·통계는 반드시 공식 자료로 다시 확인해야 해요."],
+  ["토큰","Token","AI가 글을 처리하는 작은 단위예요. 입력과 출력 길이, 요금이 토큰 수로 계산돼요.","긴 참가자 명단을 통째로 넣으면 토큰이 많이 들고 잘릴 수 있어요."],
+  ["컨텍스트 윈도우","Context Window","AI가 한 번에 기억하며 다룰 수 있는 글의 양이에요.","200쪽짜리 결과보고서를 넣을 땐 장별로 나눠 요약시키는 게 안전해요."],
+  ["RAG","Retrieval-Augmented Generation","AI가 답하기 전에 지정한 문서에서 관련 내용을 찾아보고 그걸 근거로 답하는 방식이에요.","행사 FAQ와 안내 책자를 넣어 두면 참가자 질문에 정확히 답하는 챗봇을 만들 수 있어요."],
+  ["멀티모달","Multimodal","글뿐 아니라 이미지, 음성, 영상까지 함께 이해하고 만드는 AI예요.","현장 사진을 찍어 올리면 부스 배치 문제점을 짚어 달라고 할 수 있어요."],
+  ["AI 에이전트","AI Agent","목표만 주면 여러 단계를 스스로 계획하고 도구를 써서 일을 끝내는 AI예요.","\"연사 20명 일정 확인 메일을 보내고 답장을 표로 정리해줘\" 같은 일을 맡길 수 있어요."],
+  ["파인튜닝","Fine-tuning","이미 학습된 AI를 특정 분야 데이터로 추가 학습시켜 말투나 전문성을 맞추는 일이에요.","우리 회사 보고서 양식과 용어에 맞춘 전용 AI를 만들 때 써요."],
+  ["임베딩","Embedding","글의 의미를 숫자 좌표로 바꾼 것이에요. 뜻이 비슷한 글끼리 가까이 놓여요.","참가자 관심사 설문을 비슷한 것끼리 묶어 세션 추천에 쓸 수 있어요."],
+  ["개인정보 마스킹","Data Masking","이름·연락처 같은 개인정보를 가리거나 바꿔서 AI에 넣는 방법이에요.","참가자 명단을 AI로 분석할 땐 이름과 전화번호를 지우고 넣어요."],
+  ["AI 통번역","AI Interpretation","실시간 음성 인식과 번역으로 다국어 소통을 돕는 기술이에요.","국제회의에서 실시간 자막·통역 보조로 쓰여요. 중요한 세션은 전문 통역사와 함께 써요."],
+  ["챗봇","Chatbot","대화 형식으로 질문에 답하는 프로그램이에요.","행사 홈페이지에 등록·셔틀·주차 안내 챗봇을 두면 문의 전화가 줄어요."],
+  ["제로샷 / 퓨샷","Zero-shot / Few-shot","예시 없이 바로 시키는 것이 제로샷, 예시 몇 개를 보여주고 시키는 것이 퓨샷이에요.","지난 행사 안내문 2개를 예시로 보여주면 같은 톤으로 새 안내문을 써줘요."],
+  ["AI 리터러시","AI Literacy","AI가 잘하는 것과 못하는 것을 알고, 결과를 비판적으로 확인하며 쓰는 능력이에요.","AI가 만든 초안을 그대로 내보내지 않고 사실·톤·개인정보를 점검하는 습관이에요."]
+];
+const LEVEL={"입문":"#2fae94","실전":"#1d4ee8","심화":"#8a5ad8"};
+const LESSONS = [
+  {lv:"입문",t:"AI 챗봇, 무엇을 잘하고 못할까",m:5,b:`<p>AI는 <b>초안 쓰기, 요약, 번역, 아이디어 내기, 표 정리</b>를 잘해요. 반대로 <b>최신 정보, 정확한 숫자, 사실 확인</b>은 약해요.</p><ul><li>잘함: 안내 메일 초안, 회의록 요약, 다국어 번역 초안</li><li>주의: 행사 일정·장소·예산 숫자, 법규·계약 조항</li><li>원칙: AI는 첫 초안 담당, 최종 확인은 사람</li></ul>`},
+  {lv:"입문",t:"좋은 프롬프트의 4요소",m:5,b:`<p><b>역할 · 목적 · 조건 · 형식</b> 네 가지를 넣으면 결과가 확 좋아져요.</p><ul><li>역할: "너는 10년 차 PCO 프로젝트 매니저야"</li><li>목적: "해외 참가자에게 등록 안내를 하려고 해"</li><li>조건: "200단어 이내, 공손한 영어, 마감일 강조"</li><li>형식: "제목 1줄 + 본문 3문단"</li></ul>`},
+  {lv:"입문",t:"개인정보, 이것만은 넣지 마세요",m:3,b:`<p>참가자 명단, 연락처, 여권 정보, 결제 정보는 외부 AI 서비스에 그대로 넣으면 안 돼요.</p><ul><li>이름·연락처는 지우거나 'A참가자'처럼 바꿔서 넣기</li><li>회사 보안 지침과 쓸 수 있는 AI 도구 목록 먼저 확인</li><li>참가자 동의 문구에 AI 활용 여부가 있는지 확인</li></ul>`},
+  {lv:"실전",t:"설문 주관식 응답 100개, 10분 만에 정리",m:7,b:`<p>만족도 설문 주관식은 AI가 가장 빛나는 영역이에요.</p><ul><li>응답을 붙여 넣고 "주제별로 묶고, 주제마다 건수와 대표 의견 2개" 요청</li><li>긍정·부정·개선 제안으로 나눠 달라고 하기</li><li>결과보고서에 쓸 3줄 요약까지 한 번에 받기</li><li>건수는 엑셀로 한 번 더 검산하기</li></ul>`},
+  {lv:"실전",t:"다국어 안내문, 번역보다 '현지화'",m:5,b:`<p>그냥 번역해 달라고 하지 말고 <b>누가 읽는지</b>를 알려주세요.</p><ul><li>"일본 학회 참가자가 읽기 편한 정중한 일본어로"</li><li>"영어권 참가자에게 낯선 한국 지명은 영문 병기"</li><li>교통·화폐·시간 표기를 현지 기준으로 바꿔 달라고 하기</li><li>최종본은 원어민이나 통번역 담당자 검수</li></ul>`},
+  {lv:"실전",t:"회의록·세션 녹취 요약하기",m:6,b:`<p>녹취 텍스트를 넣고 형식을 정해 주면 바로 쓸 수 있는 요약이 나와요.</p><ul><li>"발표자별 핵심 주장 3개, 질의응답 요지, 후속 조치" 형식 지정</li><li>긴 녹취는 세션별로 나눠 넣기(컨텍스트 윈도우)</li><li>인용·숫자는 원본과 대조하기</li></ul>`},
+  {lv:"심화",t:"행사 FAQ 챗봇 설계 (RAG 원리)",m:8,b:`<p>참가자 문의의 대부분은 반복 질문이에요. 공식 자료를 근거로 답하는 챗봇이 효과적이에요.</p><ul><li>재료: 행사 안내 책자, FAQ, 셔틀·주차·숙박 안내</li><li>원칙: "자료에 없는 내용은 사무국 연락처로 안내"하도록 지시</li><li>운영 중 들어온 새 질문을 FAQ에 계속 추가</li><li>답변 로그를 보고 안내문 자체를 개선</li></ul>`},
+  {lv:"심화",t:"AI 에이전트로 반복 업무 자동화",m:8,b:`<p>연사 일정 확인, 견적 비교, 참가자 리마인드처럼 단계가 정해진 일은 에이전트에게 맡겨볼 수 있어요.</p><ul><li>업무를 단계로 쪼개 적어보기 (입력 → 처리 → 결과)</li><li>메일 발송·결제처럼 되돌리기 어려운 단계는 사람이 승인</li><li>작은 업무 하나로 시험해 보고 넓히기</li></ul>`},
+  {lv:"심화",t:"AI 활용 성과, 어떻게 보고할까",m:5,b:`<p>AI를 썼다는 것보다 <b>무엇이 얼마나 줄었는지</b>를 보여줘야 해요.</p><ul><li>문의 처리 시간, 보고서 작성 시간 같은 전후 비교</li><li>챗봇 자동 응답 비율, 참가자 만족도 변화</li><li>오류·검수 사례도 함께 기록해 신뢰 확보</li></ul>`}
+];
+const PROMPTS = [
+  {cat:"참가자 안내",t:"해외 연사 초청 메일 (영문)",p:`너는 국제학술대회 사무국의 프로젝트 매니저야.
+[행사명]에 [연사 이름/소속]을 기조연설자로 초청하는 영문 메일을 써줘.
+- 행사 일시·장소: [날짜, 장소]
+- 제공 사항: [항공·숙박·사례비 여부]
+- 회신 마감: [날짜]
+조건: 정중하고 간결하게 250단어 이내, 제목 1줄 + 본문 3문단.`},
+  {cat:"참가자 안내",t:"행사 D-3 리마인드 문자",p:`[행사명] 참가자에게 보낼 D-3 리마인드 문자를 90자 이내로 3가지 버전 써줘.
+포함: 일시 [날짜·시간], 장소 [장소], 사전등록 QR 지참 안내, 문의처 [번호].
+톤: 친근하지만 공식적인 느낌.`},
+  {cat:"기획",t:"행사 기획안 뼈대 잡기",p:`너는 MICE 기획 10년 차 PM이야.
+[주최 기관]이 [목적]을 위해 [규모]명 규모 [행사 유형]을 [시기]에 열려고 해.
+아래 형식으로 기획안 초안을 만들어줘.
+1) 행사 개요 2) 타깃 참가자 3) 프로그램 구성(시간표) 4) 홍보 전략 5) 예산 항목(금액 제외) 6) 리스크와 대응
+각 항목은 3~5줄 불릿으로.`},
+  {cat:"기획",t:"세션 아이디어 브레인스토밍",p:`[행사 주제] 컨퍼런스에서 [타깃 참가자]의 참여를 끌어낼 세션 아이디어 10개를 제안해줘.
+각 아이디어마다 세션 형식(패널·워크숍·네트워킹 등), 한 줄 설명, 예상 효과를 표로 정리해.`},
+  {cat:"보고서",t:"만족도 설문 주관식 분석",p:`아래는 [행사명] 만족도 설문 주관식 응답이야. (개인정보는 지웠어)
+1) 비슷한 의견끼리 주제로 묶고, 주제별 건수와 대표 의견 2개를 표로
+2) 긍정 / 부정 / 개선 제안으로 분류
+3) 결과보고서에 넣을 3줄 요약
+---
+[응답 붙여넣기]`},
+  {cat:"보고서",t:"결과보고서 초안",p:`아래 행사 데이터를 바탕으로 결과보고서 초안을 써줘.
+목차: 1) 행사 개요 2) 참가 현황(사전등록 대비 참석률) 3) 프로그램별 운영 결과 4) 성과지표 5) 개선 제안
+조건: 숫자는 내가 준 것만 쓰고, 없는 숫자는 [확인 필요]로 표시해.
+---
+[데이터 붙여넣기]`},
+  {cat:"홍보",t:"인스타 카드뉴스 문구",p:`[행사명/주제]를 소개하는 인스타그램 카드뉴스 6장 문구를 써줘.
+1장: 눈길 끄는 제목 / 2~5장: 핵심 정보 한 장에 하나씩 / 6장: 행동 유도(사전등록 링크)
+각 장 제목 15자, 본문 40자 이내. 해시태그 8개도 추천해줘.`},
+  {cat:"홍보",t:"보도자료 초안",p:`[행사명] 개최 보도자료 초안을 써줘.
+- 핵심 내용: [일시, 장소, 규모, 주요 프로그램, 의미]
+- 인용문: [주최 측 대표 이름·직함]의 코멘트 1개 (내가 확인 후 수정할게)
+형식: 제목 + 부제 + 본문 5문단, 역피라미드 구조.`}
+];
+const QUIZ = [
+  {q:"AI가 사실이 아닌 내용을 그럴듯하게 지어내는 현상은?",o:["파인튜닝","할루시네이션","임베딩","토큰화"],a:1,e:"할루시네이션이에요. 행사 날짜·숫자는 꼭 공식 자료로 다시 확인하세요."},
+  {q:"행사 안내 책자를 근거로 답하는 FAQ 챗봇에 쓰이는 방식은?",o:["RAG","제로샷","멀티모달","GAN"],a:0,e:"RAG는 지정한 문서에서 관련 내용을 찾아 근거로 답해요."},
+  {q:"참가자 명단을 AI로 분석할 때 가장 먼저 할 일은?",o:["전체를 그대로 붙여넣기","파일 이름 바꾸기","이름·연락처 지우거나 가리기","영어로 번역하기"],a:2,e:"개인정보 마스킹이 먼저예요. 회사 보안 지침도 함께 확인하세요."},
+  {q:"좋은 프롬프트의 4요소가 아닌 것은?",o:["역할","목적","형식","글자 색"],a:3,e:"역할·목적·조건·형식을 넣으면 결과가 좋아져요."},
+  {q:"지난 안내문 2개를 예시로 보여주고 같은 톤으로 쓰게 하는 방식은?",o:["퓨샷","제로샷","파인튜닝","에이전트"],a:0,e:"예시 몇 개를 보여주고 시키는 게 퓨샷이에요."}
+];
+
+
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const DOW=["일","월","화","수","목","금","토"];
+const parseD=s=>{const [y,m,d]=String(s).split("-").map(Number);return new Date(y,(m||1)-1,d||1)};
+const fmt=dt=>`${dt.getMonth()+1}.${dt.getDate()}(${DOW[dt.getDay()]})`;
+const dayDiff=dt=>Math.round((dt-TODAY)/86400000);
+const sameDay=(a,b)=>a.getTime()===b.getTime();
+const updLabel=u=>u?`${+u.slice(5,7)}월 ${+u.slice(8,10)}일 업데이트`:"";
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("on");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("on"),1800)}
+function chips(el,list,cur,key){el.innerHTML=list.map(v=>`<button class="f" data-${key}="${esc(v)}" aria-pressed="${v===cur}">${esc(v)}</button>`).join("")}
+function copyText(txt,okMsg){
+  try{navigator.clipboard.writeText(txt).then(()=>toast(okMsg),()=>copySheet(txt))}catch(_){copySheet(txt)}
+}
+function copySheet(txt){openSheet(`<h2 id="sheetTitle">직접 복사해 주세요</h2><p class="sub">이 화면에선 자동 복사가 막혀 있어요. 아래 글을 길게 눌러 복사하세요.</p><div class="copybox"><code>${esc(txt)}</code></div>`)}
+const skel=n=>Array(n).fill('<div class="skel"></div>').join("");
+const match=(q,...f)=>!q||f.join(" ").toLowerCase().includes(q);
+
+/* ---------- Data loading ---------- */
+const DATA={events:{items:[],updated:"",state:"loading"},news:{items:[],updated:"",state:"loading"},jobs:{items:[],updated:"",state:"loading"},papers:{items:[],updated:"",state:"loading"}};
+async function load(name){
+  try{const r=await fetch(name+".json",{cache:"no-store"}); if(!r.ok) throw 0; const j=await r.json(); DATA[name].items=j.items||[]; DATA[name].updated=j.updated||""; DATA[name].state="ok";}
+  catch(e){DATA[name].state="error";}
+}
+const stateMsg=(name,what)=>DATA[name].state==="loading"?skel(3):(DATA[name].state==="error"?`<div class="card empty">${what}을(를) 불러오지 못했어요. 잠시 후 새로고침해 주세요.</div>`:"");
+
+/* ---------- Events ---------- */
+let EVENTS=[];
+function prepEvents(){
+  EVENTS=DATA.events.items.map(e=>({...e,key:"ev|"+e.start+"|"+e.title,s:parseD(e.start),e:parseD(e.end||e.start),dl:e.deadline?parseD(e.deadline):null})).sort((a,b)=>a.s-b.s);
+}
+function evStatus(e){
+  if(dayDiff(e.e)<0) return `<span class="dday closed">종료</span>`;
+  if(dayDiff(e.s)<=0) return `<span class="dday live">진행 중</span>`;
+  const n=dayDiff(e.s); return `<span class="dday ${n>7?'calm':''}">${n===1?'내일 개막':'D-'+n}</span>`;
+}
+let saved=new Set(store.get("cm_saved2",[]));
+function saveBtn(key,label){const on=saved.has(key);return `<button class="star" data-save="${esc(key)}" aria-pressed="${on}" aria-label="${on?'저장 취소':'저장'}: ${esc(label)}">${on?'★ 저장됨':'☆ 저장'}</button>`}
+function evCard(e){
+  const range=sameDay(e.s,e.e)?fmt(e.s):`${fmt(e.s)} – ${fmt(e.e)}`;
+  const dl=e.dl&&dayDiff(e.dl)>=0?`<span>사전등록 마감 ${fmt(e.dl)} (D-${dayDiff(e.dl)})</span>`:(e.dl?`<span>사전등록 마감됨</span>`:"");
+  return `<article class="card ev">
+    <div class="ev-top">${newBadge(e.key)}<span class="chip">${esc(e.type)}</span><span class="chip region">${esc(e.region)}</span>${evStatus(e)}</div>
+    <h3>${esc(e.title)}</h3>
+    <div class="meta"><span>${range}</span><span>${esc(e.venue)}</span>${dl}</div>
+    <div class="actions"><button class="btn ghost" data-detail="${esc(e.key)}">자세히</button>${saveBtn(e.key,e.title)}</div></article>`;
+}
+
+/* ---------- HOME ---------- */
+let allQ="";
+function renderAll(){
+  const box=$("#allRes"), q=allQ.trim().toLowerCase();
+  if(!q){box.hidden=true; box.innerHTML=""; return}
+  const ev=EVENTS.filter(e=>dayDiff(e.e)>=0&&match(q,e.title,e.venue,e.region,e.type,e.desc)).slice(0,4);
+  const nw=DATA.news.items.filter(n=>match(q,n.title,n.sum,n.source,n.cat)).slice(0,4);
+  const jb=openJobs().filter(j=>match(q,j.company,j.title,j.place,j.career)).slice(0,4);
+  const pp=DATA.papers.items.filter(p=>match(q,p.title,p.authors,p.journal,p.sum)).slice(0,4);
+  const grp=(t,html,go)=>html?`<div class="res-group"><div class="sec-head"><h3>${t}</h3>${go?`<button class="link" data-go="${go}">더 보기</button>`:''}</div>${html}</div>`:'';
+  const out=
+    grp("행사",ev.map(e=>`<button class="res" data-detail="${esc(e.key)}"><b>${esc(e.title)}</b><span>${fmt(e.s)} · ${esc(e.venue)}</span></button>`).join(""),"calendar")+
+    grp("뉴스",nw.map(n=>`<a class="res" href="${safeUrl(n.url)}" target="_blank" rel="noopener"><b>${esc(n.title)}</b><span>${esc(n.date)} · ${esc(n.source)} ↗</span></a>`).join(""),"news")+
+    grp("채용",jb.map(j=>`<a class="res" href="${safeUrl(j.url)}" target="_blank" rel="noopener"><b>${esc(j.company)} · ${esc(j.title)}</b><span>${esc(j.place)} · ${esc(j.career)} ↗</span></a>`).join(""),"jobs")+
+    grp("논문",pp.map(p=>`<a class="res" href="${safeUrl(p.url)}" target="_blank" rel="noopener"><b>${esc(p.title)}</b><span>${esc(p.journal)} ↗</span></a>`).join(""),"papers");
+  box.hidden=false;
+  box.innerHTML=out||`<div class="card empty">'${esc(allQ)}'에 맞는 결과가 없어요. 다른 단어로 찾아보세요.</div>`;
+}
+let sinceCounts=null;
+function renderSince(){
+  const box=$("#sinceBox");
+  if(!sinceCounts||!(sinceCounts.n+sinceCounts.j+sinceCounts.e)){box.hidden=true;return}
+  const parts=[["news","뉴스",sinceCounts.n],["jobs","공고",sinceCounts.j],["calendar","행사",sinceCounts.e]].filter(p=>p[2]);
+  box.hidden=false;
+  box.innerHTML=`<div class="card since"><b>지난 방문 이후 새로 올라왔어요</b>${parts.map(p=>`<button class="btn ghost" data-go="${p[0]}">새 ${p[1]} ${p[2]}개</button>`).join("")}</div>`;
+}
+function renderHome(){
+  renderAll(); renderSince();
+  const up=EVENTS.filter(e=>dayDiff(e.e)>=0).slice(0,6);
+  $("#soonList").innerHTML=DATA.events.state!=="ok"?(stateMsg("events","행사 일정")||""):(up.length?up.map(evCard).join(""):'<div class="card empty">예정된 행사가 아직 없어요.</div>');
+  $("#homeNews").innerHTML=DATA.news.state!=="ok"?stateMsg("news","뉴스"):DATA.news.items.slice(0,3).map(n=>newsItem(n,true)).join("");
+  const js=openJobs().filter(j=>/^\d{4}-/.test(j.deadline)).slice(0,3);
+  $("#homeJobs").innerHTML=DATA.jobs.state!=="ok"?stateMsg("jobs","채용공고"):(js.length?js.map(jobCard).join(""):'<div class="card empty">마감이 가까운 공고가 없어요.</div>');
+  const sEv=EVENTS.filter(e=>saved.has(e.key)), sJob=DATA.jobs.items.filter(j=>saved.has(jobKey(j)));
+  $("#savedList").innerHTML=(sEv.length||sJob.length)?[...sEv.map(evCard),...sJob.map(jobCard)].join(""):`<div class="card empty">아직 저장한 행사나 공고가 없어요.<br>카드의 <b>☆ 저장</b>을 눌러보세요.</div>`;
+  if(DATA.papers.state==="ok") $("#homePapers").textContent=`ESG, 빅데이터, 지역 MICE 연구 ${DATA.papers.items.length}편을 주제별로 모았어요.`;
+  const live=EVENTS.filter(e=>dayDiff(e.s)<=0&&dayDiff(e.e)>=0).length;
+  if(DATA.events.state==="ok") $("#greet").innerHTML=`${live?`오늘 열리고 있는 행사가 ${live}개 있어요!`:"이번 주 놓치기 아까운 행사를 알려드릴게요!"}<small>Micy · MICE 종합 · ${TODAY.getMonth()+1}월 ${TODAY.getDate()}일 ${DOW[TODAY.getDay()]}요일</small>`;
+}
+
+/* ---------- CALENDAR ---------- */
+let calMonth=new Date(TODAY.getFullYear(),TODAY.getMonth(),1), selDay=null, region="전체", etype="전체", showPast=false, period="전체 기간";
+const addD=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+function periodRange(){
+  const mon=addD(TODAY,-((TODAY.getDay()+6)%7));
+  if(period==="이번 주") return [TODAY,addD(mon,6)];
+  if(period==="이번 주말"){const sat=addD(mon,5);return [sat>TODAY?sat:TODAY,addD(mon,6)]}
+  if(period==="다음 주") return [addD(mon,7),addD(mon,13)];
+  return null;
+}
+const onDay=(e,dt)=>dt>=e.s&&dt<=e.e;
+function renderMonth(){
+  const y=calMonth.getFullYear(), m=calMonth.getMonth();
+  $("#monthLabel").textContent=`${y}년 ${m+1}월`;
+  const start=new Date(y,m,1-new Date(y,m,1).getDay());
+  const list=filteredEvents(true);
+  let html=DOW.map(d=>`<span class="dow">${d}</span>`).join("");
+  for(let i=0;i<42;i++){
+    const x=new Date(start); x.setDate(start.getDate()+i);
+    if(i===35&&x.getMonth()!==m) break;
+    const evs=list.filter(e=>onDay(e,x));
+    const on=selDay&&sameDay(x,selDay);
+    html+=`<button class="cell ${x.getMonth()!==m?'out':''} ${sameDay(x,TODAY)?'today':''}" data-day="${x.getTime()}" aria-pressed="${!!on}" aria-label="${x.getMonth()+1}월 ${x.getDate()}일 ${evs.length?'행사 '+evs.length+'개':'행사 없음'}"><b>${x.getDate()}</b>${evs.length?`<span class="dots">${evs.slice(0,3).map(()=>'<i></i>').join("")}</span>${evs.slice(0,2).map(e=>`<span class="mini">${esc(e.title)}</span>`).join("")}${evs.length>2?`<span class="mini more">+${evs.length-2}개</span>`:''}`:''}</button>`;
+  }
+  $("#mgrid").innerHTML=html;
+}
+function filteredEvents(ignorePast){
+  return EVENTS.filter(e=>(region==="전체"||e.region===region)&&(etype==="전체"||e.type===etype)&&(ignorePast||showPast||dayDiff(e.e)>=0));
+}
+function renderCal(){
+  $("#deskCal").innerHTML=desk(C.exy,"전시장 일정과 사전등록 마감일은 제가 챙길게요!");
+  if(DATA.events.state!=="ok"){$("#calList").innerHTML=stateMsg("events","행사 일정");renderMonth();return}
+  chips($("#periodF"),["전체 기간","이번 주","이번 주말","다음 주"],period,"period");
+  chips($("#regionF"),["전체",...new Set(EVENTS.map(e=>e.region))],region,"region");
+  chips($("#typeF"),["전체",...new Set(EVENTS.map(e=>e.type))],etype,"etype");
+  renderMonth();
+  let list;
+  const pr=periodRange();
+  if(selDay) list=filteredEvents(true).filter(e=>onDay(e,selDay));
+  else if(pr) list=filteredEvents(false).filter(e=>e.e>=pr[0]&&e.s<=pr[1]);
+  else{const y=calMonth.getFullYear(),m=calMonth.getMonth(),ms=new Date(y,m,1),me=new Date(y,m+1,0); list=filteredEvents(false).filter(e=>e.e>=ms&&e.s<=me)}
+  $("#calCount").textContent=selDay?`${fmt(selDay)} · ${list.length}개 행사 · 날짜를 다시 누르면 전체 보기`:(pr?`${period}(${fmt(pr[0])} – ${fmt(pr[1])}) 행사 ${list.length}개`:`${calMonth.getMonth()+1}월 행사 ${list.length}개`);
+  $("#calList").innerHTML=list.length?list.map(evCard).join(""):`<div class="card empty">${selDay?'이날 열리는 행사가 없어요.':'조건에 맞는 행사가 없어요. 필터를 바꾸거나 다른 달을 보세요.'}</div>`;
+}
+
+/* ---------- WALK ---------- */
+let walkKey=Object.keys(WALKS)[0];
+const VENUE_MATCH={"코엑스":v=>/코엑스/.test(v)&&!/마곡/.test(v),"코엑스마곡":v=>/마곡/.test(v),"BEXCO":v=>/벡스코|BEXCO/i.test(v),"킨텍스":v=>/킨텍스|KINTEX/i.test(v)};
+function renderWalk(){
+  $("#deskWalk").innerHTML=desk(C.veny,"행사 끝나고 바로 가지 말고, 동네 한 바퀴 같이 돌아요!");
+  $("#walkTabs").innerHTML=Object.keys(WALKS).map(k=>`<button class="f" data-walk="${esc(k)}" aria-pressed="${k===walkKey}">${esc(k)}</button>`).join("");
+  const w=WALKS[walkKey];
+  $("#walkCard").innerHTML=`
+    <div class="sec-head"><h3>${esc(walkKey)} 주변 핫플</h3><a class="btn ghost" href="${nmap(walkKey)}" target="_blank" rel="noopener">행사장 지도 ↗</a></div>
+    <p class="sub" style="margin:-8px 0 0">${esc(w.how)}</p>
+    <div class="places">${w.places.map(p=>`<a class="place" href="${nmap(p[3])}" target="_blank" rel="noopener">
+      <span class="pin" style="background:${PCOL[p[1]]}" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M12 22s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12zm0-9.5A2.5 2.5 0 1 0 12 7.5a2.5 2.5 0 0 0 0 5z"/></svg></span>
+      <span class="pinfo"><b>${esc(p[0])}</b><span class="pcat" style="color:${PCOL[p[1]]}">${esc(p[1])}</span><span class="pdesc">${esc(p[2])}</span></span>
+      <span class="nbtn">지도<br>열기</span></a>`).join("")}</div>
+    <div class="quick"><a class="btn ghost" href="${nmap(w.area+' 맛집')}" target="_blank" rel="noopener">${esc(w.area)} 맛집 찾기</a><a class="btn ghost" href="${nmap(w.area+' 카페')}" target="_blank" rel="noopener">${esc(w.area)} 카페 찾기</a></div>`;
+  const evs=EVENTS.filter(e=>dayDiff(e.e)>=0&&(VENUE_MATCH[walkKey]||(()=>false))(e.venue));
+  $("#walkEvents").innerHTML=`<div class="sec-head"><h2 style="font-size:18px">${esc(walkKey)}에서 열리는 행사</h2></div>`+(evs.length?evs.slice(0,4).map(evCard).join(""):`<div class="card empty">지금 예정된 행사가 없어요.</div>`);
+}
+
+/* ---------- NEWS ---------- */
+let newsCat="전체", newsQ="";
+const CAT_COLOR={"지역 MICE":"#2fae94","국내 MICE":"#1d4ee8","국제회의 유치":"#c98700","신규 컨벤션센터":"#8a5ad8","전시·행사 일정":"#d14a6f","AI×MICE":"#0f7c8c"};
+function newsItem(n,compact){
+  const col=CAT_COLOR[n.cat]||"#1d4ee8";
+  return `<a class="card news" href="${safeUrl(n.url)}" target="_blank" rel="noopener"><div class="thumb" style="background:${col}">${esc(n.cat).replace(" ","<br>")}</div><div style="min-width:0"><div class="ev-top">${newBadge("n|"+n.url)}<span class="sub count" style="margin:0">${esc(n.date.slice(5).replace("-","."))} · ${esc(n.source)}</span></div><h3 style="margin-top:4px">${esc(n.title)}</h3>${compact?'':`<p>${esc(n.sum)}</p>`}<span class="go">기사 원문 보기 ↗</span></div></a>`;
+}
+function renderNews(){
+  $("#deskNews").innerHTML=desk(C.micy,"매일 아침 새 MICE 기사를 골라 둘게요. 누르면 원문으로 바로 가요!");
+  $("#newsUpd").textContent=DATA.news.updated?`${updLabel(DATA.news.updated)} · 매일 아침 새 기사로 바뀌어요`:"";
+  if(DATA.news.state!=="ok"){$("#newsList").innerHTML=stateMsg("news","뉴스");return}
+  const N=[...DATA.news.items].sort((a,b)=>b.date.localeCompare(a.date));
+  chips($("#newsF"),["전체",...new Set(N.map(n=>n.cat))],newsCat,"ncat");
+  const q=newsQ.trim().toLowerCase();
+  const list=N.filter(n=>(newsCat==="전체"||n.cat===newsCat)&&match(q,n.title,n.sum,n.source,n.cat));
+  $("#newsList").innerHTML=list.length?list.map(n=>newsItem(n)).join(""):'<div class="card empty">찾는 기사가 없어요. 다른 검색어를 넣어 보세요.</div>';
+}
+
+/* ---------- JOBS ---------- */
+let jobCareer="전체", jobRegion="전체", jobQ="";
+const jobKey=j=>"job|"+j.company+"|"+j.title;
+function openJobs(){
+  const dated=j=>/^\d{4}-/.test(j.deadline);
+  return DATA.jobs.items.filter(j=>!dated(j)||dayDiff(parseD(j.deadline))>=0)
+    .sort((a,b)=>{const ka=dated(a)?0:(a.deadline==="상시"?1:2), kb=dated(b)?0:(b.deadline==="상시"?1:2); return ka-kb||(ka===0?a.deadline.localeCompare(b.deadline):0)});
+}
+const JOB_LINKS=[
+  ["사람인 · MICE 직무","https://www.saramin.co.kr/zf_user/jobs/list/job-category?cat_kewd=1472"],
+  ["잡코리아 · MICE","https://www.jobkorea.co.kr/Search/?stext=MICE"],
+  ["잡코리아 · PCO","https://www.jobkorea.co.kr/search/?stext=Pco"],
+  ["K-MICE 채용게시판","https://k-mice.visitkorea.or.kr/noti.kto?func_name=list&pgbn=2"],
+  ["관광in 일자리","https://academy.visitkorea.or.kr/mainHome.do"]
+];
+function jobDday(j){
+  if(!j.deadline) return `<span class="dday calm">마감일 공고 확인</span>`;
+  if(j.deadline==="상시") return `<span class="dday calm">상시채용</span>`;
+  const n=dayDiff(parseD(j.deadline));
+  if(n<0) return `<span class="dday closed">마감</span>`;
+  return `<span class="dday ${n>5?'calm':''}">${n===0?'오늘 마감':'D-'+n}</span>`;
+}
+function jobCard(j){
+  const dl=/^\d{4}-/.test(j.deadline)?` · ~${fmt(parseD(j.deadline))}`:"";
+  return `<article class="card job">
+    <div class="ev-top">${newBadge(jobKey(j))}<span class="chip region">${esc(j.place)}</span>${j.newbie?'<span class="chip new">신입 가능</span>':''}${jobDday(j)}</div>
+    <span class="co">${esc(j.company)}</span><h3>${esc(j.title)}</h3>
+    <div class="meta"><span>${esc(j.career)}${j.pay?' · '+esc(j.pay):''}${dl}</span></div>
+    <div class="actions"><a class="btn" href="${safeUrl(j.url)}" target="_blank" rel="noopener">${esc(j.site)}에서 보기 ↗</a>${saveBtn(jobKey(j),j.title)}</div></article>`;
+}
+function renderJobs(){
+  $("#deskJobs").innerHTML=desk(C.exy,"MICE 업계 새 채용공고, 제가 매일 아침 모아 올게요!");
+  $("#jobsUpd").textContent=DATA.jobs.updated?`${updLabel(DATA.jobs.updated)} · 매일 아침 새 공고로 바뀌어요`:"";
+  $("#jobLinks").innerHTML=JOB_LINKS.map(l=>`<a class="btn ghost" href="${l[1]}" target="_blank" rel="noopener">${l[0]} ↗</a>`).join("");
+  if(DATA.jobs.state!=="ok"){$("#jobList").innerHTML=stateMsg("jobs","채용공고");return}
+  const J=openJobs();
+  chips($("#jobF"),["전체","신입 가능","경력","저장한 공고"],jobCareer,"jcar");
+  chips($("#jobR"),["전체",...new Set(J.map(j=>j.region))],jobRegion,"jreg");
+  const q=jobQ.trim().toLowerCase();
+  const list=J.filter(j=>(jobCareer==="전체"||(jobCareer==="신입 가능"&&j.newbie)||(jobCareer==="경력"&&!j.newbie)||(jobCareer==="저장한 공고"&&saved.has(jobKey(j))))&&(jobRegion==="전체"||j.region===jobRegion)&&match(q,j.company,j.title,j.place,j.career));
+  $("#jobCount").textContent=`모집 중인 공고 ${list.length}개`;
+  $("#jobList").innerHTML=list.length?list.map(jobCard).join(""):`<div class="card empty">조건에 맞는 공고가 없어요. 필터나 검색어를 바꿔 보세요.</div>`;
+}
+
+/* ---------- AI ---------- */
+let lessonsDone=new Set(store.get("cm_lessons",[])), promptCat="전체", quizI=0, quizScore=0, quizAns=null, dictQ="";
+function renderAI(){
+  $("#deskAi").innerHTML=desk(C.aily,"하루 5분! 용어 하나, 레슨 하나, 퀴즈 하나씩 같이 해봐요.");
+  const idx=Math.floor(TODAY.getTime()/86400000)%TERMS.length, w=TERMS[idx];
+  $("#todayWord").innerHTML=`<span class="eyebrow">오늘의 AI 용어 · ${TODAY.getMonth()+1}월 ${TODAY.getDate()}일</span><h3>${w[0]}</h3><span class="en">${w[1]}</span><p style="margin:0">${w[2]}</p><div class="ex"><b>MICE에선 이렇게</b><br>${w[3]}</div>`;
+  $("#lessonCount").textContent=`${lessonsDone.size}/${LESSONS.length} 완료`;
+  $("#lessonBar").style.width=(lessonsDone.size/LESSONS.length*100)+"%";
+  $("#lessons").innerHTML=LESSONS.map((l,i)=>`<details class="card lesson ${lessonsDone.has(i)?'done':''}"><summary><span class="lv" style="background:${LEVEL[l.lv]}">${l.lv}</span><span><h3>${l.t}</h3><span class="min">${l.m}분</span></span><span class="tick" aria-hidden="true">${lessonsDone.has(i)?'✓':''}</span></summary><div class="body">${l.b}<div><button class="btn ${lessonsDone.has(i)?'ghost':''}" data-lesson="${i}">${lessonsDone.has(i)?'완료 취소':'학습 완료'}</button></div></div></details>`).join("");
+  chips($("#promptF"),["전체",...new Set(PROMPTS.map(p=>p.cat))],promptCat,"pcat");
+  $("#prompts").innerHTML=PROMPTS.map((p,i)=>[p,i]).filter(([p])=>promptCat==="전체"||p.cat===promptCat).map(([p,i])=>`<article class="card prompt"><div class="ev-top"><span class="chip">${p.cat}</span></div><h3 style="margin-top:6px">${p.t}</h3><pre>${esc(p.p)}</pre><button class="btn" data-copyp="${i}">프롬프트 복사</button></article>`).join("");
+  renderQuiz(); renderDict();
+}
+function renderQuiz(){
+  const el=$("#quiz");
+  if(quizI>=QUIZ.length){el.innerHTML=`<div class="sec-head"><h2>오늘의 퀴즈</h2></div><p style="margin:0;font-size:18px"><b>${QUIZ.length}문제 중 ${quizScore}개</b> 맞혔어요!</p><p class="sub" style="margin:0">${quizScore===QUIZ.length?'완벽해요. Aily가 인정!':'틀린 용어는 아래 사전에서 다시 확인해요.'}</p><div><button class="btn" data-quiz="restart">다시 풀기</button></div>`;return}
+  const q=QUIZ[quizI];
+  el.innerHTML=`<div class="sec-head"><h2>오늘의 퀴즈</h2><span class="sub count">${quizI+1} / ${QUIZ.length}</span></div><p style="margin:0;font-weight:600">${q.q}</p>
+  <div style="display:grid;gap:8px">${q.o.map((o,i)=>`<button class="qopt ${quizAns===null?'':(i===q.a?'right':(i===quizAns?'wrong':''))}" data-qa="${i}" ${quizAns===null?'':'disabled'}>${o}</button>`).join("")}</div>
+  ${quizAns===null?'':`<p class="sub" style="margin:0">${quizAns===q.a?'정답!':'아쉬워요.'} ${q.e}</p><div><button class="btn" data-quiz="next">${quizI+1<QUIZ.length?'다음 문제':'결과 보기'}</button></div>`}`;
+}
+function renderDict(){
+  const q=dictQ.trim().toLowerCase();
+  const list=TERMS.filter(t=>!q||(t[0]+t[1]+t[2]).toLowerCase().includes(q));
+  $("#dictCount").textContent=`${TERMS.length}개 용어`;
+  $("#dict").innerHTML=list.length?list.map(t=>`<div class="term"><b>${t[0]}</b><span>${t[1]}</span><p>${t[2]}</p></div>`).join(""):`<div class="empty">찾는 용어가 없어요.</div>`;
+}
+
+/* ---------- PAPERS ---------- */
+let paperTopic="전체", paperQ="";
+const PAPER_LINKS=[
+  ["KCI · MICE관광연구","https://www.kci.go.kr/kciportal/po/search/poArtiSearList.kci?sereId=SER000008985"],
+  ["RISS 'MICE' 검색","https://www.riss.kr/search/Search.do?query=MICE"],
+  ["DBpia 'MICE' 검색","https://www.dbpia.co.kr/search/topSearch?searchOption=all&query=MICE"],
+  ["Google Scholar","https://scholar.google.com/scholar?q=MICE+convention+event"]
+];
+const TOPIC_COL={"지속가능·ESG":"#2fae94","빅데이터·AI":"#8a5ad8","경제효과":"#c98700","참가자·마케팅":"#d14a6f","지역 MICE":"#1d4ee8","해외 연구":"#0f7c8c"};
+function renderPapers(){
+  $("#deskPapers").innerHTML=desk(C.aily,"요즘 MICE 연구는 ESG랑 빅데이터가 대세예요. 궁금한 논문부터 골라봐요!");
+  $("#papersUpd").textContent=DATA.papers.updated?`${updLabel(DATA.papers.updated)} · 새 논문이 나오면 추가돼요`:"";
+  $("#paperLinks").innerHTML=PAPER_LINKS.map(l=>`<a class="btn ghost" href="${l[1]}" target="_blank" rel="noopener">${l[0]} ↗</a>`).join("");
+  if(DATA.papers.state!=="ok"){$("#paperList").innerHTML=stateMsg("papers","논문");return}
+  const P=DATA.papers.items;
+  chips($("#paperF"),["전체",...new Set(P.map(p=>p.topic))],paperTopic,"ptopic");
+  const q=paperQ.trim().toLowerCase();
+  const list=P.filter(p=>(paperTopic==="전체"||p.topic===paperTopic)&&match(q,p.title,p.authors,p.journal,p.sum));
+  $("#paperList").innerHTML=list.length?list.map(p=>`<article class="card paper">
+    <div class="ev-top"><span class="chip" style="background:${TOPIC_COL[p.topic]||'#1d4ee8'};color:#fff">${esc(p.topic)}</span><span class="sub" style="margin:0">${esc(p.journal)}${p.date?' · '+esc(p.date.replace('-','.')):''}</span></div>
+    <h3>${esc(p.title)}</h3>${p.authors?`<span class="by">${esc(p.authors)}</span>`:''}<p>${esc(p.sum)}</p>
+    <div class="actions"><a class="btn" href="${safeUrl(p.url)}" target="_blank" rel="noopener">${esc(p.site)}에서 보기 ↗</a></div></article>`).join(""):`<div class="card empty">찾는 논문이 없어요. 다른 검색어나 주제를 골라 보세요.</div>`;
+}
+
+/* ---------- GUIDE ---------- */
+const ROLES=[
+  {t:"PCO 기획·운영",d:"국제회의, 학회, 기업 컨퍼런스를 주최 측 대신 기획하고 현장을 운영해요.",l:["연사·참가자 등록과 안내","숙박·수송·F&B 조율","현장 운영과 결과보고서"],k:"외국어, 일정 관리, 꼼꼼함"},
+  {t:"전시 기획(PEO)",d:"전시회를 기획해 참가기업과 바이어를 모으고 전시장을 꾸려요.",l:["참가기업 모집과 부스 배치","바이어 유치, 비즈니스 상담회","홍보·사전등록 관리"],k:"영업력, 마케팅, 숫자 감각"},
+  {t:"컨벤션센터·베뉴",d:"전시장과 회의 시설을 운영하고 행사를 유치해요.",l:["대관 영업과 계약","행사 운영 지원과 시설 관리","센터 자체 행사 기획"],k:"공공기관형 채용 일정 확인"},
+  {t:"컨벤션뷰로·관광공사",d:"도시와 지역에 국제회의와 인센티브 단체를 유치해요.",l:["국제회의 유치 제안과 지원금 운영","팸투어·사이트 인스펙션 안내","해외 MICE 박람회 참가"],k:"정책 이해, 외국어, 협업"},
+  {t:"호텔 MICE 세일즈",d:"기업·학회 행사를 호텔로 유치하고 객실과 연회를 판매해요.",l:["RFP 대응과 견적","객실 블록·연회 계약","행사 당일 BEO 조율"],k:"영업, 서비스 마인드"},
+  {t:"인센티브·DMC",d:"기업 포상 여행과 해외 단체의 국내 현지 운영을 맡아요.",l:["포상 여행 일정 기획","현지 교통·숙박·투어 운영","유니크베뉴 행사 연출"],k:"여행 실무, 현장 대응력"}
+];
+const MICE_TERMS=[
+  ["PCO","Professional Convention Organizer","국제회의·학회를 주최 측 대신 기획하고 운영하는 전문 회사예요."],
+  ["PEO","Professional Exhibition Organizer","전시회를 기획해 직접 주최하거나 운영하는 전문 회사예요."],
+  ["DMC","Destination Management Company","개최지 현지에서 숙박·교통·투어 같은 지상 운영을 맡는 회사예요."],
+  ["CVB","Convention & Visitors Bureau","도시의 국제회의·관광 유치를 돕는 기관이에요. 지역 관광공사나 관광재단이 이 역할을 많이 해요."],
+  ["RFP","Request for Proposal","주최 측이 대행사나 베뉴에 보내는 제안 요청서예요."],
+  ["사이트 인스펙션","Site Inspection","행사 전에 베뉴·호텔을 직접 둘러보며 조건을 확인하는 답사예요."],
+  ["팸투어","Familiarization Tour","기획자나 바이어를 초청해 개최지를 미리 경험하게 하는 홍보 투어예요."],
+  ["유니크베뉴","Unique Venue","고궁, 박물관, 한옥처럼 지역 특색이 있는 이색 행사 장소예요."],
+  ["인센티브 투어","Incentive Travel","기업이 성과를 낸 직원이나 고객에게 보상으로 주는 단체 여행이에요."],
+  ["객실 블록","Room Block","행사 참가자를 위해 호텔 객실을 미리 묶어 확보해 두는 것이에요."],
+  ["어트리션","Attrition","확보한 객실이나 식사 인원을 약속한 비율만큼 못 채웠을 때 무는 위약 조건이에요."],
+  ["BEO","Banquet Event Order","호텔·베뉴와 주고받는 연회 진행 지시서예요. 시간, 메뉴, 세팅이 적혀 있어요."],
+  ["독립부스 / 조립부스","Raw Space / Shell Scheme","바닥 면적만 빌려 직접 꾸미는 독립부스와, 벽체·간판이 기본으로 나오는 조립부스예요."],
+  ["비즈니스 상담회","B2B Matchmaking","바이어와 셀러를 미리 짝지어 1:1 상담을 잡아 주는 프로그램이에요."],
+  ["ICCA","International Congress and Convention Association","국제회의 통계와 도시별 개최 순위를 발표하는 국제 협회예요."],
+  ["하이브리드 행사","Hybrid Event","현장 참가와 온라인 참가를 함께 운영하는 행사예요."]
+];
+const PREP=[
+  ["관심 직무 정하기","PCO, 전시, 베뉴, 공공 중 어디가 맞는지 위 직무 소개를 보고 골라 보세요"],
+  ["관심 기업 5곳 정리","채용 탭에서 자주 보이는 회사부터 홈페이지와 수행 행사를 살펴봐요"],
+  ["행사 현장 경험 쌓기","행사 스태프, 서포터즈, 협회 인턴십에 지원해 보세요"],
+  ["외국어 점수 준비","국제회의·해외 바이어 업무가 많아 영어 등 외국어 점수를 많이 봐요"],
+  ["컨벤션기획사 자격증 알아보기","시험 일정과 응시 자격을 Q-Net에서 확인해요"],
+  ["참여 행사 포트폴리오 만들기","맡은 역할, 규모, 결과를 행사별로 한 장씩 정리해요"],
+  ["업계 용어 익히기","아래 용어 사전으로 면접 전에 한 번씩 훑어봐요"],
+  ["업계 소식 꾸준히 보기","한입뉴스로 최근 유치 소식과 새 컨벤션센터 이름을 챙겨요"]
+];
+let prepDone=new Set(store.get("cm_prep",[])), mtermQ="";
+function renderGuide(){
+  $("#deskGuide").innerHTML=desk(C.exy,"MICE 업계 첫걸음, 직무부터 용어까지 같이 정리해 봐요!");
+  $("#prepCount").textContent=`${prepDone.size}/${PREP.length} 완료`;
+  $("#prepBar").style.width=(prepDone.size/PREP.length*100)+"%";
+  $("#prepList").innerHTML=PREP.map((p,i)=>`<div class="check"><input type="checkbox" id="prep${i}" data-prep="${i}" ${prepDone.has(i)?'checked':''}><label for="prep${i}"><b>${p[0]}</b><span>${p[1]}</span></label></div>`).join("");
+  $("#roles").innerHTML=ROLES.map(r=>`<article class="card role"><h3>${r.t}</h3><p>${r.d}</p><ul>${r.l.map(x=>`<li>${x}</li>`).join("")}</ul><span class="chip" style="justify-self:start;white-space:normal">필요 역량 · ${r.k}</span></article>`).join("");
+  $("#certCard").innerHTML=`<h3>컨벤션기획사 자격증</h3><p>한국산업인력공단이 시행하는 MICE 분야 국가기술자격이에요. 1급과 2급이 있고, 1급은 실무 경력 같은 응시 자격이 따로 있어요. 시험 일정과 자세한 조건은 해마다 바뀌니 Q-Net에서 확인하세요.</p><div class="quick"><a class="btn" href="https://www.q-net.or.kr" target="_blank" rel="noopener">Q-Net 바로가기 ↗</a><a class="btn ghost" href="https://academy.visitkorea.or.kr/mainHome.do" target="_blank" rel="noopener">관광in 교육·일자리 ↗</a><a class="btn ghost" href="https://k-mice.visitkorea.or.kr/noti.kto?func_name=list&pgbn=2" target="_blank" rel="noopener">K-MICE 인턴십·채용 ↗</a></div>`;
+  renderMterms();
+}
+function renderMterms(){
+  const q=mtermQ.trim().toLowerCase();
+  const list=MICE_TERMS.filter(t=>match(q,t[0],t[1],t[2]));
+  $("#mtermCount").textContent=`${MICE_TERMS.length}개 용어`;
+  $("#mterms").innerHTML=list.length?list.map(t=>`<div class="term"><b>${t[0]}</b><span>${t[1]}</span><p>${t[2]}</p></div>`).join(""):`<div class="empty">찾는 용어가 없어요.</div>`;
+}
+
+/* ---------- Sheet ---------- */
+const ymd=d=>`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+const gcal=e=>"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(e.title)+"&dates="+ymd(e.s)+"/"+ymd(addD(e.e,1))+"&location="+encodeURIComponent(e.venue)+"&details="+encodeURIComponent(e.desc+"\n"+e.url+"\n(CatchMICE)");
+let lastFocus=null;
+function openSheet(html){lastFocus=document.activeElement;$("#sheet").innerHTML=`<div class="grab"></div>`+html+`<button class="btn ghost" id="closeSheet" style="justify-content:center">닫기</button>`;$("#sheetBg").classList.add("on");$("#closeSheet").focus()}
+function closeSheet(){$("#sheetBg").classList.remove("on"); if(lastFocus&&lastFocus.focus) lastFocus.focus()}
+function eventSheet(key){
+  const e=EVENTS.find(x=>x.key===key); if(!e) return;
+  const range=sameDay(e.s,e.e)?fmt(e.s):`${fmt(e.s)} – ${fmt(e.e)}`;
+  openSheet(`<div class="ev-top"><span class="chip">${esc(e.type)}</span><span class="chip region">${esc(e.region)}</span>${evStatus(e)}</div>
+  <h2 id="sheetTitle">${esc(e.title)}</h2>
+  <div class="meta"><span>일정 · ${range}</span><span>장소 · ${esc(e.venue)}</span><span>사전등록 · ${e.dl?fmt(e.dl)+(dayDiff(e.dl)>=0?' 마감':' 마감됨'):'출처에 별도 마감 안내 없음'}</span></div>
+  <p>${esc(e.desc)}</p>
+  <a class="btn" href="${safeUrl(e.url)}" target="_blank" rel="noopener" style="justify-content:center">관련 페이지 열기 (${esc(e.src)}) ↗</a>
+  <a class="btn ghost" href="${gcal(e)}" target="_blank" rel="noopener" style="justify-content:center">구글 캘린더에 추가 ↗</a>
+  <a class="btn ghost" href="${nmap(e.venue)}" target="_blank" rel="noopener" style="justify-content:center">장소 지도 보기 ↗</a>
+  <button class="btn ghost" data-copy="${esc(e.key)}" style="justify-content:center">일정 텍스트 복사</button>
+  <p class="sub">일정은 주최 측 사정으로 바뀔 수 있어요. 방문 전에 공식 페이지를 확인하세요.</p>`);
+}
+function aboutSheet(){
+  openSheet(`<h2 id="sheetTitle">CatchMICE 기자단</h2>
+  <p>놓치기 아까운 MICE 이야기를 캐치! CatchMICE 기자단이 전시·컨벤션·지역 행사의 이야기를 쉽고 재미있게 전달해요.</p>
+  <div class="crew">${CREW.map(c=>`<div class="card member">${av(c,88)}${pill(c)}<span class="sub">${c.animal} · ${c.role}</span><p>${c.desc}</p></div>`).join("")}</div>`);
+}
+function contactSheet(){
+  openSheet(`<h2 id="sheetTitle">광고·제휴 / 채용공고 등록 문의</h2>
+  <p>MICE 업계 사람들과 예비 취업자가 매일 들르는 곳이 되려고 해요. 이런 제휴를 준비하고 있어요.</p>
+  <ul><li>채용공고 직접 등록, 추천 공고 상단 노출</li><li>행사·베뉴 소개 스폰서 (광고 표시를 붙여요)</li><li>컨벤션뷰로·지자체 MICE 홍보 협업</li></ul>
+  <div class="copybox">${CONTACT?`<span class="sub">문의 연락처</span><code>${esc(CONTACT)}</code><div><button class="btn" data-act="copycontact">연락처 복사</button></div>`:`<b>문의 창구를 준비하고 있어요</b><span class="sub">곧 이메일과 카카오톡 채널을 열 예정이에요.</span>`}</div>`);
+}
+
+/* ---------- Router ---------- */
+const ICONS={
+  home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  walk:'<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  news:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h10M7 17h6"/>',
+  jobs:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>',
+  ai:'<path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>',
+  papers:'<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h7M9 16h7"/>',
+  guide:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5M22 9v6"/>'
+};
+const svg=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[k]}</svg>`;
+const MOBILE_TABS=[["home","홈"],["calendar","캘린더"],["walk","동네"],["news","뉴스"],["jobs","채용"],["ai","스터디"]];
+const SIDE_TABS=[["home","홈"],["calendar","MICE 캘린더"],["news","한입뉴스"],["jobs","MICE 채용"],["guide","취업 가이드"],["walk","동네 한 바퀴"],["ai","AI 스터디"],["papers","MICE 논문"]];
+$("#tabbar").innerHTML=MOBILE_TABS.map(t=>`<a href="#${t[0]}" data-tab="${t[0]}">${svg(t[0])}${t[1]}</a>`).join("");
+$("#sidenav").innerHTML=SIDE_TABS.map(t=>`<a href="#${t[0]}" data-tab="${t[0]}">${svg(t[0])}${t[1]}</a>`).join("");
+const R={home:renderHome,calendar:renderCal,walk:renderWalk,news:renderNews,jobs:renderJobs,ai:renderAI,papers:renderPapers,guide:renderGuide};
+let curView="";
+function route(keepScroll){
+  let v=(location.hash||"#home").slice(1); if(!R[v]) v="home";
+  document.querySelectorAll(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));
+  document.querySelectorAll("#tabbar [data-tab]").forEach(a=>{if(a.dataset.tab===v||(v==="papers"&&a.dataset.tab==="ai")||(v==="guide"&&a.dataset.tab==="jobs")) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current")});
+  document.querySelectorAll("#sidenav [data-tab]").forEach(a=>{if(a.dataset.tab===v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current")});
+  R[v]();
+  if(v!==curView&&!keepScroll) window.scrollTo(0,0);
+  curView=v;
+  const latest=[DATA.news.updated,DATA.jobs.updated,DATA.papers.updated].filter(Boolean).sort().pop();
+  $("#footUpd").textContent=latest?`· 최근 ${updLabel(latest)}`:"";
+}
+function go(v){if(location.hash==="#"+v) route(); else location.hash=v}
+window.addEventListener("hashchange",()=>route());
+
+/* ---------- Events ---------- */
+document.addEventListener("click",ev=>{
+  const t=ev.target.closest("button,[data-go]"); if(!t) return;
+  const ds=t.dataset;
+  if(ds.go) go(ds.go);
+  else if(ds.act==="share"&&navigator.share&&window.CM_STANDALONE) navigator.share({title:"CatchMICE",url:location.href}).catch(()=>{});
+  else if(ds.act==="share") copyText(location.href.split("#")[0]+(location.hash||""),"링크를 복사했어요");
+  else if(ds.act==="theme"){theme=THEMES[(THEMES.indexOf(theme)+1)%3]; store.set("cm_theme",theme); applyTheme(); toast(`화면 테마: ${TL[theme]}`)}
+  else if(ds.period){period=ds.period; selDay=null; renderCal()}
+  else if(ds.act==="about") aboutSheet();
+  else if(ds.act==="contact") contactSheet();
+  else if(ds.act==="copycontact") copyText(CONTACT,"연락처를 복사했어요");
+  else if(ds.save){const k=ds.save; saved.has(k)?saved.delete(k):saved.add(k); store.set("cm_saved2",[...saved]); toast(saved.has(k)?"저장했어요. 홈에서 다시 볼 수 있어요":"저장을 취소했어요"); route(true)}
+  else if(ds.detail) eventSheet(ds.detail);
+  else if(ds.day){const x=new Date(+ds.day); selDay=(selDay&&sameDay(selDay,x))?null:x; if(x.getMonth()!==calMonth.getMonth()) calMonth=new Date(x.getFullYear(),x.getMonth(),1); renderCal()}
+  else if(ds.region){region=ds.region; selDay=null; renderCal()}
+  else if(ds.etype){etype=ds.etype; selDay=null; renderCal()}
+  else if(ds.ncat){newsCat=ds.ncat; renderNews()}
+  else if(ds.jcar){jobCareer=ds.jcar; renderJobs()}
+  else if(ds.jreg){jobRegion=ds.jreg; renderJobs()}
+  else if(ds.walk){walkKey=ds.walk; renderWalk()}
+  else if(ds.ptopic){paperTopic=ds.ptopic; renderPapers()}
+  else if(ds.pcat){promptCat=ds.pcat; renderAI()}
+  else if(ds.copy){const e=EVENTS.find(x=>x.key===ds.copy); if(e){const txt=`[CatchMICE] ${e.title}\n${fmt(e.s)}${e.e>e.s?' – '+fmt(e.e):''} · ${e.venue}\n${e.url}`; copyText(txt,"일정을 복사했어요")}}
+  else if(ds.copyp!==undefined) copyText(PROMPTS[+ds.copyp].p,"프롬프트를 복사했어요");
+  else if(t.id==="closeSheet") closeSheet();
+  else if(t.id==="prevMonth"){calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()-1,1); selDay=null; renderCal()}
+  else if(t.id==="nextMonth"){calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()+1,1); selDay=null; renderCal()}
+  else if(t.id==="todayBtn"){calMonth=new Date(TODAY.getFullYear(),TODAY.getMonth(),1); selDay=null; renderCal()}
+  else if(ds.lesson!==undefined){const i=+ds.lesson; lessonsDone.has(i)?lessonsDone.delete(i):lessonsDone.add(i); store.set("cm_lessons",[...lessonsDone]); renderAI(); const d=document.querySelectorAll(".lesson")[i]; if(d) d.open=true}
+  else if(ds.qa!==undefined){if(quizAns===null){quizAns=+ds.qa; if(quizAns===QUIZ[quizI].a) quizScore++; renderQuiz()}}
+  else if(ds.quiz==="next"){quizI++; quizAns=null; renderQuiz()}
+  else if(ds.quiz==="restart"){quizI=0; quizScore=0; quizAns=null; renderQuiz()}
+});
+$("#sheetBg").addEventListener("click",e=>{if(e.target.id==="sheetBg") closeSheet()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("#sheetBg").classList.contains("on")) closeSheet()});
+$("#showPast").addEventListener("change",e=>{showPast=e.target.checked; renderCal()});
+document.addEventListener("change",e=>{const p=e.target.dataset&&e.target.dataset.prep; if(p===undefined) return; const i=+p; e.target.checked?prepDone.add(i):prepDone.delete(i); store.set("cm_prep",[...prepDone]); $("#prepCount").textContent=`${prepDone.size}/${PREP.length} 완료`; $("#prepBar").style.width=(prepDone.size/PREP.length*100)+"%"});
+document.addEventListener("input",e=>{
+  const id=e.target.id;
+  if(id==="dictQ"){dictQ=e.target.value; renderDict()}
+  else if(id==="newsQ"){newsQ=e.target.value; renderNews()}
+  else if(id==="jobQ"){jobQ=e.target.value; renderJobs()}
+  else if(id==="paperQ"){paperQ=e.target.value; renderPapers()}
+  else if(id==="allQ"){allQ=e.target.value; renderAll()}
+  else if(id==="mtermQ"){mtermQ=e.target.value; renderMterms()}
+});
+
+route();
+if(window.CM_STANDALONE&&"serviceWorker" in navigator){try{navigator.serviceWorker.register("sw.js")}catch(e){}}
+let pending=4;
+function finishLoad(){
+  const keys=[...EVENTS.map(e=>e.key),...DATA.news.items.map(n=>"n|"+n.url),...DATA.jobs.items.map(jobKey)];
+  if(Array.isArray(prevSeen)) sinceCounts={n:DATA.news.items.filter(n=>isNew("n|"+n.url)).length,j:openJobs().filter(j=>isNew(jobKey(j))).length,e:EVENTS.filter(e=>dayDiff(e.e)>=0&&isNew(e.key)).length};
+  if(keys.length&&[DATA.events,DATA.news,DATA.jobs].every(d=>d.state==="ok")) store.set("cm_seen",[...new Set([...(prevSeen||[]),...keys])].slice(-600));
+}
+["events","news","jobs","papers"].forEach(n=>load(n).then(()=>{if(n==="events") prepEvents(); if(--pending===0) finishLoad(); route(true)}));
+})();
+</script>
+
+</body>
+</html>
