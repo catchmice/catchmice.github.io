@@ -1,6 +1,6 @@
 // CatchMICE offline cache: data files network-first, everything else cache-first with background refresh
 const CACHE="catchmice-2026-11-17";
-const CORE=["./","index.html","manifest.webmanifest","img/hero.jpg","img/micy.jpg","img/veny.jpg","img/exy.jpg","img/aily.jpg","icons/icon-192.png"];
+const CORE=["./","index.html","manifest.webmanifest","img/hero.jpg","img/micy.jpg","img/veny.jpg","img/exy.jpg","img/aily.jpg","icons/icon-192.png","img/crew-who.jpg","img/crew-lineup.jpg"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()))});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener("fetch",e=>{

@@ -246,6 +246,23 @@ main{padding-block:16px 8px;padding-left:var(--gut-l);padding-right:var(--gut-r)
 .role p{margin:0;font-size:13.5px}
 .role ul{margin:0;padding-left:18px;font-size:13px;color:var(--muted)}
 
+/* Crew page */
+.fig{margin:0;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.fig img{display:block;width:100%;height:auto}
+.fig figcaption{padding:10px 14px;font-size:13px;color:var(--muted)}
+.crew-hero{display:grid;gap:16px;align-items:center}
+.crew-hero .txt{display:grid;gap:10px;align-content:center}
+.crew-hero .txt p{margin:0}
+.crew-hero h2{font-size:clamp(24px,4vw,34px);line-height:1.25}
+.crew-hero h2 b{color:var(--accent);font-weight:400}
+.pillrow{display:flex;gap:8px;flex-wrap:wrap}
+.checks{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.checks li{display:flex;gap:8px;align-items:flex-start;font-weight:600}
+.checks li::before{content:"✓";color:var(--accent);font-weight:700}
+.crew4{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.crew-teaser{display:grid;gap:12px;align-items:center;color:inherit;text-decoration:none}
+.crew-teaser img{border-radius:12px;display:block;width:100%;height:auto}
+
 /* Footer */
 footer.foot{padding-block:18px 8px;padding-left:var(--gut-l);padding-right:var(--gut-r)}
 footer.foot .wrap{border-top:1px solid var(--line);padding-top:16px;display:grid;gap:8px;font-size:12.5px;color:var(--muted)}
@@ -280,7 +297,14 @@ nav.tabbar a[aria-current="page"]{color:var(--accent)}
   .cell{min-height:64px}
 }
 /* Desktop: sidebar */
+@media (min-width:640px){
+  .crew4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .crew-teaser{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+}
 @media (min-width:1000px){
+  .crew-hero{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .crew-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+
   .shell{display:grid;grid-template-columns:var(--side) minmax(0,1fr);min-height:100vh}
   header.top,nav.tabbar{display:none}
   .app{padding-bottom:24px}
@@ -381,6 +405,15 @@ nav.tabbar a[aria-current="page"]{color:var(--accent)}
             <div class="stack" id="savedList"></div>
           </div>
         </div>
+
+        <a class="card crew-teaser" href="#crew">
+          <img src="img/crew-lineup.jpg" alt="CatchMICE 기자단 Veny, Micy, Exy, Aily" width="966" height="544" loading="lazy">
+          <div style="display:grid;gap:8px">
+            <h2>CatchMICE 기자단을 소개해요</h2>
+            <p class="sub" style="margin:0">베뉴 탐방 Veny, MICE 종합 Micy, 전시·비즈니스 Exy, AI·테크 Aily. 네 기자가 어려운 MICE 소식을 쉽게 풀어 드려요.</p>
+            <span class="btn ghost" style="justify-self:start">기자단 만나러 가기</span>
+          </div>
+        </a>
 
         <div class="features">
           <div class="card feature">
@@ -526,6 +559,37 @@ nav.tabbar a[aria-current="page"]{color:var(--accent)}
         <p class="sub">원문 열람은 사이트마다 무료·기관 구독 여부가 달라요. 학교 도서관으로 접속하면 대부분 무료로 볼 수 있어요.</p>
       </section>
 
+      <!-- CREW -->
+      <section class="view" id="v-crew" aria-label="CatchMICE 기자단">
+        <div class="crew-hero">
+          <figure class="fig"><img src="img/crew-who.jpg" alt="누구냐고요? MICE를 캐치하는 기자단입니다. CatchMICE 첫 번째 이야기" width="966" height="966"></figure>
+          <div class="txt">
+            <span class="chip" style="justify-self:start">CatchMICE 첫 번째 이야기</span>
+            <h2>누구냐고요?<br><b>MICE</b>를 <b>캐치</b>하는<br>기자단입니다</h2>
+            <p>CatchMICE는 복잡하고 딱딱한 MICE 소식을 누구나 이해하기 쉽게 전하는 기자단이에요. 전시·컨벤션 현장부터 AI 트렌드, 업계 용어와 직무까지 네 명의 기자가 나눠서 취재해요.</p>
+            <div class="pillrow"><a class="btn" href="https://blog.naver.com/catchmice/224400161063" target="_blank" rel="noopener">블로그에서 첫 이야기 읽기 ↗</a><button class="btn ghost" data-go="news">한입뉴스 보기</button></div>
+          </div>
+        </div>
+        <figure class="fig"><img src="img/crew-lineup.jpg" alt="CatchMICE 기자단을 소개합니다. Veny 베뉴 탐방, Micy MICE 종합, Exy 전시·비즈니스, Aily AI·테크" width="966" height="544" loading="lazy"></figure>
+        <div class="sec-head"><h2>네 명의 기자</h2></div>
+        <div class="crew4" id="crewCards"></div>
+        <div class="crew-pair stack">
+          <div class="card" style="display:grid;gap:12px;align-content:start">
+            <figure class="fig" style="border:0"><img src="img/crew-why.jpg" alt="뉴스만 전하지 않아요. 왜 중요한지, 현장에서는 어떻게 쓰이는지, 우리에게 어떤 의미인지 한 번 더 들여다보고 쉽게 풀어드립니다" width="966" height="544" loading="lazy"></figure>
+            <h2>뉴스만 전하지 않아요</h2>
+            <ul class="checks"><li>왜 중요한지</li><li>현장에서는 어떻게 쓰이는지</li><li>우리에게 어떤 의미인지</li></ul>
+            <p class="sub" style="margin:0">한 번 더 들여다보고 쉽게 풀어 드려요.</p>
+          </div>
+          <div class="card" style="display:grid;gap:12px;align-content:start">
+            <figure class="fig" style="border:0"><img src="img/crew-easy.jpg" alt="어려운 MICE, 쉽게 캐치해드려요. 전시·컨벤션 현장, AI × MICE 트렌드, 업계 용어와 직무" width="966" height="544" loading="lazy"></figure>
+            <h2>어려운 MICE, 쉽게 캐치해 드려요</h2>
+            <div class="pillrow"><button class="btn ghost" data-go="calendar">전시·컨벤션 현장</button><button class="btn ghost" data-go="ai">AI × MICE 트렌드</button><button class="btn ghost" data-go="guide">업계 용어와 직무</button></div>
+          </div>
+        </div>
+        <figure class="fig"><img src="img/crew-catch.jpg" alt="놓치기 아까운 MICE 이야기, 함께 캐치해요! @catchmice 다음 취재에서 만나요" width="966" height="544" loading="lazy"><figcaption>놓치기 아까운 MICE 이야기, 함께 캐치해요! · @catchmice</figcaption></figure>
+        <div class="pillrow"><a class="btn" href="https://blog.naver.com/catchmice" target="_blank" rel="noopener">CatchMICE 블로그 ↗</a><button class="btn ghost" data-act="contact">광고·제휴 문의</button></div>
+      </section>
+
       <!-- GUIDE -->
       <section class="view" id="v-guide" aria-label="MICE 취업 가이드">
         <div class="page-head"><h1>MICE 취업 가이드</h1><p class="sub">MICE 업계에 처음 들어가려는 사람을 위한 기본 정리예요</p></div>
@@ -552,6 +616,7 @@ nav.tabbar a[aria-current="page"]{color:var(--accent)}
       <div class="wrap">
         <p><b style="color:var(--ink)">CatchMICE</b> · 뉴스·채용·논문은 매일 아침 업데이트돼요 <span id="footUpd"></span></p>
         <p>기사·공고·논문의 저작권은 각 원문 출처에 있어요. 요약은 CatchMICE가 직접 썼고, 행사 일정과 채용 조건은 바뀔 수 있으니 원문에서 꼭 다시 확인하세요.</p>
+        <p>문의 <span style="user-select:all;color:var(--ink)">ihm12526@naver.com</span></p>
         <div class="links"><button data-act="about">기자단 소개</button><button data-act="contact">광고·제휴 문의</button><button data-act="share">링크 복사</button></div>
       </div>
     </footer>
@@ -568,7 +633,7 @@ nav.tabbar a[aria-current="page"]{color:var(--accent)}
 <script>
 (function(){
 /* 문의 연락처: 준비되면 여기에 이메일이나 오픈채팅 주소를 넣으세요. 비어 있으면 "준비 중"으로 보여요. */
-const CONTACT = "";
+const CONTACT = "ihm12526@naver.com";
 
 /* Today in Korea time */
 const kst=new Date(Date.now()+(540+new Date().getTimezoneOffset())*60000);
@@ -971,6 +1036,11 @@ function renderPapers(){
     <div class="actions"><a class="btn" href="${safeUrl(p.url)}" target="_blank" rel="noopener">${esc(p.site)}에서 보기 ↗</a></div></article>`).join(""):`<div class="card empty">찾는 논문이 없어요. 다른 검색어나 주제를 골라 보세요.</div>`;
 }
 
+/* ---------- CREW ---------- */
+function renderCrew(){
+  $("#crewCards").innerHTML=CREW.map(c=>`<div class="card member">${av(c,88)}${pill(c)}<span class="sub">${c.animal} · ${c.role}</span><p>${c.desc}</p></div>`).join("");
+}
+
 /* ---------- GUIDE ---------- */
 const ROLES=[
   {t:"PCO 기획·운영",d:"국제회의, 학회, 기업 컨퍼런스를 주최 측 대신 기획하고 현장을 운영해요.",l:["연사·참가자 등록과 안내","숙박·수송·F&B 조율","현장 운영과 결과보고서"],k:"외국어, 일정 관리, 꼼꼼함"},
@@ -1053,7 +1123,7 @@ function contactSheet(){
   openSheet(`<h2 id="sheetTitle">광고·제휴 / 채용공고 등록 문의</h2>
   <p>MICE 업계 사람들과 예비 취업자가 매일 들르는 곳이 되려고 해요. 이런 제휴를 준비하고 있어요.</p>
   <ul><li>채용공고 직접 등록, 추천 공고 상단 노출</li><li>행사·베뉴 소개 스폰서 (광고 표시를 붙여요)</li><li>컨벤션뷰로·지자체 MICE 홍보 협업</li></ul>
-  <div class="copybox">${CONTACT?`<span class="sub">문의 연락처</span><code>${esc(CONTACT)}</code><div><button class="btn" data-act="copycontact">연락처 복사</button></div>`:`<b>문의 창구를 준비하고 있어요</b><span class="sub">곧 이메일과 카카오톡 채널을 열 예정이에요.</span>`}</div>`);
+  <div class="copybox">${CONTACT?`<span class="sub">문의 이메일</span><code>${esc(CONTACT)}</code><div class="actions"><button class="btn" data-act="copycontact">이메일 주소 복사</button><a class="btn ghost" href="mailto:${esc(CONTACT)}?subject=${encodeURIComponent("[CatchMICE] 제휴·공고 등록 문의")}">메일 앱으로 쓰기</a></div><span class="sub">메일 앱이 열리지 않으면 주소를 복사해서 보내 주세요.</span>`:`<b>문의 창구를 준비하고 있어요</b><span class="sub">곧 이메일과 카카오톡 채널을 열 예정이에요.</span>`}</div>`);
 }
 
 /* ---------- Router ---------- */
@@ -1065,14 +1135,15 @@ const ICONS={
   jobs:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>',
   ai:'<path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>',
   papers:'<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h7M9 16h7"/>',
+  crew:'<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M14.5 14.3c3.2-.6 6.5 1.6 6.5 5.7"/>',
   guide:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5M22 9v6"/>'
 };
 const svg=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[k]}</svg>`;
 const MOBILE_TABS=[["home","홈"],["calendar","캘린더"],["walk","동네"],["news","뉴스"],["jobs","채용"],["ai","스터디"]];
-const SIDE_TABS=[["home","홈"],["calendar","MICE 캘린더"],["news","한입뉴스"],["jobs","MICE 채용"],["guide","취업 가이드"],["walk","동네 한 바퀴"],["ai","AI 스터디"],["papers","MICE 논문"]];
+const SIDE_TABS=[["home","홈"],["calendar","MICE 캘린더"],["news","한입뉴스"],["jobs","MICE 채용"],["guide","취업 가이드"],["walk","동네 한 바퀴"],["ai","AI 스터디"],["papers","MICE 논문"],["crew","기자단 소개"]];
 $("#tabbar").innerHTML=MOBILE_TABS.map(t=>`<a href="#${t[0]}" data-tab="${t[0]}">${svg(t[0])}${t[1]}</a>`).join("");
 $("#sidenav").innerHTML=SIDE_TABS.map(t=>`<a href="#${t[0]}" data-tab="${t[0]}">${svg(t[0])}${t[1]}</a>`).join("");
-const R={home:renderHome,calendar:renderCal,walk:renderWalk,news:renderNews,jobs:renderJobs,ai:renderAI,papers:renderPapers,guide:renderGuide};
+const R={home:renderHome,calendar:renderCal,walk:renderWalk,news:renderNews,jobs:renderJobs,ai:renderAI,papers:renderPapers,guide:renderGuide,crew:renderCrew};
 let curView="";
 function route(keepScroll){
   let v=(location.hash||"#home").slice(1); if(!R[v]) v="home";
@@ -1097,7 +1168,7 @@ document.addEventListener("click",ev=>{
   else if(ds.act==="share") copyText(location.href.split("#")[0]+(location.hash||""),"링크를 복사했어요");
   else if(ds.act==="theme"){theme=THEMES[(THEMES.indexOf(theme)+1)%3]; store.set("cm_theme",theme); applyTheme(); toast(`화면 테마: ${TL[theme]}`)}
   else if(ds.period){period=ds.period; selDay=null; renderCal()}
-  else if(ds.act==="about") aboutSheet();
+  else if(ds.act==="about") go("crew");
   else if(ds.act==="contact") contactSheet();
   else if(ds.act==="copycontact") copyText(CONTACT,"연락처를 복사했어요");
   else if(ds.save){const k=ds.save; saved.has(k)?saved.delete(k):saved.add(k); store.set("cm_saved2",[...saved]); toast(saved.has(k)?"저장했어요. 홈에서 다시 볼 수 있어요":"저장을 취소했어요"); route(true)}
