@@ -1,0 +1,26 @@
+{
+  "name": "catchmice",
+  "version": "3.0.0",
+  "private": true,
+  "description": "CatchMICE — MICE를 캐치하는 기자단. GitHub Pages 정적 사이트 + Capacitor 안드로이드/iOS 앱",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "prepare:web": "node scripts/prepare-web.mjs",
+    "sync": "npm run prepare:web && cap sync",
+    "sync:android": "npm run prepare:web && cap sync android",
+    "open:android": "cap open android",
+    "build:android": "npm run prepare:web && cap sync android && cd android && ./gradlew assembleDebug",
+    "add:ios": "cap add ios",
+    "open:ios": "cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/android": "7.6.10",
+    "@capacitor/core": "7.6.10"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "7.6.10"
+  }
+}

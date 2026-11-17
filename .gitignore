@@ -1,0 +1,37 @@
+# ---- Node / 빌드 도구 ----
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.DS_Store
+
+# ---- 웹 번들 (npm run prepare:web 이 매번 새로 만듭니다) ----
+www/
+
+# ---- Android 빌드 산출물 / 로컬 설정 ----
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/capacitor-cordova-android-plugins/build/
+android/app/src/main/assets/public/
+android/app/src/main/assets/capacitor.config.json
+android/app/src/main/assets/capacitor.plugins.json
+
+# ---- iOS 빌드 산출물 ----
+ios/App/Pods/
+ios/App/build/
+ios/App/DerivedData/
+ios/App/App/public/
+ios/App/App/capacitor.config.json
+ios/App/App/capacitor.plugins.json
+ios/App/App.xcworkspace/xcuserdata/
+ios/App/App.xcodeproj/xcuserdata/
+*.xcuserstate
+
+# ---- 서명 키는 절대 커밋하지 않습니다 ----
+*.keystore
+*.jks
+*.p12
+*.mobileprovision
+keystore.properties

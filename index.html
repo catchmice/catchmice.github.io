@@ -21,6 +21,8 @@
 <script>
 /* 배포된 앱 여부 (방문 통계·공유 기능 스위치) */
 window.CM_STANDALONE=true;
+/* Capacitor 네이티브 앱(안드로이드/iOS) 안에서 실행 중인지 — 3단계 */
+window.CM_NATIVE=!!(window.Capacitor&&typeof window.Capacitor.isNativePlatform==="function"&&window.Capacitor.isNativePlatform());
 /* 실제로 홈 화면 앱(standalone)으로 실행 중인지 — CSS/동작 분기용 */
 (function(){
   try{
@@ -895,6 +897,24 @@ const DATA={events:{items:[],updated:"",state:"loading"},news:{items:[],updated:
 async function load(name){
   try{const r=await fetch(name+".json",{cache:"no-store"}); if(!r.ok) throw 0; const j=await r.json(); DATA[name].items=j.items||[]; DATA[name].updated=j.updated||""; DATA[name].state="ok";}
   catch(e){DATA[name].state="error";}
+}
+/* 네이티브 앱: 앱에 들어 있는 JSON으로 먼저 열고, GitHub Pages에 더 새 데이터가 있으면 조용히 바꿔 끼웁니다.
+   (온라인일 때만 시도하고, 실패하면 번들 데이터 그대로 → 오프라인에서도 화면이 비지 않습니다) */
+const LIVE_DATA_BASE="https://catchmice.github.io/";
+async function loadLive(name){
+  try{
+    const r=await fetch(LIVE_DATA_BASE+name+".json",{cache:"no-store"});
+    if(!r.ok) return;
+    const j=await r.json();
+    if(!j||!Array.isArray(j.items)||!j.items.length) return;
+    const prev=DATA[name].updated||"";
+    if(j.updated&&prev&&j.updated<=prev) return;
+    DATA[name]={items:j.items,updated:j.updated||"",state:"ok"};
+    if(name==="events") prepEvents();
+    const af=document.activeElement;
+    if(af&&/^(input|textarea)$/i.test(af.tagName||"")) return; /* 입력 중이면 화면은 그대로 두고 다음 이동 때 반영 */
+    route(true);
+  }catch(e){}
 }
 const stateMsg=(name,what)=>DATA[name].state==="loading"?skel(3):(DATA[name].state==="error"?`<div class="card empty">${what}을(를) 불러오지 못했어요. 잠시 후 새로고침해 주세요.</div>`:"");
 
@@ -1854,7 +1874,18 @@ document.addEventListener("click",ev=>{
   else track("outbound_click",{link_url:h,section:sec});
 },true);
 route();
-if(window.CM_STANDALONE&&"serviceWorker" in navigator){try{navigator.serviceWorker.register("sw.js")}catch(e){}}
+/* 서비스 워커는 웹(브라우저)에서만 — 앱 안에서는 번들 파일을 그대로 쓰고, 업데이트는 APK로 옵니다 */
+if(window.CM_STANDALONE&&!window.CM_NATIVE&&"serviceWorker" in navigator){try{navigator.serviceWorker.register("sw.js")}catch(e){}}
+/* 네이티브 앱: target="_blank" 링크는 WebView에 새 창이 없어 눌러도 반응이 없으므로 휴대폰 기본 브라우저로 엽니다 */
+if(window.CM_NATIVE) document.addEventListener("click",ev=>{
+  const a=ev.target&&ev.target.closest?ev.target.closest("a[href]"):null; if(!a) return;
+  const raw=a.getAttribute("href")||""; if(!raw||raw.charAt(0)==="#") return;
+  let u; try{u=new URL(raw,location.href)}catch(e){return}
+  if(u.origin===location.origin) return;
+  ev.preventDefault();
+  const w=window.open(u.href,"_system");
+  if(!w){try{location.href=u.href}catch(e){}}
+},true);
 /* 오프라인에서 돌아왔을 때 실패한 데이터만 다시 불러오기 */
 window.addEventListener("online",()=>{
   const bad=["events","news","jobs","papers"].filter(n=>DATA[n].state!=="ok");
@@ -1869,6 +1900,8 @@ function finishLoad(){
   if(keys.length&&[DATA.events,DATA.news,DATA.jobs].every(d=>d.state==="ok")) store.set("cm_seen",[...new Set([...(prevSeen||[]),...keys])].slice(-600));
 }
 ["events","news","jobs","papers"].forEach(n=>load(n).then(()=>{if(n==="events") prepEvents(); if(--pending===0) finishLoad(); route(true)}));
+/* 네이티브 앱에서만: 첫 화면이 뜬 뒤 최신 데이터를 한 번 확인합니다 */
+if(window.CM_NATIVE) setTimeout(()=>["events","news","jobs","papers"].forEach(n=>loadLive(n)),1500);
 })();
 </script>
 

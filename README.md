@@ -11,6 +11,24 @@ MICE를 캐치하는 기자단 CatchMICE 웹사이트예요.
 - `404.html` 없는 주소로 들어왔을 때 보여 주는 안내 페이지
 - `scripts/update_data.py` 데이터 자동 수집 스크립트
 - `scripts/daily-update.workflow.yml` 매일 아침 자동 실행 설정(아래 설명 참고)
+- `package.json`, `capacitor.config.json`, `scripts/prepare-web.mjs` 앱(안드로이드·iOS) 빌드 설정
+- `android/` 안드로이드 앱 프로젝트, `scripts/build-android-apk.workflow.yml` APK 자동 빌드
+- `APP_SETUP.md` 앱 설치·빌드 안내(아래 "앱으로 설치하기" 참고)
+
+## 앱으로 설치하기 (안드로이드 APK · iOS)
+
+웹사이트는 그대로 GitHub Pages에서 돌고, **같은 파일로 폰에 설치하는 앱**도 만들 수 있어요.
+[Capacitor](https://capacitorjs.com)로 감싸기 때문에 별도 서버나 유료 서비스가 필요 없습니다.
+
+- **안드로이드 APK**: GitHub Actions 무료 러너에서 자동 빌드 → Actions 탭 Artifacts 에서 내려받아 설치
+- **아이폰**: 같은 설정으로 맥에서 Xcode로 빌드 (`npx cap add ios && npx cap open ios`)
+- 앱은 웹 파일을 **폰 안에 넣어 두고(번들)** 열어서 오프라인에서도 화면이 뜨고,
+  온라인이면 1.5초 뒤 `https://catchmice.github.io` 의 최신 JSON으로 조용히 데이터를 갱신합니다.
+- 앱 아이콘은 `icons/icon-512.png`(Micy)에서 만들어 넣었습니다.
+- 앱 안에서는 서비스 워커(`sw.js`)를 끄고, `target="_blank"` 링크는 휴대폰 기본 브라우저로 엽니다.
+
+처음 한 번만 해 두면 되는 준비(자동 빌드 켜기, APK 내려받기, iOS 빌드, 스토어 서명)는
+**[`APP_SETUP.md`](APP_SETUP.md)** 에 순서대로 정리해 두었습니다.
 
 ## 화면 구성
 
