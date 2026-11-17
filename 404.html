@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#faf6ef" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1220" media="(prefers-color-scheme: dark)">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-title" content="CatchMICE">
+<title>페이지를 찾을 수 없어요 · CatchMICE</title>
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#faf6ef; --card:#ffffff; --ink:#141a3a; --muted:#5f6582; --line:#ece4d7;
+  --accent:#1d4ee8; --accent-ink:#ffffff; --sun:#ffc23a; --soft:#e7edff;
+  --display:"Black Han Sans","IBM Plex Sans KR",system-ui,sans-serif;
+  --body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,-apple-system,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{--paper:#0f1220;--card:#191d31;--ink:#eef0f8;--muted:#a2a9c6;--line:#2b3150;--accent:#7d93ff;--accent-ink:#0f1220;--sun:#ffd25c;--soft:#232a4d;color-scheme:dark}
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);color:var(--ink);font-family:var(--body);line-height:1.55;font-size:15px;
+  min-height:100vh;display:grid;place-items:center;
+  padding-top:max(24px,env(safe-area-inset-top,0px));
+  padding-bottom:max(24px,env(safe-area-inset-bottom,0px));
+  padding-left:max(20px,env(safe-area-inset-left,0px));
+  padding-right:max(20px,env(safe-area-inset-right,0px));
+  -webkit-font-smoothing:antialiased;
+}
+main{width:100%;max-width:460px;display:grid;gap:18px;text-align:center;justify-items:center}
+.logo{font-family:var(--display);font-size:26px;letter-spacing:.5px;color:var(--ink);text-decoration:none}
+.logo b{color:var(--accent);font-weight:400}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px 18px;display:grid;gap:14px;justify-items:center;width:100%}
+.face{width:84px;height:84px;border-radius:50%;object-fit:cover;border:3px solid var(--accent);background:var(--soft)}
+h1{font-family:var(--display);font-weight:400;font-size:26px;margin:0;letter-spacing:.3px}
+p{margin:0;color:var(--muted);font-size:14px}
+strong{color:var(--ink)}
+.btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%}
+a.btn{border-radius:12px;padding:10px 14px;font-weight:700;font-size:14px;text-decoration:none;background:var(--accent);color:var(--accent-ink);display:inline-flex;align-items:center;gap:6px}
+a.btn.ghost{background:var(--soft);color:var(--accent)}
+.redirect{font-size:12.5px;color:var(--muted)}
+.redirect a{color:var(--accent);font-weight:700}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <a class="logo" href="/#home">Catch<b>MICE</b></a>
+  <div class="card">
+    <img class="face" src="/img/micy.jpg" width="84" height="84" alt="Micy">
+    <h1>페이지를 찾을 수 없어요</h1>
+    <p>주소가 바뀌었거나 주소를 잘못 입력했어요.<br>Micy가 <strong>홈</strong>으로 안내할게요.</p>
+    <div class="btns">
+      <a class="btn" href="/#home">홈으로 가기</a>
+      <a class="btn ghost" href="/#news">한입뉴스</a>
+      <a class="btn ghost" href="/#jobs">채용공고</a>
+    </div>
+    <p class="redirect" id="redirect">5초 뒤 홈으로 이동해요 · <a href="/#home" id="stay">바로 이동</a></p>
+  </div>
+  <p style="font-size:12px">CatchMICE · MICE를 캐치하는 기자단</p>
+</main>
+<script>
+(function(){
+  var n=5, el=document.getElementById("redirect");
+  var timer=setInterval(function(){
+    n--;
+    if(n<=0){ clearInterval(timer); location.replace("/#home"); return; }
+    if(el) el.innerHTML=n+"초 뒤 홈으로 이동해요 · <a href=\"/#home\" id=\"stay\">바로 이동</a>";
+  },1000);
+  setTimeout(function(){ clearInterval(timer); location.replace("/#home"); },6000);
+})();
+</script>
+</body>
+</html>
