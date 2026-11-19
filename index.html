@@ -437,6 +437,7 @@ nav.tabbar a[aria-current="page"]{color:var(--accent)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 
+<link rel="stylesheet" href="editorial-home.css">
 </head>
 <body>
 <div class="shell">
@@ -467,6 +468,19 @@ nav.tabbar a[aria-current="page"]{color:var(--accent)}
       <div class="wrap">
       <!-- HOME -->
       <section class="view" id="v-home" aria-label="홈">
+        <div class="editorial-intro" aria-label="CatchMICE 매거진 소개">
+          <div class="edition-line"><span>THE MICE EDITION · EST. 2026</span><span>NEWS / EVENTS / CAREERS / RESEARCH</span></div>
+          <h1 class="edition-title">Catch<em>MICE.</em></h1>
+          <div class="edition-bottom">
+            <p><b>행사를 읽고, 업계를 발견하다.</b><br>MICE의 오늘을 기록하고 내일의 기회를 연결하는 디지털 매거진.</p>
+            <div class="edition-links" aria-label="주요 콘텐츠 바로가기">
+              <button type="button" data-go="news">한입뉴스 ↗</button>
+              <button type="button" data-go="calendar">행사일정 ↗</button>
+              <button type="button" data-go="jobs">채용정보 ↗</button>
+            </div>
+          </div>
+        </div>
+
         <div class="toolbar">
           <input type="search" id="allQ" class="search big" placeholder="행사·뉴스·채용·논문 한 번에 검색 (예: 코엑스, PCO, ESG)" aria-label="전체 검색">
           <div class="stack" id="allRes" hidden></div>
