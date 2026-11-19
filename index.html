@@ -66,6 +66,10 @@ window.CM_NATIVE=!!(window.Capacitor&&typeof window.Capacitor.isNativePlatform==
   /* shape */
   --r-sm:10px; --r:14px; --r-lg:16px; --pill:999px;
   --sh-1:0 1px 2px rgba(17,24,39,.04); --sh-2:0 6px 20px rgba(17,24,39,.07);
+  /* threads banner (라이트: 딥 차콜 배경 + 화이트 포인트) */
+  --th-bg:#191F28; --th-bg-hover:#0F131A; --th-line:#191F28; --th-fg:#FFFFFF;
+  --th-sub:rgba(255,255,255,.68); --th-mark:rgba(255,255,255,.12);
+  --th-btn-bg:#FFFFFF; --th-btn-fg:#191F28;
   --side:236px;
   --gut-l:max(16px, env(safe-area-inset-left, 0px));
   --gut-r:max(16px, env(safe-area-inset-right, 0px));
@@ -80,6 +84,10 @@ window.CM_NATIVE=!!(window.Capacitor&&typeof window.Capacitor.isNativePlatform==
     --hot:#FF7B85; --hot-soft:#331B22; --ok:#4FD1A5; --ok-soft:#122C25;
     --sun:#3A2E12; --sun-ink:#FFD166; --scrim:rgba(0,0,0,.62);
     --sh-1:0 1px 2px rgba(0,0,0,.3); --sh-2:0 8px 24px rgba(0,0,0,.4);
+    /* threads banner (다크: 카드 톤 + 보더 강조) */
+    --th-bg:#1C2331; --th-bg-hover:#222B3B; --th-line:#323B4D; --th-fg:#E8EDF5;
+    --th-sub:#A5B0C2; --th-mark:rgba(143,168,255,.16);
+    --th-btn-bg:#E8EDF5; --th-btn-fg:#101722;
     color-scheme:dark;
   }
 }
@@ -91,6 +99,10 @@ window.CM_NATIVE=!!(window.Capacitor&&typeof window.Capacitor.isNativePlatform==
   --hot:#FF7B85; --hot-soft:#331B22; --ok:#4FD1A5; --ok-soft:#122C25;
   --sun:#3A2E12; --sun-ink:#FFD166; --scrim:rgba(0,0,0,.62);
   --sh-1:0 1px 2px rgba(0,0,0,.3); --sh-2:0 8px 24px rgba(0,0,0,.4);
+  /* threads banner (다크: 카드 톤 + 보더 강조) */
+  --th-bg:#1C2331; --th-bg-hover:#222B3B; --th-line:#323B4D; --th-fg:#E8EDF5;
+  --th-sub:#A5B0C2; --th-mark:rgba(143,168,255,.16);
+  --th-btn-bg:#E8EDF5; --th-btn-fg:#101722;
   color-scheme:dark;
 }
 
@@ -449,12 +461,16 @@ main{padding-block:16px 8px;padding-left:var(--gut-l);padding-right:var(--gut-r)
 .crew-teaser{display:grid;gap:12px;align-items:center;color:inherit;text-decoration:none}
 .crew-teaser img{border-radius:var(--r-sm);display:block;width:100%;height:auto}
 
-/* ---------------- KakaoTalk CTA ---------------- */
-.kakao{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#FEE500;color:#191600;border:0;border-radius:var(--r);padding:12px 15px;text-decoration:none}
-.kakao:hover{text-decoration:none}
-.kakao b{font-size:14px}
-.kakao span{font-size:12.5px;opacity:.78;display:block;margin-top:2px}
-.kakao .go{background:#191600;color:#FEE500;border-radius:8px;padding:8px 12px;font-weight:700;font-size:12.5px;white-space:nowrap}
+/* ---------------- Threads CTA ---------------- */
+.threads-banner{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--th-bg);color:var(--th-fg);border:1px solid var(--th-line);border-radius:var(--r);padding:13px 16px;text-decoration:none;box-shadow:var(--sh-1);transition:background .15s,border-color .15s}
+.threads-banner:hover{background:var(--th-bg-hover);border-color:var(--th-bg-hover);text-decoration:none;color:var(--th-fg)}
+.threads-banner .tb-txt{display:flex;gap:11px;align-items:center;min-width:0;flex:1 1 auto}
+.threads-banner .tb-mark{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:var(--th-mark);color:var(--th-fg);font-size:16px;font-weight:700;line-height:1}
+.threads-banner .tb-body{min-width:0}
+.threads-banner b{display:block;font-size:14px;font-weight:700;letter-spacing:-0.02em;color:var(--th-fg)}
+.threads-banner .tb-sub{display:block;font-size:12.5px;line-height:1.45;margin-top:2px;color:var(--th-sub)}
+.threads-banner .tb-go{flex:none;background:var(--th-btn-bg);color:var(--th-btn-fg);border-radius:8px;padding:8px 12px;font-weight:700;font-size:12.5px;white-space:nowrap}
+@media (max-width:719px){.threads-banner .tb-go{flex:1 1 100%;text-align:center;padding:10px 12px}}
 
 /* ---------------- Search results / PREP ---------------- */
 .search.big{border-radius:var(--r-sm)}
@@ -555,11 +571,13 @@ nav.tabbar a[aria-current="page"]{color:var(--accent);font-weight:700}
   .side nav a:hover{background:var(--soft-2);color:var(--ink);text-decoration:none}
   .side nav a[aria-current="page"]{background:var(--soft);color:var(--accent);font-weight:700}
   .side .bottom{margin-top:auto;display:grid;gap:6px}
-  .side .bottom button{
+  .side .bottom button,.side .bottom a{
     text-align:left;border:1px solid var(--line);background:var(--card);border-radius:10px;
-    padding:9px 12px;font-size:12.5px;font-weight:600;color:var(--muted);
+    padding:9px 12px;font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;
+    transition:background .15s,color .15s,border-color .15s;
   }
-  .side .bottom button:hover{background:var(--soft-2);color:var(--ink)}
+  .side .bottom button:hover,.side .bottom a:hover{background:var(--soft-2);color:var(--ink);border-color:var(--line-strong);text-decoration:none}
+  .side .bottom a[data-social="threads-sidebar"]{color:var(--ink);font-weight:650}
   main{padding-block:26px 10px;padding-left:34px;padding-right:max(34px, env(safe-area-inset-right, 0px))}
   footer.foot{padding-left:34px;padding-right:max(34px, env(safe-area-inset-right, 0px))}
   footer.foot .wrap{max-width:1160px;margin:0 auto}
@@ -628,6 +646,7 @@ nav.tabbar a[aria-current="page"]{color:var(--accent);font-weight:700}
     <div class="bottom">
       <button data-act="theme">화면 테마: <span class="themeLabel">시스템</span></button>
       <button data-act="share">이 페이지 링크 복사</button>
+      <a href="https://www.threads.com/@catchmice_" target="_blank" rel="noopener" data-social="threads-sidebar">Threads 바로가기 ↗</a>
       <button data-act="about">기자단 소개</button>
       <button data-act="contact">광고·제휴 / 공고 등록 문의</button>
     </div>
@@ -796,7 +815,7 @@ nav.tabbar a[aria-current="page"]{color:var(--accent);font-weight:700}
           <div class="filters" id="jobR" role="group" aria-label="지역"></div>
           <p class="sub count" id="jobCount" style="margin:0"></p>
         </div>
-        <a class="kakao" href="https://open.kakao.com/o/gWhFOuXi" target="_blank" rel="noopener" data-kakao="jobs"><div><b>오늘 마감·새 공고, 카톡으로 받아보세요</b><span>매일 출근길·퇴근길에 MICE 채용과 업계 소식을 정리해 드려요</span></div><span class="go">오픈채팅 참여</span></a>
+        <a class="threads-banner" href="https://www.threads.com/@catchmice_" target="_blank" rel="noopener" data-social="threads-jobs"><span class="tb-txt"><span class="tb-mark" aria-hidden="true">@</span><span class="tb-body"><b>오늘 마감·새 공고, Threads에서도 받아보세요</b><span class="tb-sub">매일 MICE 채용과 업계 소식을 @catchmice_ 스레드로 바로 확인하세요</span></span></span><span class="tb-go">Threads 바로가기 ↗</span></a>
         <div class="stack grid2 grid3" id="jobList"></div>
         <div class="card" style="display:grid;gap:10px">
           <h3 style="font-size:15px">실시간 공고 바로 검색</h3>
@@ -915,7 +934,7 @@ nav.tabbar a[aria-current="page"]{color:var(--accent);font-weight:700}
         <p>기사·공고·논문의 저작권은 각 원문 출처에 있어요. 요약은 CatchMICE가 직접 썼고, 행사 일정과 채용 조건은 바뀔 수 있으니 원문에서 꼭 다시 확인하세요.</p>
         <p>문의 <span style="user-select:all;color:var(--ink)">ihm12526@naver.com</span></p>
         <p id="statNote" hidden>방문 통계를 위해 Google Analytics를 사용해요. 이름이나 연락처 같은 개인정보는 모으지 않아요.</p>
-        <div class="links"><a href="https://open.kakao.com/o/gWhFOuXi" target="_blank" rel="noopener" data-kakao="footer" style="border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:600;color:var(--muted);text-decoration:none">카톡 오픈채팅</a><button data-act="about">기자단 소개</button><button data-act="contact">광고·제휴 문의</button><button data-act="share">링크 복사</button></div>
+        <div class="links"><a href="https://www.threads.com/@catchmice_" target="_blank" rel="noopener" data-social="threads-footer" style="border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:600;color:var(--muted);text-decoration:none">Threads @catchmice_</a><button data-act="about">기자단 소개</button><button data-act="contact">광고·제휴 문의</button><button data-act="share">링크 복사</button></div>
       </div>
     </footer>
   </div>
@@ -930,7 +949,7 @@ nav.tabbar a[aria-current="page"]{color:var(--accent);font-weight:700}
 
 <script>
 (function(){
-/* 문의 연락처: 준비되면 여기에 이메일이나 오픈채팅 주소를 넣으세요. 비어 있으면 "준비 중"으로 보여요. */
+/* 문의 연락처: 준비되면 여기에 이메일이나 SNS(Threads) 주소를 넣으세요. 비어 있으면 "준비 중"으로 보여요. */
 const CONTACT = "ihm12526@naver.com";
 /* 방문 통계: Google Analytics 4 측정 ID(G-로 시작)를 넣으면 catchmice.github.io 에서만 켜져요. */
 const GA_ID = "G-W0GSDY4VL7";
@@ -1954,7 +1973,7 @@ function contactSheet(){
   openSheet(`<h2 id="sheetTitle">광고·제휴 / 채용공고 등록 문의</h2>
   <p>MICE 업계 사람들과 예비 취업자가 매일 들르는 곳이 되려고 해요. 이런 제휴를 준비하고 있어요.</p>
   <ul><li>채용공고 직접 등록, 추천 공고 상단 노출</li><li>행사·베뉴 소개 스폰서 (광고 표시를 붙여요)</li><li>컨벤션뷰로·지자체 MICE 홍보 협업</li></ul>
-  <div class="copybox">${CONTACT?`<span class="sub">문의 이메일</span><code>${esc(CONTACT)}</code><div class="actions"><button class="btn" data-act="copycontact">이메일 주소 복사</button><a class="btn ghost" href="mailto:${esc(CONTACT)}?subject=${encodeURIComponent("[CatchMICE] 제휴·공고 등록 문의")}">메일 앱으로 쓰기</a></div><span class="sub">메일 앱이 열리지 않으면 주소를 복사해서 보내 주세요.</span>`:`<b>문의 창구를 준비하고 있어요</b><span class="sub">곧 이메일과 카카오톡 채널을 열 예정이에요.</span>`}</div>`);
+  <div class="copybox">${CONTACT?`<span class="sub">문의 이메일</span><code>${esc(CONTACT)}</code><div class="actions"><button class="btn" data-act="copycontact">이메일 주소 복사</button><a class="btn ghost" href="mailto:${esc(CONTACT)}?subject=${encodeURIComponent("[CatchMICE] 제휴·공고 등록 문의")}">메일 앱으로 쓰기</a></div><span class="sub">메일 앱이 열리지 않으면 주소를 복사해서 보내 주세요.</span>`:`<b>문의 창구를 준비하고 있어요</b><span class="sub">곧 이메일과 Threads 채널을 열 예정이에요.</span>`}</div>`);
 }
 
 /* ---------- Router ---------- */
@@ -2079,7 +2098,7 @@ document.addEventListener("input",e=>{
 document.addEventListener("click",ev=>{
   const a=ev.target.closest("a[href^='http']"); if(!a||!ANALYTICS_ON) return;
   const h=a.href, sec=(location.hash||"#home").slice(1);
-  if(/open\.kakao\.com/.test(h)) track("kakao_join",{section:sec,placement:a.dataset.kakao||""});
+  if(/threads\.com/.test(h)) track("threads_join",{section:sec,placement:a.dataset.social||""});
   else if(/saramin|jobkorea|visitkorea|incruit/.test(h)&&a.closest(".job,.res")) track("job_click",{link_url:h,section:sec,label:((a.closest(".job")&&a.closest(".job").querySelector(".co")||a).textContent||"").trim().slice(0,80)});
   else if(a.closest(".news")||(a.closest(".res")&&sec==="home")) track("news_click",{link_url:h,section:sec});
   else if(a.closest(".paper")) track("paper_click",{link_url:h,section:sec});
