@@ -3,15 +3,19 @@
 
 매일 아침(KST 07:00) GitHub Actions에서 실행되어
   - `jobs.json` : 사람인(Saramin) 채용 검색 결과에서 MICE·컨벤션·전시·국제회의 공고를 모아 갱신
-  - `news.json` : 국내 MICE 업계 매체 RSS에서 최신 기사를 모아 최신 15건으로 갱신
+  - `news.json` : 국내 MICE 업계 매체 RSS에서 새 기사를 모아 기존 목록 뒤에 더함
 합니다.
 
 설계 원칙
   * 표준 라이브러리만 사용합니다. 외부 패키지, 유료 API, API 키가 필요 없습니다.
   * 수집에 실패하면 기존 데이터를 지우지 않습니다(안전 실패).
   * 사이트(`index.html`)가 읽는 스키마를 100% 그대로 유지합니다.
-  * 기존에 사람이 골라 둔 항목은 마감일이 지나지 않은 한 그대로 보존하고,
-    새 항목만 뒤에 덧붙입니다.
+  * **사람이 정리해 둔 항목은 자동 실행이 지우거나 덮어쓰지 않습니다.**
+    - `jobs.json` : 마감일(`YYYY-MM-DD`)이 지난 공고만 정리하고, 나머지는 필드까지 그대로 둡니다.
+      같은 공고(URL 또는 회사+제목)는 RSS/사람인에서 다시 긁혀도 새 항목으로 덧붙이지 않습니다.
+    - `news.json` : 기존 기사는 URL·제목 기준으로 중복 판정해 기존 요약(sum)을 그대로 살립니다.
+      기사 날짜가 `NEWS_KEEP_DAYS`보다 오래된 것만 정리하고, 새 기사만 더합니다.
+  * 예전처럼 `최신 15건`으로 통째로 잘라 내지 않습니다(기존 목록이 15건보다 많아도 유지).
 
 사용법
     python3 scripts/update_data.py              # 실제 파일 갱신
@@ -51,10 +55,28 @@ HTTP_TIMEOUT = 25
 HTTP_RETRIES = 2
 POLITE_DELAY = 1.2  # 요청 사이 대기(초). 상대 서버에 부담을 주지 않기 위함
 
-# jobs.json에 담을 최대 항목 수(사람이 고른 기존 항목은 항상 포함)
-MAX_JOBS = 60
-# news.json에 담을 최대 항목 수
-MAX_NEWS = 15
+# ---------------------------------------------------------------------------
+# 보관 정책
+#   기존(사람이 정리한) 항목이 상한을 넘더라도 잘라 내지 않습니다.
+#   상한은 '새로 더할 자리'를 정하는 값으로만 씁니다.
+#   - jobs.json : 상한(MAX_JOBS)에 차면 마감이 지난 공고가 빠진 자리에만 새 공고를 담습니다.
+#   - news.json : 기사 날짜 기준(NEWS_KEEP_DAYS)으로만 줄어들기 때문에, 상한에 가까워도
+#                 MIN_NEW_ITEMS_PER_RUN 만큼은 새 기사를 더해 목록이 낡지 않게 합니다.
+# ---------------------------------------------------------------------------
+
+# jobs.json 총 보관 상한(사람이 고른 기존 항목은 항상 포함)
+MAX_JOBS = 100
+# 한 번 실행에서 새로 더하는 공고 수 상한(마감이 급한 공고부터)
+MAX_NEW_JOBS_PER_RUN = 20
+
+# news.json 총 보관 상한(기존 기사는 항상 포함)
+MAX_NEWS = 40
+# 한 번 실행에서 새로 더하는 기사 수 하한
+MIN_NEW_ITEMS_PER_RUN = 5
+# 이 기간(일)이 지난 기존 기사는 정리한다. 그 안의 기사는 개수와 상관없이 보존
+# (RSS에서 새로 집을 때도 같은 기준을 써서, 담은 기사가 다음 실행에 곧바로 지워지는 일이 없게 한다)
+NEWS_KEEP_DAYS = 10
+NEWS_FIELDS = ("date", "cat", "source", "title", "sum", "url")
 
 # ---------------------------------------------------------------------------
 # 공통 유틸
@@ -399,8 +421,22 @@ def job_sort_key(job: dict) -> tuple:
     return (2, "", company, title)
 
 
+def _new_slot_capacity(kept_count: int, total_cap: int, min_per_run: int, max_per_run: int) -> int:
+    """기존 항목을 지키면서 새 항목에 내어줄 자리 수를 계산한다.
+
+    기존 항목이 상한을 넘어도 자리가 0이 되지 않게 `min_per_run`을 하한으로 두고
+    (뉴스처럼 기간으로만 소멸하는 목록에 사용), 한 번에 너무 많이 늘지 않게
+    `max_per_run`을 둔다. 채용공고처럼 상한에서 순환하는 목록은 하한을 0으로 둔다.
+    """
+    return min(max(total_cap - kept_count, min_per_run), max_per_run)
+
+
 def merge_jobs(existing: list[dict], scraped: list[dict], today: date, log) -> list[dict]:
-    """기존(사람이 고른) 항목을 보존하면서 새 공고를 더한다."""
+    """기존(사람이 고른) 항목을 보존하면서 새 공고를 더한다.
+
+    - 마감일이 지난 기존 공고만 정리하고, 남은 기존 공고는 필드까지 그대로 둔다.
+    - 같은 공고(URL 또는 회사+제목)는 다시 긁혀도 새 항목으로 덧붙이지 않는다.
+    """
     today_iso = today.isoformat()
     kept: list[dict] = []
     dropped_expired = 0
@@ -428,14 +464,14 @@ def merge_jobs(existing: list[dict], scraped: list[dict], today: date, log) -> l
             seen_rec.add(rec_idx)
         added.append({key: value for key, value in job.items() if not key.startswith("_")})
 
+    # 기존 항목은 먼저 지키고, 남는 자리만큼만 새 공고를 담는다(새 공고는 마감이 급한 순)
+    # 상한(MAX_JOBS)에 차면 마감이 지난 공고가 빠지면서 생긴 자리에만 새로 담는다.
+    capacity = _new_slot_capacity(len(kept), MAX_JOBS, 0, MAX_NEW_JOBS_PER_RUN)
+    added.sort(key=job_sort_key)
+    if len(added) > capacity:
+        log(f"  새 공고 {len(added)}건 중 마감이 급한 {capacity}건만 오늘치에 담습니다(나머지는 다음 실행에서 재수집).")
+        added = added[:capacity]
     merged = kept + added
-    if len(merged) > MAX_JOBS:
-        # 기존 항목은 먼저 지키고, 남는 자리만큼만 새 공고를 담는다
-        kept_keys = {normalize_url(job.get("url", "")) for job in kept}
-        protected = [job for job in merged if normalize_url(job.get("url", "")) in kept_keys]
-        rest = [job for job in merged if normalize_url(job.get("url", "")) not in kept_keys]
-        rest.sort(key=job_sort_key)
-        merged = protected + rest[: max(0, MAX_JOBS - len(protected))]
     merged.sort(key=job_sort_key)
 
     log(f"  기존 {len(existing)}건 중 {len(kept)}건 유지 (마감 지난 {dropped_expired}건 정리)")
@@ -614,7 +650,7 @@ def parse_feed(xml_text: str, source: str, topic_tags: tuple = (), today: date |
         published = _parse_feed_date(node.findtext("pubDate") or "")
         if published is None:
             continue
-        if published > today or (today - published).days > 10:
+        if published > today or (today - published).days > NEWS_KEEP_DAYS:
             continue
 
         summary_source = node.findtext("description") or ""
@@ -640,43 +676,83 @@ def parse_feed(xml_text: str, source: str, topic_tags: tuple = (), today: date |
     return items
 
 
+def _news_date(item: dict) -> date | None:
+    text = str(item.get("date") or "").strip()
+    if not _ISO_DATE.match(text):
+        return None
+    try:
+        return date.fromisoformat(text)
+    except ValueError:
+        return None
+
+
 def merge_news(existing: list[dict], scraped: list[dict], today: date, log) -> list[dict]:
-    entries: list[dict] = []
+    """기존 기사(사람이 다듬은 요약)를 보존하면서 새 기사만 더한다.
+
+    - 기존 기사는 URL·제목 기준으로 중복을 걸러 내고, 필드(date·cat·source·title·sum·url)를
+      그대로 살립니다. RSS에 다시 보여도 기존 요약을 덮어쓰지 않습니다.
+    - 기사 날짜가 `NEWS_KEEP_DAYS`보다 오래된 기존 기사만 정리합니다.
+    - 새 기사는 중복 없이 최신순으로 더하되, 한 번에 `MIN_NEW_ITEMS_PER_RUN` 이상은 들어오게 합니다.
+    """
+    kept: list[dict] = []
+    dropped_old = 0
     seen_urls: set[str] = set()
     seen_titles: set[str] = set()
 
-    for item in existing + scraped:  # 기존(사람이 쓴) 항목이 우선
-        url_key = normalize_url(str(item.get("url") or ""))
+    for item in existing:  # 기존(사람이 쓴) 항목이 우선
         title_key = normalize_title(str(item.get("title") or ""))
         if not title_key:
             continue
+        url_key = normalize_url(str(item.get("url") or ""))
+        if (url_key and url_key in seen_urls) or title_key in seen_titles:
+            continue
+        published = _news_date(item)
+        if published is not None and (today - published).days > NEWS_KEEP_DAYS:
+            dropped_old += 1
+            continue
+        if url_key:
+            seen_urls.add(url_key)
+        seen_titles.add(title_key)
+        kept.append({key: item.get(key, "") for key in NEWS_FIELDS})
+
+    # 새 기사 중복 제거(기존 목록과 겹치는 기사는 새로 더하지 않는다)
+    fresh: list[dict] = []
+    for item in sorted(scraped, key=lambda x: str(x.get("date") or ""), reverse=True):
+        title_key = normalize_title(str(item.get("title") or ""))
+        if not title_key:
+            continue
+        url_key = normalize_url(str(item.get("url") or ""))
         if (url_key and url_key in seen_urls) or title_key in seen_titles:
             continue
         if url_key:
             seen_urls.add(url_key)
         seen_titles.add(title_key)
-        entries.append({key: item.get(key, "") for key in ("date", "cat", "source", "title", "sum", "url")})
+        fresh.append({key: item.get(key, "") for key in NEWS_FIELDS})
 
-    entries.sort(key=lambda item: (str(item.get("date") or ""), str(item.get("title") or "")), reverse=True)
-
-    # 최신순으로 담되, 한 매체가 목록을 다 차지하지 않도록 매체별 상한을 둔다
+    # 한 매체가 목록을 독점하지 않도록 매체별 상한을 두고, 남는 자리는 매체 상한을 풀어 채운다
+    capacity = max(MAX_NEWS - len(kept), MIN_NEW_ITEMS_PER_RUN)
+    per_source: dict[str, int] = {}
     picked: list[dict] = []
     overflow: list[dict] = []
-    per_source: dict[str, int] = {}
-    for entry in entries:
+    for entry in fresh:
         source = str(entry.get("source") or "")
         if per_source.get(source, 0) >= MAX_NEWS_PER_SOURCE:
             overflow.append(entry)
             continue
         per_source[source] = per_source.get(source, 0) + 1
         picked.append(entry)
-        if len(picked) >= MAX_NEWS:
+        if len(picked) >= capacity:
             break
-    picked.extend(overflow)  # 자리가 남으면 매체 상한을 풀고 마저 채운다
-    kept = picked[:MAX_NEWS]
-    kept.sort(key=lambda item: (str(item.get("date") or ""), str(item.get("title") or "")), reverse=True)
-    log(f"  기존 {len(existing)}건 + 새 기사 {len(scraped)}건 → 최신 {len(kept)}건 유지")
-    return kept
+    else:
+        picked.extend(overflow[: max(0, capacity - len(picked))])
+
+    merged = kept + picked
+    merged.sort(key=lambda item: (str(item.get("date") or ""), str(item.get("title") or "")), reverse=True)
+    log(
+        f"  기존 {len(existing)}건 중 {len(kept)}건 유지({NEWS_KEEP_DAYS}일 지난 기사 {dropped_old}건 정리)"
+        f" + 새 기사 {len(picked)}건 → 총 {len(merged)}건"
+    )
+    return merged
 
 
 def update_news(today: date, dry_run: bool, log) -> bool:
