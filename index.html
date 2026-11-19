@@ -54,7 +54,7 @@ window.CM_NATIVE=!!(window.Capacitor&&typeof window.Capacitor.isNativePlatform==
   --paper:#F7F8FA; --card:#FFFFFF; --card-blur:rgba(255,255,255,.86); --paper-blur:rgba(247,248,250,.82);
   --line:#E5E8EB; --line-strong:#D5DAE0; --soft-2:#F2F5FA;
   /* ink */
-  --ink:#191F28; --muted:#4E5968; --muted2:#8B95A1;
+  --ink:#191F28; --muted:#4E5968; --muted2:#6B7684; --ph:#8B95A1;
   /* brand */
   --accent:#1B56E8; --accent-hover:#1444BD; --accent-ink:#FFFFFF; --soft:#EEF3FF;
   /* state */
@@ -75,7 +75,7 @@ window.CM_NATIVE=!!(window.Capacitor&&typeof window.Capacitor.isNativePlatform==
   :root:not([data-theme="light"]){
     --paper:#0F131A; --card:#171C26; --card-blur:rgba(23,28,38,.9); --paper-blur:rgba(15,19,26,.82);
     --line:#252C3B; --line-strong:#323B4D; --soft-2:#1C2331;
-    --ink:#E8EDF5; --muted:#A5B0C2; --muted2:#7B8798;
+    --ink:#E8EDF5; --muted:#A5B0C2; --muted2:#9FAABB; --ph:#76839A;
     --accent:#8FA8FF; --accent-hover:#AFC1FF; --accent-ink:#0F131A; --soft:#1E2740;
     --hot:#FF7B85; --hot-soft:#331B22; --ok:#4FD1A5; --ok-soft:#122C25;
     --sun:#3A2E12; --sun-ink:#FFD166; --scrim:rgba(0,0,0,.62);
@@ -86,7 +86,7 @@ window.CM_NATIVE=!!(window.Capacitor&&typeof window.Capacitor.isNativePlatform==
 :root[data-theme="dark"]{
   --paper:#0F131A; --card:#171C26; --card-blur:rgba(23,28,38,.9); --paper-blur:rgba(15,19,26,.82);
   --line:#252C3B; --line-strong:#323B4D; --soft-2:#1C2331;
-  --ink:#E8EDF5; --muted:#A5B0C2; --muted2:#7B8798;
+  --ink:#E8EDF5; --muted:#A5B0C2; --muted2:#9FAABB; --ph:#76839A;
   --accent:#8FA8FF; --accent-hover:#AFC1FF; --accent-ink:#0F131A; --soft:#1E2740;
   --hot:#FF7B85; --hot-soft:#331B22; --ok:#4FD1A5; --ok-soft:#122C25;
   --sun:#3A2E12; --sun-ink:#FFD166; --scrim:rgba(0,0,0,.62);
@@ -176,7 +176,7 @@ main{padding-block:16px 8px;padding-left:var(--gut-l);padding-right:var(--gut-r)
   border:1px solid var(--line);background:var(--card);color:var(--ink);
   border-radius:var(--r-sm);padding:0 13px;transition:border-color .15s, box-shadow .15s;
 }
-.search::placeholder{color:var(--muted2)}
+.search::placeholder{color:var(--ph)}
 .search:hover{border-color:var(--line-strong)}
 .search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--soft)}
 .search.big{height:46px;font-size:14.5px}
