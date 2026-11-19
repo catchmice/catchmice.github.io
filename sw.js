@@ -5,14 +5,13 @@
    - VERSION을 올리면 activate에서 예전 캐시를 자동으로 지웁니다.
    ※ 배포할 때 index.html·이미지가 바뀌면 아래 VERSION 숫자를 함께 올려 주세요.
 */
-const VERSION = "v4-2026-11-19";
+const VERSION = "v5-2026-11-19-portal";
 const CACHE = "catchmice-" + VERSION;
 const OFFLINE_HTML = "404.html";
 
 const CORE = [
   "./",
   "index.html",
-  "editorial-home.css",
   "manifest.webmanifest",
   "404.html",
   "img/hero.jpg",
@@ -26,7 +25,8 @@ const CORE = [
   "icons/icon-512.png"
 ];
 
-const FONT_HOSTS = ["fonts.googleapis.com", "fonts.gstatic.com"];
+/* 웹폰트 CDN: 내용이 고정된 자산이라 캐시 우선 (Pretendard는 cdn.jsdelivr.net) */
+const FONT_HOSTS = ["fonts.googleapis.com", "fonts.gstatic.com", "cdn.jsdelivr.net"];
 
 self.addEventListener("install", e => {
   e.waitUntil((async () => {
