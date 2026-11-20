@@ -122,18 +122,6 @@
       "site": "사람인"
     },
     {
-      "company": "더웰컴",
-      "title": "국제 행사 및 컨퍼런스 MICE 채용 (신입/계약직)",
-      "region": "서울",
-      "place": "서울 성동구",
-      "career": "신입 · 경력 · 정규직/계약직",
-      "newbie": true,
-      "deadline": "2026-11-21",
-      "pay": "",
-      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55471282",
-      "site": "사람인"
-    },
-    {
       "company": "비온에이치알",
       "title": "[외국계글로버 MICE 기업] Corporate Development Manager 경력3년",
       "region": "서울",
@@ -462,8 +450,8 @@
       "title": "전시(IP, Fine Art) 디자인 & 공간 기획 경력자(3년이상) 채용",
       "region": "서울",
       "place": "서울 강남구",
-      "career": "경력무관 · 정규직",
-      "newbie": true,
+      "career": "경력 3년↑ · 정규직",
+      "newbie": false,
       "deadline": "2026-11-27",
       "pay": "4,000만원",
       "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55417373",
@@ -782,6 +770,30 @@
       "site": "사람인"
     },
     {
+      "company": "유니에스",
+      "title": "[코엑스 파견] 사무-전시기획운영(영어 필수)",
+      "region": "서울",
+      "place": "서울 강남구",
+      "career": "경력무관 · 파견직 2년",
+      "newbie": true,
+      "deadline": "2026-12-01",
+      "pay": "월 287만원",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55585477",
+      "site": "사람인"
+    },
+    {
+      "company": "프리미어플랜",
+      "title": "[신입/경력] MICE·컨벤션·전시기획 및 운영",
+      "region": "서울",
+      "place": "서울 구로구",
+      "career": "신입·경력 · 정규직",
+      "newbie": true,
+      "deadline": "2026-12-01",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55621179",
+      "site": "사람인"
+    },
+    {
       "company": "공감을더하다",
       "title": "입주박람회 주관사/전시 컨벤션 행사 기획 업무",
       "region": "서울",
@@ -842,6 +854,18 @@
       "site": "사람인"
     },
     {
+      "company": "더클라우드",
+      "title": "[기획본부] MICE·전시컨벤션·프로모션 기획 신입/경력",
+      "region": "서울",
+      "place": "서울 마포구",
+      "career": "경력무관 · 정규직·계약직",
+      "newbie": true,
+      "deadline": "2026-12-05",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55484007",
+      "site": "사람인"
+    },
+    {
       "company": "어드민",
       "title": "광주전남 MICE 기획사 기획자 채용",
       "region": "광주·전남",
@@ -854,6 +878,18 @@
       "site": "사람인"
     },
     {
+      "company": "인터비즈투어",
+      "title": "MICE·기업 해외연수 기획/운영(경력 및 신입)",
+      "region": "서울",
+      "place": "서울 강남구",
+      "career": "신입·경력 · 정규직",
+      "newbie": true,
+      "deadline": "2026-12-05",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55212223",
+      "site": "사람인"
+    },
+    {
       "company": "피플엑스",
       "title": "MICE기획팀 신입인턴 및 1년 이상 경력 모집",
       "region": "서울",
@@ -863,6 +899,18 @@
       "deadline": "2026-12-05",
       "pay": "",
       "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55496154",
+      "site": "사람인"
+    },
+    {
+      "company": "에이시티",
+      "title": "[부산] 행사대행 기획 인재",
+      "region": "부산",
+      "place": "부산 해운대구",
+      "career": "경력무관 · 정규직",
+      "newbie": true,
+      "deadline": "2026-12-07",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55512358",
       "site": "사람인"
     },
     {
@@ -962,6 +1010,18 @@
       "site": "사람인"
     },
     {
+      "company": "서울메쎄인터내셔널",
+      "title": "전시회(박람회) 주최·운영 신입/경력",
+      "region": "서울",
+      "place": "서울 강동구",
+      "career": "경력무관 · 정규직",
+      "newbie": true,
+      "deadline": "2026-12-18",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55605343",
+      "site": "사람인"
+    },
+    {
       "company": "인코플랜",
       "title": "국제회의(컨벤션) 기획 및 운영 신입/경력",
       "region": "서울",
@@ -971,6 +1031,66 @@
       "deadline": "2026-12-18",
       "pay": "",
       "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55566864",
+      "site": "사람인"
+    },
+    {
+      "company": "지에이치코리아",
+      "title": "행사 및 심포지엄 기획 담당(신입/경력)",
+      "region": "서울",
+      "place": "서울 강남구",
+      "career": "신입·경력 2년↓ · 정규직",
+      "newbie": true,
+      "deadline": "2026-12-18",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55608430",
+      "site": "사람인"
+    },
+    {
+      "company": "리이스트",
+      "title": "전시·행사 기획팀 팀원",
+      "region": "부산",
+      "place": "부산 남구",
+      "career": "경력무관 · 정규직",
+      "newbie": true,
+      "deadline": "2026-12-19",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55617139",
+      "site": "사람인"
+    },
+    {
+      "company": "아젤리아",
+      "title": "전주 웨스틴헤라&엔타워 컨벤션 고객지원부",
+      "region": "전북",
+      "place": "전북 전주시 완산구",
+      "career": "경력무관(경력우대) · 정규직",
+      "newbie": true,
+      "deadline": "2026-12-19",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55617127",
+      "site": "사람인"
+    },
+    {
+      "company": "원마이스글로벌",
+      "title": "국제회의·컨벤션 기획사 모집",
+      "region": "서울",
+      "place": "서울 구로구",
+      "career": "경력무관 · 정규직",
+      "newbie": true,
+      "deadline": "2026-12-19",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55533244",
+      "site": "사람인"
+    },
+    {
+      "company": "콜라보에어",
+      "title": "2027 상반기 행사기획 진행 매니저",
+      "region": "대전",
+      "place": "대전 유성구",
+      "career": "신입·경력무관 · 정규직·계약직",
+      "newbie": true,
+      "deadline": "2026-12-19",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55625345",
       "site": "사람인"
     },
     {
@@ -984,6 +1104,30 @@
       "pay": "",
       "url": "https://k-mice.visitkorea.or.kr/noti.kto?func_name=list&pgbn=2",
       "site": "K-MICE 채용게시판"
+    },
+    {
+      "company": "커넥티움",
+      "title": "2026년 하반기 행사 기획/PM",
+      "region": "경기",
+      "place": "경기 화성시",
+      "career": "경력무관 · 정규직",
+      "newbie": true,
+      "deadline": "2026-12-31",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55512796",
+      "site": "사람인"
+    },
+    {
+      "company": "피아트",
+      "title": "(경력무관) 행사기획 정규직",
+      "region": "경북",
+      "place": "경북 경산시",
+      "career": "경력무관 · 정규직",
+      "newbie": true,
+      "deadline": "2027-01-09",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55530858",
+      "site": "사람인"
     },
     {
       "company": "MCI Korea",
@@ -1082,6 +1226,30 @@
       "site": "사람인"
     },
     {
+      "company": "월드전람",
+      "title": "[월드식품·주류박람회·카페쇼] 전시기획·영업 신입·경력",
+      "region": "경기",
+      "place": "경기 하남시",
+      "career": "경력무관 · 정규직",
+      "newbie": true,
+      "deadline": "상시",
+      "pay": "연봉 3,000만원",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55490998",
+      "site": "사람인"
+    },
+    {
+      "company": "코리아컨벤션서비스",
+      "title": "국제회의기획자(컨벤션기획·세계폴리처학회)",
+      "region": "서울",
+      "place": "서울 서초구",
+      "career": "경력무관 · 정규직",
+      "newbie": true,
+      "deadline": "상시",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55195274",
+      "site": "사람인"
+    },
+    {
       "company": "포유커뮤니케이션즈",
       "title": "MICE기획팀 모집(신입/경력)",
       "region": "부산",
@@ -1091,6 +1259,18 @@
       "deadline": "상시",
       "pay": "신입 초봉 3,000만원~",
       "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55416579",
+      "site": "사람인"
+    },
+    {
+      "company": "하나엠앤씨",
+      "title": "MICE 행사 기획 및 운영관리(신입/경력)",
+      "region": "서울",
+      "place": "서울 중구",
+      "career": "신입·경력 1~10년 · 정규직",
+      "newbie": true,
+      "deadline": "상시",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55388062",
       "site": "사람인"
     }
   ]
