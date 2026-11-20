@@ -1,0 +1,7 @@
+name = "catchmice-approve"
+main = "index.js"
+compatibility_date = "2026-11-01"
+[vars]
+REPO = "catchmice/catchmice.github.io"
+ACCESS_AUD = "REPLACE_WITH_ACCESS_AUD"
+ACCESS_TEAM = "REPLACE_WITH_YOUR_TEAM.cloudflareaccess.com"

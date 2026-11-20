@@ -1,149 +1,54 @@
-# CatchMICE
+# CatchMICE 인스타그램 승인형 카드뉴스 — 설치 패키지
 
-MICE를 캐치하는 기자단 CatchMICE 웹사이트예요.
-전시·컨벤션 일정, MICE 한입뉴스, 채용공고, 논문, 취업 가이드를 모아요.
-서버·유료 API 없이 GitHub Pages에 올라가는 정적 사이트(HTML/CSS/JS + JSON)입니다.
+**상태:** 배포 전 소스코드. 기존 홈페이지 변경 없음. 사용자 승인 없이 게시하지 않음.
 
-- `index.html` 사이트 본체 (라우팅·렌더링·캐릭터 브리핑이 모두 이 파일 안에 있어요)
-- `events.json`, `news.json`, `jobs.json`, `papers.json` 매일 업데이트되는 데이터
-- `img/` 캐릭터 이미지, `icons/` 앱 아이콘
-- `manifest.webmanifest`, `sw.js` 휴대폰 홈 화면 설치와 오프라인 보기
-- `404.html` 없는 주소로 들어왔을 때 보여 주는 안내 페이지
-- `scripts/update_data.py` 데이터 자동 수집 스크립트
-- `scripts/daily-update.workflow.yml` 매일 아침 자동 실행 설정(아래 설명 참고)
-- `package.json`, `capacitor.config.json`, `scripts/prepare-web.mjs` 앱(안드로이드·iOS) 빌드 설정
-- `android/` 안드로이드 앱 프로젝트, `scripts/build-android-apk.workflow.yml` APK 자동 빌드
-- `APP_SETUP.md` 앱 설치·빌드 안내(아래 "앱으로 설치하기" 참고)
+## 동작
 
-## 앱으로 설치하기 (안드로이드 APK · iOS)
+1. 홈페이지의 `news.json`에서 이전에 초안으로 만든 적 없는 기사를 선택합니다.
+2. Github Actions가 화·금 07:00 KST에 1080×1350 PNG 5장을 만듭니다(실제 시작은 GitHub 스케줄 지연 가능).
+3. `social/drafts/<id>`를 GitHub Pages에 공개하여 카드뉴스 이미지 URL을 발행합니다.
+4. Cloudflare Access로 인증된 **본인만** 승인 페이지에서 5장과 캡션을 확인하고 게시 워크플로를 호출합니다.
+5. Instagram Login API의 Instagram 비즈니스 게시 권한으로 캐러셀을 게시하고 결과 상태를 기록합니다.
 
-웹사이트는 그대로 GitHub Pages에서 돌고, **같은 파일로 폰에 설치하는 앱**도 만들 수 있어요.
-[Capacitor](https://capacitorjs.com)로 감싸기 때문에 별도 서버나 유료 서비스가 필요 없습니다.
+## 캐릭터 원본 고정
 
-- **안드로이드 APK**: GitHub Actions 무료 러너에서 자동 빌드 → Actions 탭 Artifacts 에서 내려받아 설치
-- **아이폰**: 같은 설정으로 맥에서 Xcode로 빌드 (`npx cap add ios && npx cap open ios`)
-- 앱은 웹 파일을 **폰 안에 넣어 두고(번들)** 열어서 오프라인에서도 화면이 뜨고,
-  온라인이면 1.5초 뒤 `https://catchmice.github.io` 의 최신 JSON으로 조용히 데이터를 갱신합니다.
-- 앱 아이콘은 `icons/icon-512.png`(Micy)에서 만들어 넣었습니다.
-- 앱 안에서는 서비스 워커(`sw.js`)를 끄고, `target="_blank"` 링크는 휴대폰 기본 브라우저로 엽니다.
+`assets/{micy,veny,exy,aily}.png`는 **사용자가 제공한 기자단 소개 카드뉴스의 각 캐릭터 구역을 그대로 자른 이미지**입니다. 재생성하지 않습니다. 이미지 배경이 포함된 스크린샷 크롭이므로 실제 브랜드용 배경 없는 투명 PNG를 확보하면 교체하는 것을 권장합니다. 원본 그림체와 얼굴을 다시 그리는 것은 금지합니다.
 
-처음 한 번만 해 두면 되는 준비(자동 빌드 켜기, APK 내려받기, iOS 빌드, 스토어 서명)는
-**[`APP_SETUP.md`](APP_SETUP.md)** 에 순서대로 정리해 두었습니다.
+## GitHub에 올릴 것
 
-## 화면 구성
+패키지 파일을 `catchmice/catchmice.github.io` 루트에 병합합니다. 기존 `index.html`과 기존 `img`는 수정할 필요가 없습니다. **`news.json`은 기존 저장소 파일을 사용하며 패키지에는 포함하지 않았습니다.**
 
-아래쪽 6개 탭(홈·캘린더·동네·뉴스·채용·스터디)은 그대로이고, 그 안에서 화면이 바뀝니다.
-`#home`, `#calendar`, `#walk`, `#news`, `#jobs`, `#ai`, `#papers`, `#guide`, `#crew` 주소를 그대로 쓸 수 있어요.
-`#briefing`으로 들어오면 홈의 캐릭터 브리핑으로 바로 이동합니다.
+특히 `.github/workflows/instagram-cards.yml` 워크플로는 GitHub의 웹 편집기에서 직접 업로드해야 할 수 있습니다. 이 환경의 GitHub 커넥터는 `create_branch`에 403을 반환했습니다.
 
-## 캐릭터 일일 브리핑 & 질문하기 (2단계)
+GitHub 저장소 Settings > Secrets and variables > Actions > Secrets에 아래를 추가하세요.
 
-홈 화면 위쪽에 네 기자가 오늘 데이터를 정리해 주는 패널이 있어요.
+- `IG_ACCESS_TOKEN`: Meta Instagram Login으로 발급받은 실제 게시 권한 토큰
+- `IG_USER_ID`: Instagram Professional Account 숫자 ID
 
-- **Micy(채용 코치)** — 모집 중인 공고 수, 신입 가능 공고, 마감 7일 이내 공고, 지난 방문 뒤 새 공고
-- **Veny(행사 가이드)** — 가장 가까운 행사 D-day, 7일 안에 열리는 행사, 사전등록이 열린 행사
-- **Exy(뉴스 에디터)** — 최신 기사 수·분류 분포·헤드라인
-- **Aily(준비 파트너)** — 취업 준비 8단계 진행률, 다음 할 일, 오늘의 AI 용어, 논문 수
+GitHub Settings > Environments에서 `instagram-publishing` 환경을 만들어 **Required reviewers**를 설정하면 추가 2차 승인 안전장치가 됩니다. 플랜 및 공개 저장소 제약은 GitHub 설정에서 확인하세요.
 
-빠른 질문 칩과 자유 입력으로 물어보면 **`jobs.json`·`news.json`·`events.json`·`papers.json`에 있는 항목만**으로
-답합니다. 결과 카드는 해당 탭으로 이동하거나(채용·뉴스·논문) 행사 상세를 열고, 맞는 항목이 없으면
-지어내지 않고 "전체 검색에서 찾기"로 안내합니다. 답변에는 항상 데이터 기준 날짜가 붙습니다.
+Actions > CatchMICE Instagram approval > Run workflow > generate 로 첫 초안을 테스트하세요. `social/drafts/<id>` 이미지들이 GitHub Pages에서 열린 후 게시 승인 테스트를 진행하세요.
 
-### 내 맞춤 조건
+## 승인 버튼 설치 (Cloudflare Worker)
 
-브리핑 안의 **내 맞춤 조건**에서 지역(여러 개)·경력(무관/신입/경력)·관심 분야(PCO/전시/협회·공공/베뉴)를
-고르면 Micy 브리핑과 "내 조건에 맞는 공고" 답변이 그 조건으로 좁혀집니다. 브라우저에만 저장됩니다.
+1. Cloudflare에서 Worker를 배포합니다. `worker/index.js`와 `worker/wrangler.toml` 사용.
+2. Worker에 **Cloudflare Access 애플리케이션**을 걸어 본인의 이메일만 접근하도록 허용하세요.
+3. `ACCESS_AUD`에 해당 Access App의 AUD, `ACCESS_TEAM`에 팀 도메인을 넣으세요.
+4. Worker secret `GITHUB_TOKEN`에 **해당 repo Contents: Read 및 Actions: Write** 권한의 fine-grained GitHub PAT를 저장하세요. 브라우저 파일에 넣으면 안 됩니다.
+5. 사용자 휴대폰에서 Worker URL 접속 → 초안 ID 입력 → 이미지·캡션 확인 → **승인하고 인스타그램 게시**.
 
-### 3단계(AI API) 연동 지점
+## Meta 설정
 
-`index.html` 안의 `BADAPTER` 한 곳만 열려 있습니다. 키는 이 파일에 넣지 마세요.
-어댑터가 없거나 실패하면 항상 위의 로컬 JSON 검색으로 답합니다.
+Meta Developers에서 Instagram API with Instagram Login을 설정하고, `instagram_business_basic`, `instagram_business_content_publish` 권한을 사용하세요. 계정을 앱에 연결하고 사용자 ID 및 장기 액세스 토큰을 안전하게 저장하고 만료/갱신 정책을 마련하세요. 실제 계정에 대한 권한은 Meta 설정/앱 상태에 따라 다릅니다. 토큰을 채팅으로 공유하지 마세요.
 
-```js
-// 3단계에서 서버 프록시(권장)나 API를 붙일 때
-window.CatchMICEAssistant.registerProvider(async (question, context) => {
-  // context: {today, prefs, updated, jobs, events, news, papers, prep, applied}
-  const res = await fetch("/api/ask", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({question, context})
-  });
-  return {html: (await res.json()).html};   // .bans 안에 들어갈 HTML
-});
-```
+## 중요한 제한
 
-그 밖에 `window.CatchMICEAssistant`는 `context()`(현재 데이터 스냅샷), `ask(q)`, `open("micy")`,
-`hasProvider()`를 제공합니다. 어댑터를 지우려면 `registerProvider(null)`.
-
-## 채용 트래커 (#jobs)
-
-- 필터: **마감 임박(D-7)**, 신입 가능, 경력, **지원함**, 저장한 공고 + 지역
-- 카드에서 **지원함**을 누르면 한 줄 메모를 남길 수 있고, `지원함` 표시·메모는 홈의 **내 지원·저장**에 모입니다.
-- **캘린더** 버튼은 공고 마감일을 구글 캘린더에 하루 종일 일정으로 추가합니다(행사 카드와 같은 방식).
-- 마감 지난 공고는 목록에서 자동으로 빠집니다.
-
-## 취업 준비 8단계 (#guide)
-
-`PREP` 배열의 8단계 체크리스트가 가이드 화면에 나옵니다. 체크하면 진행률 막대와 숫자가 바뀌고,
-Aily 브리핑에도 바로 반영됩니다.
-
-## 브라우저에 저장되는 값 (localStorage)
-
-| 키 | 내용 |
-| --- | --- |
-| `cm_theme` | 화면 테마(system/light/dark) |
-| `cm_saved2` | 저장한 행사·공고 |
-| `cm_seen` | 지난 방문 때 본 항목(NEW 배지용) |
-| `cm_prefs` | 내 맞춤 조건(지역·경력·관심 분야) |
-| `cm_applied` | 지원함 표시 + 한 줄 메모 |
-| `cm_prep` | 취업 준비 8단계 체크 |
-| `cm_lessons` | AI 스터디에서 끝낸 레슨 |
-
-서버로 보내지 않습니다. 브라우저 저장소를 지우면 함께 사라집니다.
-
-## 오프라인·캐시 동작 (`sw.js`)
-
-- 문서(HTML): **network-first** → 캐시 → 오프라인 안내
-- `*.json` 데이터: **network-first** → 캐시 (매일 아침 갱신이 바로 보이도록)
-- 이미지·아이콘·폰트: **stale-while-revalidate** (빠르게 보여 주고 뒤에서 갱신)
-- 캐시 이름은 `catchmice-<VERSION>`이고, `VERSION`을 올리면 새 워커가 설치되면서 예전 캐시를 지웁니다.
-  **index.html·이미지를 바꿔 배포할 때는 `sw.js`의 `VERSION`도 함께 올려 주세요.**
-
-## 404
-
-`404.html`은 CatchMICE 색·캐릭터로 만든 안내 페이지입니다. 5초 뒤 `/#home`으로 이동하고
-바로 갈 수 있는 버튼(홈·한입뉴스·채용)도 있습니다.
-
-## 데이터 자동 업데이트
-
-`jobs.json`(채용공고)과 `news.json`(한입뉴스)은 GitHub Actions가 매일 아침 7시(KST)에
-`scripts/update_data.py`를 돌려 새로 채워요. 유료 API나 별도 서버, 라이브러리 없이 표준 파이썬만 씁니다.
-
-- **채용공고** — 사람인(Saramin)에서 MICE·컨벤션·PCO·국제회의·전시기획·행사기획 공고를 검색해
-  회사·제목·지역·고용형태·마감일·급여를 `jobs.json` 스키마 그대로 담아요.
-  웨딩홀·식음·시설관리·디자인 전용 같은 무관 공고와 마감이 지난 공고는 거르고,
-  손으로 골라 둔 기존 공고는 마감 전까지 그대로 둡니다.
-- **뉴스** — 한국MICE저널(KMJ), 호텔레스토랑, 여행신문, 비즈월드, 디스커버리뉴스의 RSS에서
-  MICE·컨벤션·전시 관련 기사만 골라 최신 15건으로 정리해요(기사 첫 문단을 요약으로 사용).
-- 수집에 실패하면 기존 파일을 지우지 않고 그대로 둡니다. 한 소스가 막혀도 나머지로 채워요.
-
-### 직접 실행해 보기
-
-```bash
-python3 scripts/update_data.py            # 실제로 jobs.json, news.json 갱신
-python3 scripts/update_data.py --dry-run  # 파일을 쓰지 않고 결과만 확인
-python3 scripts/update_data.py --jobs-only
-python3 scripts/update_data.py --news-only
-```
-
-### 수동으로 한 번 돌리기
-
-GitHub 저장소 → **Actions** 탭 → **Daily data update** → **Run workflow** (브랜치 선택 후 실행).
-바뀐 내용이 있을 때만 `jobs.json`, `news.json`을 커밋하고 푸시합니다.
-
-### 자동 실행 켜기 (한 번만)
-
-자동 실행 설정은 `scripts/daily-update.workflow.yml`에 들어 있어요.
-GitHub에서 `.github/workflows/daily-update.yml` 파일을 새로 만들고 그 내용을 그대로 붙여 넣으면
-다음 날 아침 7시부터 자동으로 돌기 시작합니다.
-(작업 도구에 workflows 권한이 없어 이 경로로는 직접 올리지 못했어요. 웹에서 파일을 추가하면 바로 동작합니다.)
+- **현재 패키지는 배포·Meta 인증·실게시 검증이 되지 않았습니다.**
+- 승인 페이지는 Cloudflare Access 인증이 반드시 필요하며, Worker 접근 허용 범위를 전체 공개로 두면 안 됩니다.
+- 초안의 이미지 및 원고는 GitHub Pages에 공개됩니다. 민감하거나 비공개 콘텐츠는 이 설계에서 사용하면 안 됩니다.
+- 공개된 승인 버튼은 없고, Cloudflare Access 본인 인증 후에만 접속합니다.
+- Meta API는 이미지가 공개 HTTPS URL로 접근 가능해야 합니다. Pages 배포 반영 시간을 확인하세요.
+- AI 문장 생성 대신 `news.json`의 원문 요약을 템플릿에 배치한 **결정론적 MVP**입니다. 원문 대조와 사실 확인은 승인자가 해야 합니다. 4장 인사이트는 기사별 자동 심층 분석이 아닌 공통 실무 질문으로 표기합니다.
+- 스케줄 작업은 07:00에 **시작**하며 08:00 이전 완료를 보장하지 않습니다.
+- 승인 요청의 진위는 서버에서 확인합니다. 게시 상태 중복 방지는 draft 상태에 의존하므로 동시 요청/중복 실행에는 추가 락이나 GitHub Environment 승인 정책이 필요합니다.
+- 실제 무인 운영 전 Meta 버전, 처리 대기 상태, 실패 재시도 및 토큰 만료 로직을 테스트하세요.
