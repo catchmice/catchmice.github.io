@@ -1212,6 +1212,30 @@
       "pay": "",
       "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55622534",
       "site": "사람인"
+    },
+    {
+      "company": "메쎄유람",
+      "title": "[MICE] 박람회 기획·운영·판매관리 채용 (신입/경력)",
+      "region": "대전",
+      "place": "대전 동구 (전국 순회)",
+      "career": "경력무관 · 정규직",
+      "newbie": true,
+      "deadline": "상시",
+      "pay": "면접 후 결정",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55637405",
+      "site": "사람인"
+    },
+    {
+      "company": "커리어커넥트",
+      "title": "[서울] 우량 상용여행서비스기업 MICE 경력직 모집",
+      "region": "서울",
+      "place": "서울 중구",
+      "career": "경력 3~10년 · 정규직",
+      "newbie": false,
+      "deadline": "상시",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55638710",
+      "site": "사람인"
     }
   ]
 }
