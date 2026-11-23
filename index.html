@@ -142,7 +142,12 @@ header.top{
 header.top .in{max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .logo{display:inline-flex;align-items:baseline;background:none;border:0;padding:0;color:var(--ink);font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:-0.045em;line-height:1}
 .logo b{color:var(--accent);font-weight:800}
-.top-actions{display:flex;gap:6px}
+.top-actions{display:flex;align-items:center;gap:6px}
+.cm-lang{display:inline-flex;justify-self:start;align-self:flex-start;gap:2px;border:1px solid var(--line);border-radius:var(--r-sm);padding:2px;background:var(--card)}
+.cm-lang button{min-height:28px;border:0;border-radius:calc(var(--r-sm) - 2px);padding:0 8px;background:transparent;color:var(--muted);font-size:12px;font-weight:700;white-space:nowrap}
+.cm-lang button[aria-pressed="true"]{background:var(--soft);color:var(--accent)}
+.cm-lang button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+@media(max-width:380px){.top-actions{gap:4px}.top-actions .icon-btn,.cm-lang button{padding-inline:5px}}
 .icon-btn{height:34px;border:1px solid var(--line);background:var(--card);border-radius:var(--r-sm);padding:0 11px;font-size:12.5px;font-weight:600;color:var(--muted);white-space:nowrap}
 .icon-btn:hover{background:var(--soft-2);color:var(--ink)}
 main{padding-block:16px 8px;padding-left:var(--gut-l);padding-right:var(--gut-r)}
@@ -634,6 +639,8 @@ nav.tabbar a[aria-current="page"]{color:var(--accent);font-weight:700}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 
+<script src="i18n-data.js"></script>
+<script src="i18n.js"></script>
 </head>
 <body>
 <div class="shell">
@@ -642,6 +649,10 @@ nav.tabbar a[aria-current="page"]{color:var(--accent);font-weight:700}
       <button class="logo" data-go="home" aria-label="홈으로"><span>Catch<b>MICE</b></span></button>
       <p class="tag">MICE 산업·커리어 포털</p>
     </div>
+    <div class="cm-lang" role="group" aria-label="사이트 언어" data-no-translate>
+          <button type="button" data-language="ko" lang="ko" aria-pressed="true">한국어</button>
+          <button type="button" data-language="en" lang="en" aria-label="English" aria-pressed="false">ENG</button>
+        </div>
     <nav id="sidenav" aria-label="주요 메뉴"></nav>
     <div class="bottom">
       <button data-act="theme">화면 테마: <span class="themeLabel">시스템</span></button>
@@ -657,6 +668,10 @@ nav.tabbar a[aria-current="page"]{color:var(--accent);font-weight:700}
       <div class="in">
         <button class="logo" data-go="home" aria-label="홈으로"><span>Catch<b>MICE</b></span></button>
         <div class="top-actions">
+          <div class="cm-lang" role="group" aria-label="사이트 언어" data-no-translate>
+            <button type="button" data-language="ko" lang="ko" aria-pressed="true">한국어</button>
+            <button type="button" data-language="en" lang="en" aria-label="English" aria-pressed="false">ENG</button>
+          </div>
           <button class="icon-btn" data-act="theme" aria-label="화면 테마 바꾸기"><span aria-hidden="true">◐ </span><span class="themeLabel">테마</span></button>
           <button class="icon-btn" data-act="share" aria-label="이 페이지 링크 복사">링크 복사</button>
         </div>
@@ -933,6 +948,7 @@ nav.tabbar a[aria-current="page"]{color:var(--accent);font-weight:700}
         <p><b style="color:var(--ink)">CatchMICE</b> · 뉴스·채용·논문은 매일 아침 업데이트돼요 <span id="footUpd"></span></p>
         <p>기사·공고·논문의 저작권은 각 원문 출처에 있어요. 요약은 CatchMICE가 직접 썼고, 행사 일정과 채용 조건은 바뀔 수 있으니 원문에서 꼭 다시 확인하세요.</p>
         <p>문의 <span style="user-select:all;color:var(--ink)">ihm12526@naver.com</span></p>
+        <p id="cm-language-note" class="sub" hidden>Some names, source pages and newer listings are available in Korean.</p>
         <p id="statNote" hidden>방문 통계를 위해 Google Analytics를 사용해요. 이름이나 연락처 같은 개인정보는 모으지 않아요.</p>
         <div class="links"><a href="https://www.threads.com/@catchmice_" target="_blank" rel="noopener" data-social="threads-footer" style="border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:600;color:var(--muted);text-decoration:none">Threads @catchmice_</a><button data-act="about">기자단 소개</button><button data-act="contact">광고·제휴 문의</button><button data-act="share">링크 복사</button></div>
       </div>
@@ -1101,11 +1117,17 @@ const QUIZ = [
 /* ---------- helpers ---------- */
 const $=s=>document.querySelector(s);
 const DOW=["일","월","화","수","목","금","토"];
+const EnglishDOW=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const parseD=s=>{const [y,m,d]=String(s).split("-").map(Number);return new Date(y,(m||1)-1,d||1)};
-const fmt=dt=>`${dt.getMonth()+1}.${dt.getDate()}(${DOW[dt.getDay()]})`;
+const language=window.CatchMICELanguage;
+const localize=value=>language?language.localize(value):value;
+const displayField=(dataset,item,key)=>language?language.field(dataset,item,key):item[key];
+const contentLang=value=>language?.english&&/[가-힣]/.test(value||"")?' lang="ko"':"";
+const displayDate=dt=>language?.english?language.formatDate(dt):null;
+const fmt=dt=>displayDate(dt)||`${dt.getMonth()+1}.${dt.getDate()}(${DOW[dt.getDay()]})`;
 const dayDiff=dt=>Math.round((dt-TODAY)/86400000);
 const sameDay=(a,b)=>a.getTime()===b.getTime();
-const updLabel=u=>u?`${+u.slice(5,7)}월 ${+u.slice(8,10)}일 업데이트`:"";
+const updLabel=u=>u?(language?.english?("Updated "+fmt(parseD(u))):`${+u.slice(5,7)}월 ${+u.slice(8,10)}일 업데이트`):"";
 function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("on");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("on"),1800)}
 function chips(el,list,cur,key){el.innerHTML=list.map(v=>`<button class="f" data-${key}="${esc(v)}" aria-pressed="${v===cur}">${esc(v)}</button>`).join("")}
 function copyText(txt,okMsg){
@@ -1114,6 +1136,7 @@ function copyText(txt,okMsg){
 function copySheet(txt){openSheet(`<h2 id="sheetTitle">직접 복사해 주세요</h2><p class="sub">이 화면에선 자동 복사가 막혀 있어요. 아래 글을 길게 눌러 복사하세요.</p><div class="copybox"><code>${esc(txt)}</code></div>`)}
 const skel=n=>Array(n).fill('<div class="skel"></div>').join("");
 const match=(q,...f)=>!q||f.join(" ").toLowerCase().includes(q);
+const matchItem=(q,dataset,item,...keys)=>!q||match(q,...(language?language.searchFields(dataset,item,keys):keys.map(key=>item[key])));
 
 /* ---------- Data loading ---------- */
 const DATA={events:{items:[],updated:"",state:"loading"},news:{items:[],updated:"",state:"loading"},jobs:{items:[],updated:"",state:"loading"},papers:{items:[],updated:"",state:"loading"}};
@@ -1168,10 +1191,10 @@ function evCard(e){
   const range=sameDay(e.s,e.e)?fmt(e.s):`${fmt(e.s)} – ${fmt(e.e)}`;
   const dl=e.dl&&dayDiff(e.dl)>=0?`<span>사전등록 마감 ${fmt(e.dl)} (D-${dayDiff(e.dl)})</span>`:(e.dl?`<span>사전등록 마감됨</span>`:"");
   return `<article class="card ev">
-    <div class="ev-top">${newBadge(e.key)}<span class="chip">${esc(e.type)}</span><span class="chip region">${esc(e.region)}</span>${evStatus(e)}</div>
-    <h3>${esc(e.title)}</h3>
-    <div class="meta"><span>${range}</span><span>${esc(e.venue)}</span>${dl}</div>
-    <div class="actions"><button class="btn ghost" data-detail="${esc(e.key)}">자세히</button>${saveBtn(e.key,e.title)}</div></article>`;
+    <div class="ev-top">${newBadge(e.key)}<span class="chip">${esc(displayField("events",e,"type"))}</span><span class="chip region">${esc(displayField("events",e,"region"))}</span>${evStatus(e)}</div>
+    <h3${contentLang(displayField("events",e,"title"))}>${esc(displayField("events",e,"title"))}</h3>
+    <div class="meta"><span>${range}</span><span>${esc(displayField("events",e,"venue"))}</span>${dl}</div>
+    <div class="actions"><button class="btn ghost" data-detail="${esc(e.key)}">자세히</button>${saveBtn(e.key,displayField("events",e,"title"))}</div></article>`;
 }
 
 /* ---------- HOME ---------- */
@@ -1179,16 +1202,16 @@ let allQ="";
 function renderAll(){
   const box=$("#allRes"), q=allQ.trim().toLowerCase();
   if(!q){box.hidden=true; box.innerHTML=""; return}
-  const ev=EVENTS.filter(e=>dayDiff(e.e)>=0&&match(q,e.title,e.venue,e.region,e.type,e.desc)).slice(0,4);
-  const nw=DATA.news.items.filter(n=>match(q,n.title,n.sum,n.source,n.cat)).slice(0,4);
-  const jb=openJobs().filter(j=>match(q,j.company,j.title,j.place,j.career)).slice(0,4);
-  const pp=DATA.papers.items.filter(p=>match(q,p.title,p.authors,p.journal,p.sum)).slice(0,4);
+  const ev=EVENTS.filter(e=>dayDiff(e.e)>=0&&matchItem(q,"events",e,"title","venue","region","type","desc")).slice(0,4);
+  const nw=DATA.news.items.filter(n=>matchItem(q,"news",n,"title","sum","source","cat")).slice(0,4);
+  const jb=openJobs().filter(j=>matchItem(q,"jobs",j,"company","title","place","career")).slice(0,4);
+  const pp=DATA.papers.items.filter(p=>matchItem(q,"papers",p,"title","authors","journal","sum")).slice(0,4);
   const grp=(t,html,go)=>html?`<div class="res-group"><div class="sec-head"><h3>${t}</h3>${go?`<button class="link" data-go="${go}">더 보기</button>`:''}</div>${html}</div>`:'';
   const out=
-    grp("행사",ev.map(e=>`<button class="res" data-detail="${esc(e.key)}"><b>${esc(e.title)}</b><span>${fmt(e.s)} · ${esc(e.venue)}</span></button>`).join(""),"calendar")+
-    grp("뉴스",nw.map(n=>`<a class="res" href="${safeUrl(n.url)}" target="_blank" rel="noopener"><b>${esc(n.title)}</b><span>${esc(n.date)} · ${esc(n.source)} ↗</span></a>`).join(""),"news")+
-    grp("채용",jb.map(j=>`<a class="res" href="${safeUrl(j.url)}" target="_blank" rel="noopener"><b>${esc(j.company)} · ${esc(j.title)}</b><span>${esc(j.place)} · ${esc(j.career)} ↗</span></a>`).join(""),"jobs")+
-    grp("논문",pp.map(p=>`<a class="res" href="${safeUrl(p.url)}" target="_blank" rel="noopener"><b>${esc(p.title)}</b><span>${esc(p.journal)} ↗</span></a>`).join(""),"papers");
+    grp("행사",ev.map(e=>`<button class="res" data-detail="${esc(e.key)}"><b>${esc(displayField("events",e,"title"))}</b><span>${fmt(e.s)} · ${esc(displayField("events",e,"venue"))}</span></button>`).join(""),"calendar")+
+    grp("뉴스",nw.map(n=>`<a class="res" href="${safeUrl(n.url)}" target="_blank" rel="noopener"><b>${esc(displayField("news",n,"title"))}</b><span>${esc(n.date)} · ${esc(displayField("news",n,"source"))} ↗</span></a>`).join(""),"news")+
+    grp("채용",jb.map(j=>`<a class="res" href="${safeUrl(j.url)}" target="_blank" rel="noopener"><b>${esc(displayField("jobs",j,"company"))} · ${esc(displayField("jobs",j,"title"))}</b><span>${esc(displayField("jobs",j,"place"))} · ${esc(displayField("jobs",j,"career"))} ↗</span></a>`).join(""),"jobs")+
+    grp("논문",pp.map(p=>`<a class="res" href="${safeUrl(p.url)}" target="_blank" rel="noopener"><b>${esc(displayField("papers",p,"title"))}</b><span>${esc(displayField("papers",p,"journal"))} ↗</span></a>`).join(""),"papers");
   box.hidden=false;
   box.innerHTML=out||`<div class="card empty">'${esc(allQ)}'에 맞는 결과가 없어요. 다른 단어로 찾아보세요.</div>`;
 }
@@ -1209,7 +1232,7 @@ function renderHome(){
   $("#homeJobs").innerHTML=DATA.jobs.state!=="ok"?stateMsg("jobs","채용공고"):(js.length?js.map(jobCard).join(""):'<div class="card empty">마감이 가까운 공고가 없어요.</div>');
   renderMyTracker();
   const live=EVENTS.filter(e=>dayDiff(e.s)<=0&&dayDiff(e.e)>=0).length;
-  if(DATA.events.state==="ok") $("#greet").innerHTML=`${live?`오늘 열리고 있는 행사가 ${live}개 있어요!`:"이번 주 놓치기 아까운 행사를 알려드릴게요!"}<small>Micy · MICE 종합 · ${TODAY.getMonth()+1}월 ${TODAY.getDate()}일 ${DOW[TODAY.getDay()]}요일</small>`;
+  if(DATA.events.state==="ok") $("#greet").innerHTML=`${live?`오늘 열리고 있는 행사가 ${live}개 있어요!`:"이번 주 놓치기 아까운 행사를 알려드릴게요!"}<small>Micy · MICE 종합 · ${language?.english?fmt(TODAY):`${TODAY.getMonth()+1}월 ${TODAY.getDate()}일 ${DOW[TODAY.getDay()]}요일`}</small>`;
   const statsBox=$("#portalStats");
   if(statsBox){
     const openCnt=DATA.jobs.state==="ok"?openJobs().length:null;
@@ -1237,7 +1260,7 @@ function renderMyTracker(){
   }else{
     box.innerHTML=`<div class="card tracked">
       <div class="tracked-top"><span class="chip new">지원함 ${rows.length}개</span>${soon!==undefined?`<span class="dday">D-${soon} 마감</span>`:'<span class="chip region">마감 지난 지원 없음</span>'}</div>
-      ${live.slice(0,3).map(x=>`<button class="bres" data-bjob="${esc(x.k)}"><span class="bt">${esc(x.j.company)} · ${esc(x.j.title)}</span><span class="bm">${esc(x.j.career||"")}${x.m&&x.m.memo?" · 메모: "+esc(x.m.memo):""}${bDL(x.j)!==null?" · "+ddayText(bDL(x.j)):""}</span></button>`).join("")}
+      ${live.slice(0,3).map(x=>`<button class="bres" data-bjob="${esc(x.k)}"><span class="bt">${esc(x.j.company)} · ${esc(displayField("jobs",x.j,"title"))}</span><span class="bm">${esc(displayField("jobs",x.j,"career"))}${x.m&&x.m.memo?" · 메모: "+esc(x.m.memo):""}${bDL(x.j)!==null?" · "+ddayText(bDL(x.j)):""}</span></button>`).join("")}
       <div class="actions"><button class="btn ghost xs" data-jobsview="지원함">지원한 공고 전체 보기</button><button class="btn ghost xs" data-jobsview="마감 임박">마감 임박 공고</button></div>
     </div>`;
   }
@@ -1267,13 +1290,13 @@ function renderMonth(){
   $("#monthLabel").textContent=`${y}년 ${m+1}월`;
   const start=new Date(y,m,1-new Date(y,m,1).getDay());
   const list=filteredEvents(true);
-  let html=DOW.map(d=>`<span class="dow">${d}</span>`).join("");
+  let html=(language?.english?EnglishDOW:DOW).map(d=>`<span class="dow">${d}</span>`).join("");
   for(let i=0;i<42;i++){
     const x=new Date(start); x.setDate(start.getDate()+i);
     if(i===35&&x.getMonth()!==m) break;
     const evs=list.filter(e=>onDay(e,x));
     const on=selDay&&sameDay(x,selDay);
-    html+=`<button class="cell ${x.getMonth()!==m?'out':''} ${sameDay(x,TODAY)?'today':''}" data-day="${x.getTime()}" aria-pressed="${!!on}" aria-label="${x.getMonth()+1}월 ${x.getDate()}일 ${evs.length?'행사 '+evs.length+'개':'행사 없음'}"><b>${x.getDate()}</b>${evs.length?`<span class="dots">${evs.slice(0,3).map(()=>'<i></i>').join("")}</span>${evs.slice(0,2).map(e=>`<span class="mini">${esc(e.title)}</span>`).join("")}${evs.length>2?`<span class="mini more">+${evs.length-2}개</span>`:''}`:''}</button>`;
+    html+=`<button class="cell ${x.getMonth()!==m?'out':''} ${sameDay(x,TODAY)?'today':''}" data-day="${x.getTime()}" aria-pressed="${!!on}" aria-label="${x.getMonth()+1}월 ${x.getDate()}일 ${evs.length?'행사 '+evs.length+'개':'행사 없음'}"><b>${x.getDate()}</b>${evs.length?`<span class="dots">${evs.slice(0,3).map(()=>'<i></i>').join("")}</span>${evs.slice(0,2).map(e=>`<span class="mini">${esc(displayField("events",e,"title"))}</span>`).join("")}${evs.length>2?`<span class="mini more">+${evs.length-2}개</span>`:''}`:''}</button>`;
   }
   $("#mgrid").innerHTML=html;
 }
@@ -1320,7 +1343,7 @@ let newsCat="전체", newsQ="";
 const CAT_COLOR={"지역 MICE":"#2fae94","국내 MICE":"#1B56E8","국제회의 유치":"#c98700","신규 컨벤션센터":"#8a5ad8","전시·행사 일정":"#d14a6f","AI×MICE":"#0f7c8c"};
 function newsItem(n,compact){
   const col=CAT_COLOR[n.cat]||"#1B56E8";
-  return `<a class="card news" href="${safeUrl(n.url)}" target="_blank" rel="noopener"><div class="ntop"><span class="chip cat" style="--cat:${col}">${esc(n.cat)}</span>${newBadge("n|"+n.url)}<span class="sub count">${esc(n.date.slice(5).replace("-","."))} · ${esc(n.source)}</span></div><h3>${esc(n.title)}</h3>${compact?'':`<p>${esc(n.sum)}</p>`}<span class="go">기사 원문 보기 ↗</span></a>`;
+  return `<a class="card news" href="${safeUrl(n.url)}" target="_blank" rel="noopener"><div class="ntop"><span class="chip cat" style="--cat:${col}">${esc(displayField("news",n,"cat"))}</span>${newBadge("n|"+n.url)}<span class="sub count">${esc(n.date.slice(5).replace("-","."))} · ${esc(displayField("news",n,"source"))}</span></div><h3${contentLang(displayField("news",n,"title"))}>${esc(displayField("news",n,"title"))}</h3>${compact?'':`<p${contentLang(displayField("news",n,"sum"))}>${esc(displayField("news",n,"sum"))}</p>`}<span class="go">기사 원문 보기 ↗</span></a>`;
 }
 function renderNews(){
   $("#deskNews").innerHTML=desk(C.micy,"매일 아침 새 MICE 기사를 골라 둘게요. 누르면 원문으로 바로 가요!");
@@ -1329,7 +1352,7 @@ function renderNews(){
   const N=[...DATA.news.items].sort((a,b)=>b.date.localeCompare(a.date));
   chips($("#newsF"),["전체",...new Set(N.map(n=>n.cat))],newsCat,"ncat");
   const q=newsQ.trim().toLowerCase();
-  const list=N.filter(n=>(newsCat==="전체"||n.cat===newsCat)&&match(q,n.title,n.sum,n.source,n.cat));
+  const list=N.filter(n=>(newsCat==="전체"||n.cat===newsCat)&&matchItem(q,"news",n,"title","sum","source","cat"));
   $("#newsList").innerHTML=list.length?list.map(n=>newsItem(n)).join(""):'<div class="card empty">찾는 기사가 없어요. 다른 검색어를 넣어 보세요.</div>';
 }
 
@@ -1370,11 +1393,11 @@ function jobCard(j){
   const ap=applied[k];
   const cal=jobCalUrl(j);
   return `<article class="card job${ap?" applied":""}">
-    <div class="ev-top">${newBadge(k)}<span class="chip region">${esc(j.place)}</span>${j.newbie?'<span class="chip new">신입 가능</span>':''}${jobDday(j)}</div>
-    <span class="co">${esc(j.company)}</span><h3>${esc(j.title)}</h3>
-    <div class="meta"><span>${esc(j.career)}${j.pay?' · '+esc(j.pay):''}${dl}</span></div>
+    <div class="ev-top">${newBadge(k)}<span class="chip region">${esc(displayField("jobs",j,"place"))}</span>${j.newbie?'<span class="chip new">신입 가능</span>':''}${jobDday(j)}</div>
+    <span class="co"${contentLang(displayField("jobs",j,"company"))}>${esc(displayField("jobs",j,"company"))}</span><h3${contentLang(displayField("jobs",j,"title"))}>${esc(displayField("jobs",j,"title"))}</h3>
+    <div class="meta"><span>${esc(displayField("jobs",j,"career"))}${j.pay?' · '+esc(displayField("jobs",j,"pay")):''}${dl}</span></div>
     ${ap?`<div class="appliedline"><b>지원함${ap.at?" · "+esc(ap.at):""}</b>${ap.memo?`<span>${esc(ap.memo)}</span>`:""}</div>`:""}
-    <div class="actions"><a class="btn" href="${safeUrl(j.url)}" target="_blank" rel="noopener">${isListUrl(j.url)?esc(j.site)+"에서 찾아보기":esc(j.site)+"에서 공고 보기"} ↗</a><button class="btn ghost${ap?" saved":""}" data-apply="${esc(k)}" aria-pressed="${!!ap}">${ap?"지원함 ✓":"지원함"}</button>${cal?`<a class="btn ghost" href="${cal}" target="_blank" rel="noopener" aria-label="마감일을 구글 캘린더에 추가">캘린더</a>`:""}${saveBtn(k,j.title)}</div></article>`;
+    <div class="actions"><a class="btn" href="${safeUrl(j.url)}" target="_blank" rel="noopener">${isListUrl(j.url)?esc(displayField("jobs",j,"site"))+"에서 찾아보기":esc(displayField("jobs",j,"site"))+"에서 공고 보기"} ↗</a><button class="btn ghost${ap?" saved":""}" data-apply="${esc(k)}" aria-pressed="${!!ap}">${ap?"지원함 ✓":"지원함"}</button>${cal?`<a class="btn ghost" href="${cal}" target="_blank" rel="noopener" aria-label="마감일을 구글 캘린더에 추가">캘린더</a>`:""}${saveBtn(k,displayField("jobs",j,"title"))}</div></article>`;
 }
 function renderJobs(){
   $("#deskJobs").innerHTML=desk(C.exy,"MICE 업계 새 채용공고, 제가 매일 아침 모아 올게요!");
@@ -1392,7 +1415,7 @@ function renderJobs(){
     if(jobCareer==="저장한 공고"&&!saved.has(jobKey(j))) return false;
     if(jobCareer==="마감 임박"){const d=bDL(j); if(d===null||d<0||d>7) return false}
     if(jobRegion!=="전체"&&j.region!==jobRegion) return false;
-    return match(q,j.company,j.title,j.place,j.career);
+    return matchItem(q,"jobs",j,"company","title","place","career");
   });
   if(jobCareer==="마감 임박") list=[...list].sort((a,b)=>bDL(a)-bDL(b));
   $("#jobCount").textContent=`모집 중인 공고 ${list.length}개`;
@@ -1406,7 +1429,7 @@ function renderAI(){
   const idx=Math.floor(TODAY.getTime()/86400000)%TERMS.length, w=TERMS[idx];
   $("#todayWord").innerHTML=`<span class="eyebrow">오늘의 AI 용어 · ${TODAY.getMonth()+1}월 ${TODAY.getDate()}일</span><h3>${w[0]}</h3><span class="en">${w[1]}</span><p style="margin:0">${w[2]}</p><div class="ex"><b>MICE에선 이렇게</b><br>${w[3]}</div>`;
   chips($("#promptF"),["전체",...new Set(PROMPTS.map(p=>p.cat))],promptCat,"pcat");
-  $("#prompts").innerHTML=PROMPTS.map((p,i)=>[p,i]).filter(([p])=>promptCat==="전체"||p.cat===promptCat).map(([p,i])=>`<article class="card prompt"><div class="ev-top"><span class="chip">${p.cat}</span></div><h3 style="margin-top:6px">${p.t}</h3><pre>${esc(p.p)}</pre><button class="btn" data-copyp="${i}">프롬프트 복사</button></article>`).join("");
+  $("#prompts").innerHTML=PROMPTS.map((p,i)=>[p,i]).filter(([p])=>promptCat==="전체"||p.cat===promptCat).map(([p,i])=>`<article class="card prompt"><div class="ev-top"><span class="chip">${p.cat}</span></div><h3 style="margin-top:6px">${p.t}</h3><pre>${esc(localize(p.p))}</pre><button class="btn" data-copyp="${i}">프롬프트 복사</button></article>`).join("");
   renderQuiz(); renderDict();
 }
 function renderQuiz(){
@@ -1441,11 +1464,11 @@ function renderPapers(){
   const P=DATA.papers.items;
   chips($("#paperF"),["전체",...new Set(P.map(p=>p.topic))],paperTopic,"ptopic");
   const q=paperQ.trim().toLowerCase();
-  const list=P.filter(p=>(paperTopic==="전체"||p.topic===paperTopic)&&match(q,p.title,p.authors,p.journal,p.sum));
+  const list=P.filter(p=>(paperTopic==="전체"||p.topic===paperTopic)&&matchItem(q,"papers",p,"title","authors","journal","sum"));
   $("#paperList").innerHTML=list.length?list.map(p=>`<article class="card paper">
-    <div class="ev-top"><span class="chip cat" style="--cat:${TOPIC_COL[p.topic]||'#1B56E8'}">${esc(p.topic)}</span><span class="sub" style="margin:0">${esc(p.journal)}${p.date?' · '+esc(p.date.replace('-','.')):''}</span></div>
-    <h3>${esc(p.title)}</h3>${p.authors?`<span class="by">${esc(p.authors)}</span>`:''}<p>${esc(p.sum)}</p>
-    <div class="actions"><a class="btn" href="${safeUrl(p.url)}" target="_blank" rel="noopener">${esc(p.site)}에서 보기 ↗</a></div></article>`).join(""):`<div class="card empty">찾는 논문이 없어요. 다른 검색어나 주제를 골라 보세요.</div>`;
+    <div class="ev-top"><span class="chip cat" style="--cat:${TOPIC_COL[p.topic]||'#1B56E8'}">${esc(displayField("papers",p,"topic"))}</span><span class="sub" style="margin:0">${esc(displayField("papers",p,"journal"))}${p.date?' · '+esc(p.date.replace('-','.')):''}</span></div>
+    <h3${contentLang(displayField("papers",p,"title"))}>${esc(displayField("papers",p,"title"))}</h3>${p.authors?`<span class="by">${esc(displayField("papers",p,"authors"))}</span>`:''}<p${contentLang(displayField("papers",p,"sum"))}>${esc(displayField("papers",p,"sum"))}</p>
+    <div class="actions"><a class="btn" href="${safeUrl(p.url)}" target="_blank" rel="noopener">${esc(displayField("papers",p,"site"))}에서 보기 ↗</a></div></article>`).join(""):`<div class="card empty">찾는 논문이 없어요. 다른 검색어나 주제를 골라 보세요.</div>`;
 }
 
 /* ---------- CREW ---------- */
@@ -1589,21 +1612,21 @@ function renderPrefs(){
 /* ---------- 결과 카드 ---------- */
 function jobRes(j){
   const d=bDL(j);
-  const meta=[j.place,j.career,j.newbie?"신입 가능":"",d!==null?ddayText(d):(j.deadline==="상시"?"상시채용":String(j.deadline||""))].filter(Boolean).map(esc).join(" · ");
-  return `<div class="bres"><span class="bt">${esc(j.company)} · ${esc(j.title)}</span><span class="bm">${meta}</span><div class="ba"><button class="btn ghost xs" data-bjob="${esc(jobKey(j))}">채용 탭에서 보기</button><a class="btn xs" href="${safeUrl(j.url)}" target="_blank" rel="noopener">원문 ↗</a></div></div>`;
+  const meta=[displayField("jobs",j,"place"),displayField("jobs",j,"career"),j.newbie?"신입 가능":"",d!==null?ddayText(d):(j.deadline==="상시"?"상시채용":String(j.deadline||""))].filter(Boolean).map(esc).join(" · ");
+  return `<div class="bres"><span class="bt">${esc(displayField("jobs",j,"company"))} · ${esc(displayField("jobs",j,"title"))}</span><span class="bm">${meta}</span><div class="ba"><button class="btn ghost xs" data-bjob="${esc(jobKey(j))}">채용 탭에서 보기</button><a class="btn xs" href="${safeUrl(j.url)}" target="_blank" rel="noopener">원문 ↗</a></div></div>`;
 }
 function evRes(e){
   const d=dayDiff(e.s);
   const st=d<=0&&dayDiff(e.e)>=0?"진행 중":d===1?"내일":d>0?"D-"+d:"종료";
-  return `<div class="bres"><span class="bt">${esc(e.title)}</span><span class="bm">${fmt(e.s)}${sameDay(e.s,e.e)?"":" – "+fmt(e.e)} · ${esc(e.venue)} · ${st}</span><div class="ba"><button class="btn ghost xs" data-detail="${esc(e.key)}">자세히 보기</button></div></div>`;
+  return `<div class="bres"><span class="bt">${esc(displayField("events",e,"title"))}</span><span class="bm">${fmt(e.s)}${sameDay(e.s,e.e)?"":" – "+fmt(e.e)} · ${esc(displayField("events",e,"venue"))} · ${st}</span><div class="ba"><button class="btn ghost xs" data-detail="${esc(e.key)}">자세히 보기</button></div></div>`;
 }
 function newsRes(n){
-  const sum=String(n.sum||"");
+  const sum=String(displayField("news",n,"sum")||"");
   const s=sum.length>110?sum.slice(0,110)+"…":sum;
-  return `<div class="bres"><span class="bt">${esc(n.title)}</span><span class="bm">${esc(n.date)} · ${esc(n.source)} · ${esc(n.cat)}</span><span class="bm">${esc(s)}</span><div class="ba"><button class="btn ghost xs" data-bnews="${esc(n.url)}">뉴스 탭에서 보기</button><a class="btn xs" href="${safeUrl(n.url)}" target="_blank" rel="noopener">원문 ↗</a></div></div>`;
+  return `<div class="bres"><span class="bt">${esc(displayField("news",n,"title"))}</span><span class="bm">${esc(n.date)} · ${esc(displayField("news",n,"source"))} · ${esc(displayField("news",n,"cat"))}</span><span class="bm">${esc(s)}</span><div class="ba"><button class="btn ghost xs" data-bnews="${esc(n.url)}">뉴스 탭에서 보기</button><a class="btn xs" href="${safeUrl(n.url)}" target="_blank" rel="noopener">원문 ↗</a></div></div>`;
 }
 function paperRes(p){
-  return `<div class="bres"><span class="bt">${esc(p.title)}</span><span class="bm">${esc(p.topic)} · ${esc(p.journal)}${p.date?" · "+esc(p.date):""}${p.authors?" · "+esc(p.authors):""}</span><div class="ba"><button class="btn ghost xs" data-bpaper="${esc(p.url)}">논문 탭에서 보기</button><a class="btn xs" href="${safeUrl(p.url)}" target="_blank" rel="noopener">원문 ↗</a></div></div>`;
+  return `<div class="bres"><span class="bt">${esc(displayField("papers",p,"title"))}</span><span class="bm">${esc(displayField("papers",p,"topic"))} · ${esc(displayField("papers",p,"journal"))}${p.date?" · "+esc(p.date):""}${p.authors?" · "+esc(displayField("papers",p,"authors")):""}</span><div class="ba"><button class="btn ghost xs" data-bpaper="${esc(p.url)}">논문 탭에서 보기</button><a class="btn xs" href="${safeUrl(p.url)}" target="_blank" rel="noopener">원문 ↗</a></div></div>`;
 }
 
 /* ---------- 일일 브리핑 (캐릭터별) ---------- */
@@ -1643,8 +1666,8 @@ function briefVeny(){
   const dl=EV.filter(e=>e.dl&&dayDiff(e.dl)>=0);
   const reg=topPairs(tally(EV,e=>e.region),2).map(x=>`${esc(x[0])} ${x[1]}개`).join(" · ");
   const lines=[
-    `가장 가까운 행사는 <b>${esc(nxt.title)}</b> · ${d<=0?"오늘 진행 중":d===1?"내일 개막":"D-"+d}`,
-    `${fmt(nxt.s)}${sameDay(nxt.s,nxt.e)?"":" – "+fmt(nxt.e)} · ${esc(nxt.venue)}`,
+    `가장 가까운 행사는 <b>${esc(displayField("events",nxt,"title"))}</b> · ${d<=0?"오늘 진행 중":d===1?"내일 개막":"D-"+d}`,
+    `${fmt(nxt.s)}${sameDay(nxt.s,nxt.e)?"":" – "+fmt(nxt.e)} · ${esc(displayField("events",nxt,"venue"))}`,
     week.length?`7일 안에 <b>${week.length}개</b> 행사가 열려요.`:"7일 안에 열리는 행사는 없어요.",
     dl.length?`사전등록이 아직 열린 행사 <b>${dl.length}개</b>`:"",
     reg?`지역은 ${reg} 순이에요.`:""
@@ -1657,9 +1680,9 @@ function briefExy(){
   if(!N.length) return briefHtml(C.exy,"오늘의 뉴스 브리핑",["아직 기사 데이터가 비어 있어요."],"","news","한입뉴스 열기");
   const cats=topPairs(tally(N,n=>n.cat),3).map(x=>`${esc(x[0])} ${x[1]}`).join(" · ");
   const lines=[
-    `최신 기사 <b>${N.length}건</b> · 가장 최근 ${esc(N[0].date)} (${esc(N[0].source)})`,
+    `최신 기사 <b>${N.length}건</b> · 가장 최근 ${esc(N[0].date)} (${esc(displayField("news",N[0],"source"))})`,
     cats?`분류는 ${cats} 순이에요.`:"",
-    `헤드라인: ${N.slice(0,2).map(n=>esc(n.title)).join(" / ")}`
+    `헤드라인: ${N.slice(0,2).map(n=>esc(displayField("news",n,"title"))).join(" / ")}`
   ];
   return briefHtml(C.exy,"오늘의 뉴스 브리핑",lines,N.slice(0,2).map(newsRes).join(""),"news","한입뉴스 전체 보기");
 }
@@ -1810,6 +1833,15 @@ function answerAny(kw,tokens,raw){
   return ansPanel(`"${esc(String(raw).slice(0,30))}" 관련 항목 ${total}개를 찾았어요`,"",j.map(jobRes).join("")+e.map(evRes).join("")+n.map(newsRes).join("")+p.map(paperRes).join(""));
 }
 function localAnswer(q){
+  if(language?.english && !/[가-힣]/.test(q)){
+    const englishQuestion=String(q||"").trim().toLowerCase();
+    const quick=Object.values(BCHIPS).flat().find(prompt=>localize(prompt).toLowerCase()===englishQuestion);
+    if(quick) q=quick;
+    else if(/\bentry[- ]level\b/.test(englishQuestion)) q="신입 가능 공고";
+    else if(/\b(events?|exhibitions?) this week\b/.test(englishQuestion) || /\bthis week('s)? (events?|exhibitions?)\b/.test(englishQuestion)) q="이번 주 행사";
+    else if(/\b(news|headlines)\b/.test(englishQuestion)) q="최신 뉴스 요약";
+    else if(englishQuestion) return emptyAns("Search CatchMICE for “"+esc(q)+"”","Search events, news, jobs and research in English or Korean.",q);
+  }
   const raw=String(q||"").trim();
   const kw=norm(raw);
   if(!kw) return ansPanel("무엇이 궁금한가요?","아래 빠른 질문을 누르거나 한 문장으로 물어봐 주세요.");
@@ -1856,7 +1888,7 @@ async function askBrief(q){
   const text=String(q||"").trim();
   const box=$("#briefAns");
   if(!text||!box) return;
-  const inp=$("#briefQ"); if(inp) inp.value=text;
+  const inp=$("#briefQ"); if(inp) inp.value=localize(text);
   box.hidden=false;
   const c=BWHO[briefWho]||C.micy;
   box.innerHTML=`<div class="bans"><div class="who">${av(c,28)}<b>${c.name}</b><span>· ${c.role}</span></div><span class="bm">찾아보는 중…</span></div>`;
@@ -1878,13 +1910,13 @@ function jumpJob(key){
 }
 function jumpNews(url){
   const n=DATA.news.items.filter(x=>x.url===url)[0];
-  newsCat="전체"; newsQ=n?String(n.title):"";
+  newsCat="전체"; newsQ=n?String(displayField("news",n,"title")):"";
   go("news");
   setTimeout(()=>{const el=$("#newsList"); if(el&&el.scrollIntoView) el.scrollIntoView({block:"start"})},90);
 }
 function jumpPaper(url){
   const p=DATA.papers.items.filter(x=>x.url===url)[0];
-  paperTopic="전체"; paperQ=p?String(p.title):"";
+  paperTopic="전체"; paperQ=p?String(displayField("papers",p,"title")):"";
   go("papers");
   setTimeout(()=>{const el=$("#paperList"); if(el&&el.scrollIntoView) el.scrollIntoView({block:"start"})},90);
 }
@@ -1906,9 +1938,9 @@ function applySheet(key){
   const j=DATA.jobs.items.filter(x=>jobKey(x)===key)[0]; if(!j) return;
   const cur=applied[key];
   const cal=jobCalUrl(j);
-  openSheet(`<h2 id="sheetTitle">${esc(j.company)}</h2>
-    <p class="sub" style="margin:0">${esc(j.title)}</p>
-    <div class="meta"><span>${esc(j.place)} · ${esc(j.career)}</span><span>${jobDday(j).replace(/<[^>]+>/g,"")}</span></div>
+  openSheet(`<h2 id="sheetTitle">${esc(displayField("jobs",j,"company"))}</h2>
+    <p class="sub" style="margin:0">${esc(displayField("jobs",j,"title"))}</p>
+    <div class="meta"><span>${esc(displayField("jobs",j,"place"))} · ${esc(displayField("jobs",j,"career"))}</span><span>${jobDday(j).replace(/<[^>]+>/g,"")}</span></div>
     <label class="field"><span>메모 (한 줄, 선택)</span><input id="applyMemo" class="search" maxlength="120" value="${esc((cur&&cur.memo)||"")}" placeholder="예: 11/20 서류 마감, 결과 대기"></label>
     <div class="actions"><button class="btn" data-applysave="${esc(key)}">${cur?"메모 저장":"지원함으로 표시"}</button>${cur?`<button class="btn ghost" data-applydel="${esc(key)}">지원 취소</button>`:""}</div>
     <a class="btn ghost" href="${safeUrl(j.url)}" target="_blank" rel="noopener" style="justify-content:center">공고 원문 열기 ↗</a>
@@ -1947,18 +1979,18 @@ window.CatchMICEAssistant={
 
 /* ---------- Sheet ---------- */
 const ymd=d=>`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
-const gcal=e=>"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(e.title)+"&dates="+ymd(e.s)+"/"+ymd(addD(e.e,1))+"&location="+encodeURIComponent(e.venue)+"&details="+encodeURIComponent(e.desc+"\n"+e.url+"\n(CatchMICE)");
+const gcal=e=>"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(displayField("events",e,"title"))+"&dates="+ymd(e.s)+"/"+ymd(addD(e.e,1))+"&location="+encodeURIComponent(e.venue)+"&details="+encodeURIComponent(displayField("events",e,"desc")+"\n"+e.url+"\n(CatchMICE)");
 let lastFocus=null;
 function openSheet(html){lastFocus=document.activeElement;$("#sheet").innerHTML=`<div class="grab"></div>`+html+`<button class="btn ghost" id="closeSheet" style="justify-content:center">닫기</button>`;$("#sheetBg").classList.add("on");$("#closeSheet").focus()}
 function closeSheet(){$("#sheetBg").classList.remove("on"); if(lastFocus&&lastFocus.focus) lastFocus.focus()}
 function eventSheet(key){
   const e=EVENTS.find(x=>x.key===key); if(!e) return;
   const range=sameDay(e.s,e.e)?fmt(e.s):`${fmt(e.s)} – ${fmt(e.e)}`;
-  openSheet(`<div class="ev-top"><span class="chip">${esc(e.type)}</span><span class="chip region">${esc(e.region)}</span>${evStatus(e)}</div>
-  <h2 id="sheetTitle">${esc(e.title)}</h2>
-  <div class="meta"><span>일정 · ${range}</span><span>장소 · ${esc(e.venue)}</span><span>사전등록 · ${e.dl?fmt(e.dl)+(dayDiff(e.dl)>=0?' 마감':' 마감됨'):'출처에 별도 마감 안내 없음'}</span></div>
-  <p>${esc(e.desc)}</p>
-  <a class="btn" href="${safeUrl(e.url)}" target="_blank" rel="noopener" style="justify-content:center">관련 페이지 열기 (${esc(e.src)}) ↗</a>
+  openSheet(`<div class="ev-top"><span class="chip">${esc(displayField("events",e,"type"))}</span><span class="chip region">${esc(displayField("events",e,"region"))}</span>${evStatus(e)}</div>
+  <h2 id="sheetTitle">${esc(displayField("events",e,"title"))}</h2>
+  <div class="meta"><span>일정 · ${range}</span><span>장소 · ${esc(displayField("events",e,"venue"))}</span><span>사전등록 · ${e.dl?fmt(e.dl)+(dayDiff(e.dl)>=0?' 마감':' 마감됨'):'출처에 별도 마감 안내 없음'}</span></div>
+  <p${contentLang(displayField("events",e,"desc"))}>${esc(displayField("events",e,"desc"))}</p>
+  <a class="btn" href="${safeUrl(e.url)}" target="_blank" rel="noopener" style="justify-content:center">관련 페이지 열기 (${esc(displayField("events",e,"src"))}) ↗</a>
   <a class="btn ghost" href="${gcal(e)}" target="_blank" rel="noopener" style="justify-content:center">구글 캘린더에 추가 ↗</a>
   <a class="btn ghost" href="${nmap(e.venue)}" target="_blank" rel="noopener" style="justify-content:center">장소 지도 보기 ↗</a>
   <button class="btn ghost" data-copy="${esc(e.key)}" style="justify-content:center">일정 텍스트 복사</button>
@@ -2062,8 +2094,8 @@ document.addEventListener("click",ev=>{
   else if(ds.walk){walkKey=ds.walk; renderWalk()}
   else if(ds.ptopic){paperTopic=ds.ptopic; renderPapers()}
   else if(ds.pcat){promptCat=ds.pcat; renderAI()}
-  else if(ds.copy){const e=EVENTS.find(x=>x.key===ds.copy); if(e){const txt=`[CatchMICE] ${e.title}\n${fmt(e.s)}${e.e>e.s?' – '+fmt(e.e):''} · ${e.venue}\n${e.url}`; copyText(txt,"일정을 복사했어요")}}
-  else if(ds.copyp!==undefined) copyText(PROMPTS[+ds.copyp].p,"프롬프트를 복사했어요");
+  else if(ds.copy){const e=EVENTS.find(x=>x.key===ds.copy); if(e){const txt=`[CatchMICE] ${displayField("events",e,"title")}\n${fmt(e.s)}${e.e>e.s?' – '+fmt(e.e):''} · ${displayField("events",e,"venue")}\n${e.url}`; copyText(txt,"일정을 복사했어요")}}
+  else if(ds.copyp!==undefined) copyText(localize(PROMPTS[+ds.copyp].p),"프롬프트를 복사했어요");
   else if(t.id==="closeSheet") closeSheet();
   else if(t.id==="prevMonth"){calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()-1,1); selDay=null; renderCal()}
   else if(t.id==="nextMonth"){calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()+1,1); selDay=null; renderCal()}
