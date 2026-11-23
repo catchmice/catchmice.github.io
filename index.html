@@ -445,7 +445,7 @@ main{padding-block:16px 8px;padding-left:var(--gut-l);padding-right:var(--gut-r)
 .seg{display:grid;grid-template-columns:1fr 1fr;background:var(--soft-2);border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px}
 .seg a{text-align:center;padding:8px 0;border-radius:9px;font-weight:650;font-size:13px;color:var(--muted);text-decoration:none}
 .seg a:hover{text-decoration:none;color:var(--ink)}
-.seg a[aria-selected="true"]{background:var(--card);color:var(--ink);box-shadow:var(--sh-1)}
+.seg a[aria-selected="true"],.seg a[aria-current="page"]{background:var(--card);color:var(--ink);box-shadow:var(--sh-1)}
 
 /* ---------------- Crew ---------------- */
 .crew{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -641,6 +641,23 @@ nav.tabbar a[aria-current="page"]{color:var(--accent);font-weight:700}
 
 <script src="i18n-data.js"></script>
 <script src="i18n.js"></script>
+<style>
+.career-nav{grid-template-columns:repeat(3,minmax(0,1fr));width:100%;justify-self:stretch}
+.career-nav a{display:grid;place-items:center;min-height:44px;padding:7px 4px;line-height:1.25}
+#v-bids{--opportunity-accent:#e49400}
+#v-staff{--opportunity-accent:#159681}
+.opportunity-view .page-head h1{border-inline-start:6px solid var(--opportunity-accent);padding-inline-start:10px}
+.opportunity-view .desk{border-inline-start:4px solid var(--opportunity-accent)}
+.opportunity-view .f[aria-pressed="true"]{background:var(--ink);color:var(--card)}
+.opportunity-card .opportunity-org{color:var(--accent);font-weight:700;font-size:.9rem}
+.opportunity-card .opportunity-budget{justify-self:start;background:var(--ok-soft);color:var(--ok)}
+.opportunity-card .ev-top .dday{margin-inline-start:auto}
+.opportunity-card .chip.newb{background:var(--hot);color:white}
+.opportunity-card{display:grid;gap:10px;align-content:start}
+.opportunity-card h3{overflow-wrap:anywhere}
+.opportunity-card .meta span{overflow-wrap:anywhere}
+.opportunity-card .meta b{margin-inline-end:4px}
+</style>
 </head>
 <body>
 <div class="shell">
@@ -822,6 +839,7 @@ nav.tabbar a[aria-current="page"]{color:var(--accent);font-weight:700}
 
       <!-- JOBS -->
       <section class="view" id="v-jobs" aria-label="MICE 채용">
+        <nav class="seg career-nav" data-career-nav="jobs"></nav>
         <div class="page-head"><h1>MICE 채용</h1><p class="sub" id="jobsUpd"></p></div>
         <div id="deskJobs"></div>
         <div class="toolbar">
@@ -847,6 +865,44 @@ nav.tabbar a[aria-current="page"]{color:var(--accent);font-weight:700}
           <div><button class="btn" data-act="contact">공고 등록 문의</button></div>
         </div>
         <p class="sub">마감된 공고는 자동으로 숨겨요. 마감 여부와 자세한 조건은 공고 원문에서 꼭 확인하세요.</p>
+      </section>
+
+      <section class="view opportunity-view" id="v-bids" aria-label="입찰 레이더">
+        <nav class="seg career-nav" data-career-nav="bids"></nav>
+        <div class="page-head">
+          <h1>입찰 레이더</h1>
+          <p class="sub opportunity-intro"></p>
+          <p class="sub" id="bidsUpdated"></p>
+        </div>
+        <div id="bidsDesk"></div>
+        <div class="toolbar">
+          <input type="search" class="search" id="bidsQuery">
+          <div class="filters" role="group" id="bidsCategory"></div>
+          <div class="filters" role="group" id="bidsRegion"></div>
+          <label class="toggle"><input type="checkbox" id="bidsClosed"> <span class="opportunity-closed"></span></label>
+          <p class="sub count" role="status" id="bidsStatus"></p>
+        </div>
+        <div class="stack grid2 grid3" id="bidsList"></div>
+        <p class="sub opportunity-note"></p>
+      </section>
+
+      <section class="view opportunity-view" id="v-staff" aria-label="스태프·서포터즈">
+        <nav class="seg career-nav" data-career-nav="staff"></nav>
+        <div class="page-head">
+          <h1>스태프·서포터즈</h1>
+          <p class="sub opportunity-intro"></p>
+          <p class="sub" id="staffUpdated"></p>
+        </div>
+        <div id="staffDesk"></div>
+        <div class="toolbar">
+          <input type="search" class="search" id="staffQuery">
+          <div class="filters" role="group" id="staffCategory"></div>
+          <div class="filters" role="group" id="staffRegion"></div>
+          <label class="toggle"><input type="checkbox" id="staffClosed"> <span class="opportunity-closed"></span></label>
+          <p class="sub count" role="status" id="staffStatus"></p>
+        </div>
+        <div class="stack grid2 grid3" id="staffList"></div>
+        <p class="sub opportunity-note"></p>
       </section>
 
       <!-- AI -->
@@ -2008,6 +2064,208 @@ function contactSheet(){
   <div class="copybox">${CONTACT?`<span class="sub">문의 이메일</span><code>${esc(CONTACT)}</code><div class="actions"><button class="btn" data-act="copycontact">이메일 주소 복사</button><a class="btn ghost" href="mailto:${esc(CONTACT)}?subject=${encodeURIComponent("[CatchMICE] 제휴·공고 등록 문의")}">메일 앱으로 쓰기</a></div><span class="sub">메일 앱이 열리지 않으면 주소를 복사해서 보내 주세요.</span>`:`<b>문의 창구를 준비하고 있어요</b><span class="sub">곧 이메일과 Threads 채널을 열 예정이에요.</span>`}</div>`);
 }
 
+/* ---------- 채용 · 입찰 · 행사 스태프 ---------- */
+const opportunityText=(ko,en)=>language?.english?en:ko;
+const careerTabs=[
+  ["jobs","채용공고","Jobs"],
+  ["bids","입찰 레이더","Bid Radar"],
+  ["staff","스태프·서포터즈","Event Staff"]
+];
+const opportunityConfig={
+  bids:{
+    title:["MICE 입찰 레이더","MICE Bid Radar"],
+    reporter:"exy",
+    briefing:["행사대행·국제회의·전시 운영 입찰을 마감이 가까운 순서로 모았어요.","Browse event management, conference and exhibition bids by closing date."],
+    updateNote:["공공 MICE 용역 입찰 모음","Public MICE procurement"],
+    intro:["행사대행·국제회의·전시·축제 관련 용역 공고를 마감이 가까운 순서로 확인하세요.","Browse procurement notices for event management, conferences, exhibitions and festivals by deadline."],
+    search:["공고명·발주기관·공고번호 검색","Search titles, contracting authorities or notice numbers"],
+    category:"type",
+    categoryLabel:["입찰 분야","Procurement category"],
+    notice:["마감 시각, 참가 자격과 예산 기준은 원문에서 확인하세요. 나라장터 공고는 공고번호로 검색할 수 있어요.","Check the original notice for closing times, eligibility and budget details. Use the notice number to search Korea ON-line E-Procurement System (KONEPS)."]
+  },
+  staff:{
+    title:["행사 스태프·서포터즈","Event Staff & Volunteers"],
+    reporter:"veny",
+    briefing:["전시회와 행사에서 현장 경험을 쌓을 수 있는 모집 공고를 모았어요.","Find ways to gain experience working or volunteering at events."],
+    updateNote:["행사 현장 경험 모음","On-site event opportunities"],
+    intro:["전시회·박람회 운영요원, 서포터즈와 자원봉사 모집을 모았어요.","Find exhibition staff, supporter programs and volunteer opportunities."],
+    search:["공고명·행사명·모집처 검색","Search titles, events or recruiters"],
+    category:"kind",
+    categoryLabel:["모집 유형","Opportunity type"],
+    notice:["채용 시 마감 공고는 일찍 종료될 수 있어요. 근무일과 보수, 지원 조건은 원문에서 확인하세요.","Rolling listings may close early. Check the original listing for work dates, pay and eligibility."]
+  }
+};
+const opportunityCategories={
+  "국제회의":"International Conferences","행사대행":"Event Management","축제":"Festivals",
+  "부스·시설":"Booths & Facilities","전시·박람회":"Exhibitions & Fairs",
+  "스태프·운영요원":"Event Operations Staff","서포터즈·기자단":"Supporters & Event Reporters",
+  "통역·자원봉사":"Interpreters & Volunteers","전국":"Nationwide","기타":"Other",
+  "산군(나라장터)":"Sankun (KONEPS)","알바천국":"Alba Cheonguk",
+  "콘테스트코리아":"Contest Korea","위비티":"Wevity","고용24":"Work24","1365 자원봉사포털":"1365 Volunteer Portal","나라장터":"KONEPS"
+};
+const opportunityState={
+  bids:{query:"",category:"",region:"",showClosed:false,state:"idle",items:[],updated:""},
+  staff:{query:"",category:"",region:"",showClosed:false,state:"idle",items:[],updated:""}
+};
+const opportunityLabel=value=>language?.english?(opportunityCategories[value]||localize(value)):value;
+const opportunityDate=value=>{
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(value||"")) return null;
+  const date=parseD(value);
+  if(ymd(date)!==value.replaceAll("-","")) return null;
+  return date;
+};
+for(const nav of document.querySelectorAll("[data-career-nav]")){
+  nav.setAttribute("aria-label",opportunityText("채용 및 공고","Jobs and opportunities"));
+  nav.innerHTML=careerTabs.map(([key,ko,en])=>`<a href="#${key}"${key===nav.dataset.careerNav?' aria-current="page"':""}>${opportunityText(ko,en)}</a>`).join("");
+}
+for(const [key,config] of Object.entries(opportunityConfig)){
+  const root=$("#v-"+key);
+  root.setAttribute("aria-label",opportunityText(...config.title));
+  root.querySelector("h1").textContent=opportunityText(...config.title);
+  root.querySelector(".opportunity-intro").textContent=opportunityText(...config.intro);
+  root.querySelector(".opportunity-note").textContent=opportunityText(...config.notice);
+  const query=$("#"+key+"Query");
+  query.placeholder=opportunityText(...config.search);
+  query.setAttribute("aria-label",query.placeholder);
+  const reporter=C[config.reporter];
+  $("#"+key+"Desk").innerHTML=desk(reporter,opportunityText(...config.briefing));
+  $("#"+key+"Category").setAttribute("aria-label",opportunityText(...config.categoryLabel));
+  $("#"+key+"Region").setAttribute("aria-label",opportunityText("지역","Region"));
+  root.querySelector(".opportunity-closed").textContent=opportunityText("마감 공고 포함","Include closed listings");
+}
+
+function opportunityDeadline(item,date){
+  const lastDay=opportunityDate(item.active_until);
+  const days=date?dayDiff(date):lastDay&&dayDiff(lastDay)<0?-1:null;
+  if(days===null){
+    const text=item.deadline==="채용시 마감"?opportunityText("채용 시 마감","Open until filled"):opportunityText("마감일 원문 확인","Check the source for the deadline");
+    return {text,style:"calm"};
+  }
+  if(days<0) return {text:opportunityText("마감","Closed"),style:"closed"};
+  if(days===0) return {text:opportunityText("오늘 마감","Closes today"),style:""};
+  return {text:"D-"+days,style:days>7?"calm":""};
+}
+function opportunityCard(key,item,date){
+  const category=item[opportunityConfig[key].category];
+  const deadline=opportunityDeadline(item,date);
+  const field=name=>displayField(key,item,name);
+  const detail=(label,value)=>value?`<span><b>${label}</b> ${esc(value)}</span>`:"";
+  const isBid=key==="bids";
+  const title=field("title");
+  const organization=field("org");
+  const sourceText=item.src==="고용24"?opportunityText("채용정보 제공사이트로 이동","View on Work24"):
+    (item.src?opportunityLabel(item.src)+" · ":"")+opportunityText("공고 보기","View listing");
+  const posted=opportunityDate(item.posted)||opportunityDate(item.first_seen);
+  const isNew=posted&&dayDiff(posted)<=0&&dayDiff(posted)>=-3;
+  return `<article class="card opportunity-card">
+    <div class="ev-top">
+      ${isNew?'<span class="chip newb">NEW</span>':""}
+      ${category?`<span class="chip">${esc(opportunityLabel(category))}</span>`:""}
+      ${item.region?`<span class="chip region">${esc(opportunityLabel(item.region))}</span>`:""}
+      <span class="dday ${deadline.style}">${esc(deadline.text)}</span>
+    </div>
+    ${organization?`<span class="opportunity-org"${contentLang(organization)}>${esc(organization)}</span>`:""}
+    <h3${contentLang(title)}>${esc(title)}</h3>
+    ${isBid&&item.budget?`<span class="chip opportunity-budget">${esc(field("budget"))}</span>`:""}
+    <div class="meta">
+      ${detail(opportunityText("마감일","Deadline"),date?fmt(date):"")}
+      ${isBid?
+        detail(opportunityText("공고일","Posted"),opportunityDate(item.posted)?fmt(parseD(item.posted)):"")+
+        detail(opportunityText("계약방법","Procurement method"),field("method"))+
+        detail(opportunityText("공고번호","Notice number"),item.no):
+        detail(opportunityText("행사","Event"),field("event"))+
+        detail(opportunityText("활동·근무 일정","Work dates"),field("period"))+
+        detail(opportunityText("보수·혜택","Pay & benefits"),field("pay"))}
+    </div>
+    <div class="actions">
+      ${safeUrl(item.url)!=="#"?`<a class="btn" href="${safeUrl(item.url)}" target="_blank" rel="noopener noreferrer">${esc(sourceText)}</a>`:""}
+      ${isBid&&item.no?`<button type="button" class="btn ghost" data-bid-number="${esc(item.no)}">${opportunityText("공고번호 복사","Copy notice number")}</button>`:""}
+    </div>
+    ${item.src==="고용24"?`<p class="sub">${opportunityText("정보 제공 · 고용노동부 고용24","Source · Work24, Ministry of Employment and Labor")}</p>`:""}
+  </article>`;
+}
+function renderOpportunities(key){
+  const state=opportunityState[key];
+  const list=$("#"+key+"List");
+  const status=$("#"+key+"Status");
+  const updated=$("#"+key+"Updated");
+  if(state.state==="idle"){
+    loadOpportunities(key);
+    return;
+  }
+  if(state.state==="loading"){
+    status.textContent=opportunityText("공고를 불러오는 중…","Loading listings…");
+    list.innerHTML=skel(3);
+    return;
+  }
+  if(state.state==="error"){
+    status.textContent=opportunityText("공고를 불러오지 못했어요.","Couldn’t load the listings.");
+    list.innerHTML=`<div class="card empty"><button type="button" class="btn ghost" data-retry-opportunities="${key}">${opportunityText("다시 불러오기","Try again")}</button></div>`;
+    return;
+  }
+  const config=opportunityConfig[key];
+  updated.textContent=[opportunityDate(state.updated)?updLabel(state.updated):"",opportunityText(...config.updateNote)].filter(Boolean).join(" · ");
+  for(const [suffix,field,property] of [["Category",config.category,"category"],["Region","region","region"]]){
+    const input=$("#"+key+suffix);
+    const values=[...new Set(state.items.map(item=>item[field]).filter(Boolean))];
+    input.innerHTML=["",...values].map(value=>`<button type="button" class="f" data-opportunity-filter="${key}" data-field="${property}" data-value="${esc(value)}" aria-pressed="${state[property]===value}">${esc(value?opportunityLabel(value):opportunityText("전체","All"))}</button>`).join("");
+  }
+  const query=state.query.trim().toLowerCase();
+  const rows=state.items.map(item=>({item,date:opportunityDate(item.deadline),lastDay:opportunityDate(item.active_until)}))
+    .filter(({item,date,lastDay})=>
+      (state.showClosed||(!date&&!lastDay)||dayDiff(date||lastDay)>=0)&&
+      (!state.category||item[config.category]===state.category)&&
+      (!state.region||item.region===state.region)&&
+      (matchItem(query,key,item,"title","org","no","event","region",config.category)||
+       match(query,opportunityLabel(item[config.category]))))
+    .sort((a,b)=>(a.date?.getTime()??Infinity)-(b.date?.getTime()??Infinity));
+  status.textContent=opportunityText(`${state.showClosed?"공고":key==="bids"?"진행 중인 입찰":"모집 중"} ${rows.length}건`,`${rows.length} listing${rows.length===1?"":"s"}`);
+  list.innerHTML=rows.length?rows.map(({item,date})=>opportunityCard(key,item,date)).join(""):
+    `<div class="card empty">${opportunityText("조건에 맞는 공고가 없어요.","No listings match your filters.")}</div>`;
+}
+async function loadOpportunities(key){
+  const state=opportunityState[key];
+  if(state.state==="loading") return;
+  state.state="loading";
+  renderOpportunities(key);
+  try{
+    const isHosted=location.hostname==="catchmice.github.io";
+    const urls=isHosted?[
+      "https://raw.githubusercontent.com/catchmice/catchmice.github.io/main/"+key+".json",
+      key+".json"
+    ]:[key+".json",...(window.CM_NATIVE?[LIVE_DATA_BASE+key+".json"]:[])];
+    let data;
+    for(const url of urls){
+      try{
+        const response=await fetch(url,{cache:"no-store",signal:AbortSignal.timeout(5000)});
+        if(!response.ok) continue;
+        const result=await response.json();
+        if(Array.isArray(result.items)&&result.items.every(item=>item&&typeof item.title==="string")){
+          data=result;
+          break;
+        }
+      }catch(error){ /* Try the bundled snapshot when the live feed is unavailable. */ }
+    }
+    if(!data) throw new Error("Listing request failed");
+    state.items=data.items;
+    state.updated=data.updated;
+    state.state="ok";
+  }catch(error){
+    state.state="error";
+  }
+  renderOpportunities(key);
+}
+for(const key of Object.keys(opportunityConfig)){
+  for(const [suffix,event,field] of [
+    ["Query","input","query"],["Closed","change","showClosed"]
+  ]){
+    $("#"+key+suffix).addEventListener(event,e=>{
+      opportunityState[key][field]=field==="showClosed"?e.target.checked:e.target.value;
+      renderOpportunities(key);
+    });
+  }
+}
+
 /* ---------- Router ---------- */
 const ICONS={
   home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
@@ -2022,19 +2280,22 @@ const ICONS={
 };
 const svg=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[k]}</svg>`;
 const MOBILE_TABS=[["home","홈"],["calendar","캘린더"],["walk","동네"],["news","뉴스"],["jobs","채용"],["ai","스터디"]];
-const SIDE_TABS=[["home","홈"],["calendar","MICE 캘린더"],["news","한입뉴스"],["jobs","MICE 채용"],["guide","취업 가이드"],["walk","동네 한 바퀴"],["ai","AI 스터디"],["papers","MICE 논문"],["crew","기자단 소개"]];
+const careerViews=["jobs","bids","staff"];
+ICONS.bids='<path d="M5 3h10l4 4v14H5zM14 3v5h5M8 12h8M8 16h6"/>';
+ICONS.staff=ICONS.crew;
+const SIDE_TABS=[["home","홈"],["calendar","MICE 캘린더"],["news","한입뉴스"],["jobs","MICE 채용"],["bids",opportunityText("입찰 레이더","Bid Radar")],["staff",opportunityText("스태프·서포터즈","Event Staff")],["guide","취업 가이드"],["walk","동네 한 바퀴"],["ai","AI 스터디"],["papers","MICE 논문"],["crew","기자단 소개"]];
 $("#tabbar").innerHTML=MOBILE_TABS.map(t=>`<a href="#${t[0]}" data-tab="${t[0]}">${svg(t[0])}${t[1]}</a>`).join("");
 $("#sidenav").innerHTML=SIDE_TABS.map(t=>`<a href="#${t[0]}" data-tab="${t[0]}">${svg(t[0])}${t[1]}</a>`).join("");
-const R={home:renderHome,calendar:renderCal,walk:renderWalk,news:renderNews,jobs:renderJobs,ai:renderAI,papers:renderPapers,guide:renderGuide,crew:renderCrew};
+const R={home:renderHome,calendar:renderCal,walk:renderWalk,news:renderNews,jobs:renderJobs,bids:()=>renderOpportunities("bids"),staff:()=>renderOpportunities("staff"),ai:renderAI,papers:renderPapers,guide:renderGuide,crew:renderCrew};
 let curView="";
 function route(keepScroll){
   const raw=(location.hash||"#home").slice(1);
-  let v=raw; if(v==="briefing") v="home"; if(!R[v]) v="home";
+  let v=raw; if(v==="briefing") v="home"; if(!Object.hasOwn(R,v)) v="home";
   document.querySelectorAll(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));
-  document.querySelectorAll("#tabbar [data-tab]").forEach(a=>{if(a.dataset.tab===v||(v==="papers"&&a.dataset.tab==="ai")||(v==="guide"&&a.dataset.tab==="jobs")) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current")});
+  document.querySelectorAll("#tabbar [data-tab]").forEach(a=>{if(a.dataset.tab===v||(v==="papers"&&a.dataset.tab==="ai")||((v==="guide"||careerViews.includes(v))&&a.dataset.tab==="jobs")) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current")});
   document.querySelectorAll("#sidenav [data-tab]").forEach(a=>{if(a.dataset.tab===v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current")});
   R[v]();
-  if(v!==curView){ track("page_view",{page_title:"CatchMICE · "+(VIEW_TITLE[v]||v),page_location:location.origin+location.pathname+location.search+"#"+v}); }
+  if(v!==curView){ track("page_view",{page_title:"CatchMICE · "+(VIEW_TITLE[v]||opportunityConfig[v]?.title[0]||v),page_location:location.origin+location.pathname+location.search+"#"+v}); }
   if(v!==curView&&!keepScroll) window.scrollTo(0,0);
   curView=v;
   if(raw==="briefing") setTimeout(()=>{const el=$("#briefPanel"); if(el&&el.scrollIntoView) el.scrollIntoView({block:"start"})},40);
@@ -2064,6 +2325,15 @@ document.addEventListener("click",ev=>{
   else if(ds.bpaper){ jumpPaper(ds.bpaper); }
   else if(ds.bsearch!==undefined){ searchFromBrief(ds.bsearch); }
   else if(ds.jobsview){ jobCareer=ds.jobsview; jobRegion="전체"; jobQ=""; go("jobs"); }
+  else if(ds.opportunityFilter){
+    const {opportunityFilter:key,field,value}=ds;
+    opportunityState[key][field]=value;
+    renderOpportunities(key);
+    const button=[...$("#"+key+(field==="category"?"Category":"Region")).querySelectorAll("button")].find(item=>item.dataset.value===value);
+    if(button) button.focus();
+  }
+  else if(ds.bidNumber){ copyText(ds.bidNumber,opportunityText("공고번호를 복사했어요.","Notice number copied.")); }
+  else if(ds.retryOpportunities){ loadOpportunities(ds.retryOpportunities); }
   else if(ds.apply){ applySheet(ds.apply); }
   else if(ds.applysave){ saveApplied(ds.applysave); }
   else if(ds.applydel){ delApplied(ds.applydel); }
