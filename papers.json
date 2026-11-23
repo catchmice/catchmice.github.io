@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-17",
+  "updated": "2026-11-23",
   "items": [
     {
       "topic": "지속가능·ESG",
@@ -10,6 +10,36 @@
       "sum": "수원시 MICE 전문가 10명을 인터뷰해 개최시설·교통·식음료·행사 후 관리의 네 축으로 된 지속가능 운영 틀을 제안해요.",
       "url": "https://journals.iium.edu.my/kstcl/index.php/jocth/article/view/68",
       "site": "JoCTH"
+    },
+    {
+      "topic": "참가자·마케팅",
+      "title": "수정된 IPA를 이용한 전시 프로세스별 고객경험 요인 평가 연구: B2C 소비재 전시회를 중심으로",
+      "authors": "강현나, 김봉석, 조유진, 정동원",
+      "journal": "무역전시연구 21(3)",
+      "date": "2026-09",
+      "sum": "B2C 소비재 전시회 관람객 306명 설문을 수정 IPA로 분석해 사전등록·현장·퇴장 단계별 고객경험을 평가했어요. 현장 동선·안전관리·안내와 행사 후 피드백 수집이 집중 개선 과제로 꼽혔어요.",
+      "url": "https://www.earticle.net/Article/A494349",
+      "site": "earticle"
+    },
+    {
+      "topic": "빅데이터·AI",
+      "title": "국내 무역전시 연구의 지적 구조와 주제 지형 변화: 『무역전시연구』(2011~2026) 논문의 체계적 문헌고찰",
+      "authors": "윤혜진, 이지연",
+      "journal": "무역전시연구 21(3)",
+      "date": "2026-09",
+      "sum": "15년간 실린 논문 298편을 체계적으로 분석해 연구 흐름을 정리했어요. ESG·디지털·하이브리드 주제가 늘었고, 주최자 관점 연구는 여전히 적다고 봤어요.",
+      "url": "https://www.earticle.net/Article/A494350",
+      "site": "earticle"
+    },
+    {
+      "topic": "참가자·마케팅",
+      "title": "컨벤션 서비스 이행품질 평가요인 도출 및 중요도 분석: 델파이와 AHP를 활용하여",
+      "authors": "김미성, 김서현, 황희곤",
+      "journal": "무역전시연구 21(3)",
+      "date": "2026-09",
+      "sum": "공공조달 컨벤션 서비스의 품질을 평가할 지표를 델파이와 AHP로 만들었어요. 사전·본·사후 서비스 중 본 서비스의 중요도가 가장 높게 나왔어요.",
+      "url": "https://www.earticle.net/Article/A494351",
+      "site": "earticle"
     },
     {
       "topic": "지속가능·ESG",
@@ -83,6 +113,46 @@
     },
     {
       "topic": "빅데이터·AI",
+      "title": "국내 전시컨벤션센터 연구의 지적 구조와 주제 변화 분석: 계량서지분석과 BERTopic 기반 토픽 모델링",
+      "authors": "김성진, 김문구, 정명석, 이주연",
+      "journal": "무역전시연구 21(1)",
+      "date": "2026-03",
+      "sum": "2002~2025년 KCI 논문 211편을 BERTopic으로 분석해 국내 전시컨벤션센터 연구의 흐름을 정리했어요. 관심사가 관광·성과에서 지속가능성·지역사회 영향 쪽으로 옮겨 갔다고 봤어요.",
+      "url": "https://www.earticle.net/Article/A483827",
+      "site": "earticle"
+    },
+    {
+      "topic": "해외 연구",
+      "title": "중국 중소도시 전시컨벤션 경쟁력 요인이 브랜드 자산가치에 미치는 영향",
+      "authors": "JINGYAO KAN, 김철원, 이태숙",
+      "journal": "무역전시연구 21(1)",
+      "date": "2026-03",
+      "sum": "중국 중소도시의 전시컨벤션 경쟁력이 도시 브랜드 가치에 주는 영향을 참가자·관광객 설문으로 분석했어요. 수요 촉진과 지속가능성 요인의 영향이 가장 컸대요.",
+      "url": "https://www.earticle.net/Article/A483826",
+      "site": "earticle"
+    },
+    {
+      "topic": "해외 연구",
+      "title": "지역주민의 장소 애착심이 공동체 의식과 엑스포 개최 협력의사에 미치는 영향",
+      "authors": "이지연, 카나코, 김봉석",
+      "journal": "무역전시연구 21(1)",
+      "date": "2026-03",
+      "sum": "2025 오사카 엑스포 개최지 주민 244명을 조사해 장소 애착이 공동체 의식을 거쳐 엑스포 협력 의사로 이어진다는 걸 확인했어요. 부정적 경제효과 인식은 이 연결을 약하게 만들었어요.",
+      "url": "https://www.earticle.net/Article/A483829",
+      "site": "earticle"
+    },
+    {
+      "topic": "참가자·마케팅",
+      "title": "전시산업 SNS 마케팅 특성이 방문객 인게이지먼트와 참가 만족도 및 행동의도에 미치는 영향에 대한 연구",
+      "authors": "이한나, 김미성, 윤은주",
+      "journal": "무역전시연구 21(1)",
+      "date": "2026-03",
+      "sum": "전시회의 SNS 마케팅 특성이 방문객 참여(인게이지먼트)와 만족도, 다시 찾을 의도에 어떤 영향을 주는지 살펴본 연구예요.",
+      "url": "https://www.earticle.net/Article/A483828",
+      "site": "earticle"
+    },
+    {
+      "topic": "빅데이터·AI",
       "title": "소셜 빅데이터를 활용한 청주 오스코(OSCO) MICE 인식 구조에 대한 탐색적 연구",
       "authors": "서정운, 임규찬",
       "journal": "MICE관광연구 26(1)",
@@ -90,6 +160,36 @@
       "sum": "SNS 데이터로 사람들이 청주 오스코와 MICE를 어떻게 인식하는지 분석했어요.",
       "url": "https://www.kci.go.kr/kciportal/po/search/poArtiSearList.kci?sereId=SER000008985",
       "site": "KCI"
+    },
+    {
+      "topic": "해외 연구",
+      "title": "MICE Tourism: From Temporary Disruption to Systemic Transformation in the 21st Century",
+      "authors": "Phrawachirahamakun, Pinsupha Thangthong, Pranotporn Thangthong, Nick Naumov",
+      "journal": "Procedia of Multidisciplinary Research 4(2)",
+      "date": "2026-02",
+      "sum": "코로나19 이후 MICE 관광이 수요·공급·기술·지속가능성 측면에서 어떻게 재편됐는지 문헌으로 정리했어요. 하이브리드 행사, 디지털 도입, 지속가능성은 앞으로도 이어질 변화로 봤어요.",
+      "url": "https://so09.tci-thaijo.org/index.php/PMR/article/view/8601",
+      "site": "ThaiJO"
+    },
+    {
+      "topic": "해외 연구",
+      "title": "Analyzing the Competitive Advantages of South Korea in Global MICE Tourism: Historical and Cultural Dimensions",
+      "authors": "Ortikova Sabohat, Gulomova Mukhlisa, Ochilova Hilola Farmonovna",
+      "journal": "Yashil iqtisodiyot va taraqqiyot 4(2)",
+      "date": "2026-02",
+      "sum": "SWOT 분석으로 한국이 세계 MICE 관광에서 가진 경쟁력을 살폈어요. 지리적 위치·정부 지원·한류를 강점으로, 높은 운영비와 언어 장벽을 과제로 꼽았어요.",
+      "url": "https://zenodo.org/records/18761087",
+      "site": "Zenodo"
+    },
+    {
+      "topic": "빅데이터·AI",
+      "title": "XR 기술요인이 만족도, 활동의도 및 MICE 경쟁력에 미치는 영향",
+      "authors": "김미경, 황미연, 홍성화",
+      "journal": "MICE관광연구 26(1)",
+      "date": "2026-02",
+      "sum": "2025 코리아 마이스 엑스포와 제주 마이스 엑스포 참가자 251명을 설문해 XR 기술이 만족도와 행동의도를 거쳐 MICE 경쟁력으로 이어지는지 살폈어요. XR의 필요성과 체험 품질이 만족도에 의미 있는 영향을 준 것으로 나왔어요.",
+      "url": "https://dl.nanet.go.kr/detail/KINX2026017090",
+      "site": "국회도서관"
     },
     {
       "topic": "해외 연구",
@@ -122,6 +222,26 @@
       "site": "MDPI"
     },
     {
+      "topic": "해외 연구",
+      "title": "MICE Tourism and City Marketing: Development of Unique Venues in Xi'an, China",
+      "authors": "Yuan Li, Youngjoon Choi, Jeeyon Peak",
+      "journal": "Journal of China Tourism Research",
+      "date": "2026",
+      "sum": "중국 시안의 주최자·베뉴·공무원·참가자를 인터뷰해 유니크베뉴가 도시 브랜딩에 주는 효과와 과제, 지속가능한 발전 전략을 정리했어요.",
+      "url": "https://pure.ewha.ac.kr/en/publications/mice-tourism-and-city-marketing-development-of-unique-venues-in-x/",
+      "site": "Taylor & Francis"
+    },
+    {
+      "topic": "지속가능·ESG",
+      "title": "Sustainability in the global MICE/business events industry – the current state, and the road ahead",
+      "authors": "Edward Koh",
+      "journal": "ABAC Journal 46(1)",
+      "date": "2026",
+      "sum": "세계 MICE 관련 기구들의 보고서를 내용분석해 업계 탄소배출과 표준·인증 현황을 정리한 관점 논문이에요. 항공 외에는 식음료·숙박·부스 제작이 큰 배출원이고, 흩어진 노력을 공동 플랫폼으로 모아야 한다고 봤어요.",
+      "url": "https://www.emerald.com/abac/article-pdf/doi/10.1108/ABAC-08-2025-0149/11266767/abac-08-2025-0149en.pdf",
+      "site": "Emerald"
+    },
+    {
       "topic": "빅데이터·AI",
       "title": "한국 MICE의 가치 전환과 담론 구조 분석: SNS 기반 키워드 네트워크 접근",
       "authors": "김정은",
@@ -142,6 +262,26 @@
       "site": "earticle"
     },
     {
+      "topic": "지역 MICE",
+      "title": "유니크 베뉴(Unique Venue) 자원으로서 피란수도 부산의 가능성과 활용 방안 연구",
+      "authors": "김정은",
+      "journal": "이벤트컨벤션연구 21(4)",
+      "date": "2025-12",
+      "sum": "유네스코 잠정목록에 오른 부산 피란수도 유산을 MICE 유니크베뉴로 쓸 수 있을지 전문가 12명 심층 인터뷰로 살펴보고, 기대 효과와 과제, 활용 전략을 정리했어요.",
+      "url": "https://dl.nanet.go.kr/detail/KINX2025236989",
+      "site": "국회도서관"
+    },
+    {
+      "topic": "지역 MICE",
+      "title": "MICE관광도시 브랜딩활동에 따른 브랜딩활동 성과 및 지지도 연구",
+      "authors": "윤유식",
+      "journal": "관광학연구 49(7)",
+      "date": "2025-10",
+      "sum": "MICE 관광도시의 브랜딩 활동을 정책·실행, 홍보·프로모션, 개최·참가 세 요인으로 나누고 구조방정식으로 성과와 지지도에 주는 영향을 분석했어요.",
+      "url": "https://scholar.kyobobook.co.kr/article/detail/4010071663949",
+      "site": "교보 스콜라"
+    },
+    {
       "topic": "경제효과",
       "title": "국제 MICE 행사의 사전적 효과 평가 방안: 제9회 WCPEC 행사를 중심으로",
       "authors": "최은철, 양준석",
@@ -160,66 +300,6 @@
       "sum": "말레이시아 MICE 업계가 팬데믹 동안 행사 운영 방식을 어떻게 바꾸고 위기에 대응했는지 살펴봐요.",
       "url": "https://jssm.umt.edu.my/wp-content/uploads/2025/06/2-JSSM-Volume-20-Number-4-April-2025-FINAL.pdf",
       "site": "JSSM"
-    },
-    {
-      "topic": "빅데이터·AI",
-      "title": "텍스트마이닝 분석을 통한 여수시 MICE산업 발전 방안 연구: 여수엑스포컨벤션센터를 중심으로",
-      "authors": "신이수, 박효연",
-      "journal": "국회도서관 수록",
-      "date": "2025",
-      "sum": "온라인 텍스트 약 8만5천 건을 분석해 여수 MICE가 관광자원·교통·숙박과 강하게 연결돼 있고, 도시 간 협력이 필요하다고 정리했어요.",
-      "url": "https://dl.nanet.go.kr/detail/KINX2025216012",
-      "site": "국회도서관"
-    },
-    {
-      "topic": "지속가능·ESG",
-      "title": "MICE 분야의 ESG 동향 및 연구 과제",
-      "authors": "윤혜진",
-      "journal": "MICE관광연구 25(4)",
-      "date": "2025",
-      "sum": "MICE 분야 ESG 연구 흐름을 정리하고 앞으로 연구할 과제를 제안해요.",
-      "url": "https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003269597",
-      "site": "KCI"
-    },
-    {
-      "topic": "해외 연구",
-      "title": "The impact of social changes on MICE tourism management in the age of digitalization: a bibliometric review",
-      "authors": "Martín-Rojo, I., Gaspar-González, A.",
-      "journal": "Review of Managerial Science 19",
-      "date": "2025",
-      "sum": "디지털 시대 사회 변화가 MICE 관광 경영에 주는 영향을 연구 문헌 분석으로 정리한 오픈액세스 논문이에요.",
-      "url": "https://link.springer.com/article/10.1007/s11846-024-00751-3",
-      "site": "Springer"
-    },
-    {
-      "topic": "참가자·마케팅",
-      "title": "MICE 산업 변화에 기반한 전시컨벤션 브랜딩 디자인 사례연구",
-      "authors": "민재윤",
-      "journal": "조형미디어학 27(3)",
-      "date": "2024",
-      "sum": "전시·컨벤션 브랜딩 디자인 사례를 분석해 실무에 쓸 가이드라인을 제안해요.",
-      "url": "https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003117599",
-      "site": "KCI"
-    },
-    {
-      "topic": "빅데이터·AI",
-      "title": "컨벤션 참가자의 미팅 테크놀로지 특성 인식에 따른 재참가 의도에 관한 연구",
-      "authors": "이금경, 주연우, 윤유식",
-      "journal": "MICE관광연구 21(3)",
-      "date": "2021",
-      "sum": "참가자가 느끼는 미팅 테크놀로지의 특성이 다시 참가하고 싶은 마음에 어떤 영향을 주는지 분석했어요.",
-      "url": "https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART002758694",
-      "site": "KCI"
-    },
-    {
-      "topic": "참가자·마케팅",
-      "title": "MICE 참가동기와 연계관광프로그램의 선호도 분석",
-      "authors": "",
-      "journal": "관광연구",
-      "date": "",
-      "sum": "MICE 참가자 유형별로 참가 동기와 선호하는 연계관광이 어떻게 다른지 분석해, 서울의 MICE 관광상품 개발에 시사점을 줘요.",
-      "url": "https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART001147502",
-      "site": "KCI"
     }
   ]
 }
