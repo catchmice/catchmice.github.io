@@ -69,6 +69,30 @@
     [/^최근 (Updated .+)$/, (_, date) => date],
     [/^(\d+)개 완료$/, (_, n) => `${n} complete`],
     [/^내 준비 진행률 (\d+)%$/, (_, n) => `My progress: ${n}%`],
+    [/^내 조건\((.+)\)에 맞는 공고$/, (_, tags) => `Jobs matching my preferences (${localize(tags)})`],
+    [/^(?:· )?전체 (\d+)개$/, (_, n) => `· ${n} total`],
+    [/^— 가장 급한 건 (.+) \((.+)\)$/, (_, company, date) => `— ${exact(company)} (${localize(date)})`],
+    [/^· 가장 최근 (.+)$/, (_, date) => `· Latest: ${date}`],
+    [/^헤드라인:\s*(.+)$/, (_, titles) => `Headlines: ${titles}`],
+    [/^분류는 (.+) 순이에요\.$/, (_, categories) => `Top categories: ${localize(categories)}`],
+    [/^지역은 (.+) 순이에요\.$/, (_, regions) => `Top regions: ${localize(regions)}`],
+    [/^마감 (\d+)일 이내$/, (_, days) => `Closing within ${days} days`],
+    [/^준비 8단계 중 (\d+)개 완료 \((\d+)%\)$/, (_, n, percent) => `${n} of 8 steps complete (${percent}%)`],
+    [/^채용 탭에서 (\d+)개 모두 보기$/, (_, n) => `See all ${n} in Careers`],
+    [/^(?:(.+) )?(공고|행사|논문) (\d+)(?:개|편)를 찾았어요$/, (_, tags, kind, count) =>
+      `Found ${count} ${exact(kind).toLowerCase()}${tags ? ' · ' + localize(tags) : ''}`],
+    [/^(?:(.+) )?기사 (\d+)건을 골랐어요(?: \(전체 (\d+)건\))?$/, (_, tags, count, total) =>
+      `Showing ${count} articles${total ? ' of ' + total : ''}${tags ? ' · ' + localize(tags) : ''}`],
+    [/^조건: (.+?)(?: · 다른 조건으로 다시 물어봐 주세요\.)?$/, (_, tags) => `Filters: ${localize(tags)}`],
+    [/^"(.+)" 검색$/, (_, query) => `Search: “${query}”`],
+    [/^"(.+)" 단계를 함께 볼게요\.$/, (_, step) => `Review this step: ${exact(step)}.`],
+    [/^다음 할 일은 "(.+)"이에요\.$/, (_, step) => `Next step: ${exact(step)}.`],
+    [/^오늘의 AI 용어 · (.+) \((.+)\)$/, (_, title, term) => `AI term of the day · ${term}`],
+    [/^([^·]+) \(([^()]+)\)$/, (original, label, detail) => {
+      const translated = exact(label);
+      if (translated === label) return original;
+      return translated === detail ? detail : `${translated} (${detail})`;
+    }],
     [/^(\d+)개 용어$/, (_, n) => `${n} terms`],
     [/^(\d+)개$/, (_, n) => n],
     [/^(\d+)건$/, (_, n) => n],
@@ -94,7 +118,11 @@
     [/^(\d+)월 (\d+)일 (?:행사 (\d+)개|행사 없음)$/, (_, m, d, n) => `${dateFormat.format(new Date(2024, m - 1, +d))} · ${n ? n + ' events' : 'No events'}`],
     [/^(\d+)월 행사 (\d+)개$/, (_, m, n) => `${new Intl.DateTimeFormat('en',{month:'long'}).format(new Date(2024,m-1))} · ${n} events`],
     [/^(.+?)\(([^()]+)\) 행사 (\d+)개$/, (_, period, dates, n) => `${exact(period)} (${dates}) · ${n} events`],
-    [/^(.+) · (\d+)개 행사 · 날짜를 다시 누르면 전체 보기$/, (_, dates, n) => `${dates} · ${n} events · Select the date again to clear it`]
+    [/^(.+) · (\d+)개 행사 · 날짜를 다시 누르면 전체 보기$/, (_, dates, n) => `${dates} · ${n} events · Select the date again to clear it`],
+    [/^([^·]+) (\d+)(개|편)?$/, (original, label, count) => {
+      const translated = exact(label);
+      return translated === label ? original : `${translated} (${count})`;
+    }]
   ];
 
   function localize(value) {
@@ -106,6 +134,8 @@
       if (match) return translate(...match);
     }
     if (value.includes(' · ')) return value.split(' · ').map(localize).join(' · ');
+    if (value.startsWith('· ')) return '· ' + localize(value.slice(2));
+    if (value.startsWith('— ')) return '— ' + localize(value.slice(2));
     if (value.endsWith(' ↗')) return localize(value.slice(0, -2)) + ' ↗';
     return value;
   }

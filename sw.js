@@ -5,7 +5,7 @@
    - VERSION을 올리면 activate에서 예전 캐시를 자동으로 지웁니다.
    ※ 배포할 때 index.html·이미지가 바뀌면 아래 VERSION 숫자를 함께 올려 주세요.
 */
-const VERSION = "v7-2026-11-23-english";
+const VERSION = "v8-2026-11-23-expanded-english";
 const CACHE = "catchmice-" + VERSION;
 const OFFLINE_HTML = "404.html";
 
