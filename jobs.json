@@ -1,30 +1,6 @@
 {
-  "updated": "2026-11-23",
+  "updated": "2026-11-24",
   "items": [
-    {
-      "company": "팀크리에이티브",
-      "title": "BTL 기업 행사 기획 및 운영 전문가를 모십니다.",
-      "region": "서울",
-      "place": "서울 강남구",
-      "career": "경력 3~10년 · 정규직",
-      "newbie": false,
-      "deadline": "2026-11-23",
-      "pay": "",
-      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55119531",
-      "site": "사람인"
-    },
-    {
-      "company": "퍼스트브레인INT",
-      "title": "그룹사 문화재단(신규박물관) 공예 전시기획 자 모십니다",
-      "region": "서울",
-      "place": "서울 강남구",
-      "career": "경력 2~13년 · 정규직",
-      "newbie": false,
-      "deadline": "2026-11-23",
-      "pay": "",
-      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55532581",
-      "site": "사람인"
-    },
     {
       "company": "다올전시문화",
       "title": "[상설전시 디자인, 전시 기획] 경력직 모집",
@@ -1329,6 +1305,78 @@
       "deadline": "상시",
       "pay": "",
       "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55622534",
+      "site": "사람인"
+    },
+    {
+      "company": "케이온",
+      "title": "국내 및 국제 학술대회 이벤트 기획·실행 및 운영 신입 채용",
+      "region": "서울",
+      "place": "서울 강서구",
+      "career": "신입 · 정규직",
+      "newbie": true,
+      "deadline": "2026-12-06",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55647794",
+      "site": "사람인"
+    },
+    {
+      "company": "리젠시컴",
+      "title": "제약회사 전문 심포지엄 기획, 운영자 모집",
+      "region": "서울",
+      "place": "서울 강남구",
+      "career": "신입·경력 · 정규직·계약직",
+      "newbie": true,
+      "deadline": "상시",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55646139",
+      "site": "사람인"
+    },
+    {
+      "company": "콜럼버스파파야",
+      "title": "MICE, 공공기관문화이벤트 기획자 채용",
+      "region": "서울",
+      "place": "서울 마포구",
+      "career": "경력무관 · 정규직",
+      "newbie": true,
+      "deadline": "2026-12-23",
+      "pay": "연봉 3,400만원↑",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55644708",
+      "site": "사람인"
+    },
+    {
+      "company": "링커스",
+      "title": "(주)링커스 이벤트·행사 기획 및 운영 담당자 채용 (CTM)",
+      "region": "부산",
+      "place": "부산 연제구",
+      "career": "경력무관 · 정규직",
+      "newbie": true,
+      "deadline": "2026-12-23",
+      "pay": "연봉 2,700만원",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55643890",
+      "site": "사람인"
+    },
+    {
+      "company": "디앤씨컴퍼니",
+      "title": "[디앤씨컴퍼니] 행사·콘텐츠 기획자",
+      "region": "대전",
+      "place": "대전 중구",
+      "career": "경력 1년↑ · 정규직",
+      "newbie": false,
+      "deadline": "채용시",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55642126",
+      "site": "사람인"
+    },
+    {
+      "company": "루커스인터네셔널",
+      "title": "글로벌 기업의 국내 진출(GTM) 및 글로벌 전시회 기획/운영 모집",
+      "region": "서울",
+      "place": "서울 서초구",
+      "career": "경력 2년↑ · 정규직·계약직",
+      "newbie": false,
+      "deadline": "2026-12-23",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55644850",
       "site": "사람인"
     }
   ]
