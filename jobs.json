@@ -1,66 +1,6 @@
 {
-  "updated": "2026-11-25",
+  "updated": "2026-11-26",
   "items": [
-    {
-      "company": "메디오피스",
-      "title": "[PCO/MICE] 의학회 사무국 : 학회팀",
-      "region": "서울",
-      "place": "서울 강남구",
-      "career": "경력무관 · 정규직",
-      "newbie": true,
-      "deadline": "상시",
-      "pay": "",
-      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55658145",
-      "site": "사람인"
-    },
-    {
-      "company": "넥스트브릿지(NextBridge)",
-      "title": "행사기획 ·홍보·행사진행 분야 채용",
-      "region": "경북",
-      "place": "경북 포항시 남구",
-      "career": "경력무관 · 정규직",
-      "newbie": true,
-      "deadline": "2026-11-25",
-      "pay": "",
-      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55392089",
-      "site": "사람인"
-    },
-    {
-      "company": "카피바라",
-      "title": "축제 및 행사 기획자 구인합니다.",
-      "region": "전북",
-      "place": "전북 전주시 완산구",
-      "career": "경력2년↑ · 기간제·계약직",
-      "newbie": false,
-      "deadline": "2026-11-25",
-      "pay": "",
-      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55479109",
-      "site": "사람인"
-    },
-    {
-      "company": "핑크팝콘",
-      "title": "2026 행사, 축제, 이벤트 기획자 신입 채용",
-      "region": "대구",
-      "place": "대구 동구",
-      "career": "경력무관 · 정규직",
-      "newbie": true,
-      "deadline": "2026-11-25",
-      "pay": "",
-      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55394308",
-      "site": "사람인"
-    },
-    {
-      "company": "하나엠앤씨",
-      "title": "MICE행사 기획 및 운영 관리 신입 및 경력직 채용",
-      "region": "서울",
-      "place": "서울 중구",
-      "career": "신입 · 경력1년↑",
-      "newbie": true,
-      "deadline": "2026-11-25",
-      "pay": "",
-      "url": "https://www.jobkorea.co.kr/Recruit/GI_Read/50236843",
-      "site": "잡코리아"
-    },
     {
       "company": "베이커플랜",
       "title": "[신입/경력 무관]국내전시회 부스기획·영업(PM) 정규직 모집",
@@ -1212,6 +1152,18 @@
       "site": "사람인"
     },
     {
+      "company": "디앤씨컴퍼니",
+      "title": "[디앤씨컴퍼니] 행사·콘텐츠 기획자",
+      "region": "대전",
+      "place": "대전 중구",
+      "career": "경력 1년↑ · 정규직",
+      "newbie": false,
+      "deadline": "상시",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55642126",
+      "site": "사람인"
+    },
+    {
       "company": "라인플래너스",
       "title": "MICE 국제회의·행사기획자 채용[신입/경력]",
       "region": "광주·전남",
@@ -1233,6 +1185,18 @@
       "deadline": "상시",
       "pay": "",
       "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55646139",
+      "site": "사람인"
+    },
+    {
+      "company": "메디오피스",
+      "title": "[PCO/MICE] 의학회 사무국 : 학회팀",
+      "region": "서울",
+      "place": "서울 강남구",
+      "career": "경력무관 · 정규직",
+      "newbie": true,
+      "deadline": "상시",
+      "pay": "",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55658145",
       "site": "사람인"
     },
     {
@@ -1353,18 +1317,6 @@
       "deadline": "상시",
       "pay": "",
       "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55388062",
-      "site": "사람인"
-    },
-    {
-      "company": "디앤씨컴퍼니",
-      "title": "[디앤씨컴퍼니] 행사·콘텐츠 기획자",
-      "region": "대전",
-      "place": "대전 중구",
-      "career": "경력 1년↑ · 정규직",
-      "newbie": false,
-      "deadline": "상시",
-      "pay": "",
-      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55642126",
       "site": "사람인"
     }
   ]
