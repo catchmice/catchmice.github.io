@@ -2287,6 +2287,7 @@ ICONS.staff=ICONS.crew;
 const SIDE_TABS=[["home","홈"],["calendar","MICE 캘린더"],["news","한입뉴스"],["jobs","MICE 채용"],["bids",opportunityText("입찰 레이더","Bid Radar")],["staff",opportunityText("스태프·서포터즈","Event Staff")],["guide","취업 가이드"],["walk","동네 한 바퀴"],["ai","AI 스터디"],["papers","MICE 논문"],["crew","기자단 소개"]];
 $("#tabbar").innerHTML=MOBILE_TABS.map(t=>`<a href="#${t[0]}" data-tab="${t[0]}">${svg(t[0])}${t[1]}</a>`).join("");
 $("#sidenav").innerHTML=SIDE_TABS.map(t=>`<a href="#${t[0]}" data-tab="${t[0]}">${svg(t[0])}${t[1]}</a>`).join("");
+$("#sidenav").insertAdjacentHTML("beforeend",`<a href="./data-lab.html"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 3v18h18M7 16v-5m5 5V7m5 9v-8"/></svg>MICE 데이터랩</a>`);
 const R={home:renderHome,calendar:renderCal,walk:renderWalk,news:renderNews,jobs:renderJobs,bids:()=>renderOpportunities("bids"),staff:()=>renderOpportunities("staff"),ai:renderAI,papers:renderPapers,guide:renderGuide,crew:renderCrew};
 let curView="";
 function route(keepScroll){
