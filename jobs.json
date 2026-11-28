@@ -2,6 +2,66 @@
   "updated": "2026-11-28",
   "items": [
     {
+      "company": "플랜디오",
+      "title": "[행사기획] 의학학술대회(PCO) 기획 및 운영",
+      "region": "서울",
+      "place": "서울 강서구 마곡중앙6로 11",
+      "career": "경력무관(신입포함) · 정규직",
+      "newbie": true,
+      "deadline": "2027-01-25",
+      "pay": "연봉 3,300만원",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55681394",
+      "site": "사람인"
+    },
+    {
+      "company": "(주)마이스풀",
+      "title": "MICE사업 및 박람회(대한민국라면박람회 등) 담당자 모집",
+      "region": "대전",
+      "place": "대전 중구 계룡로 778",
+      "career": "경력 1~15년 · 정규직(수습 3개월)",
+      "newbie": false,
+      "deadline": "2026-12-27",
+      "pay": "월급 300만원 이상",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55687084",
+      "site": "사람인"
+    },
+    {
+      "company": "(주)풀문",
+      "title": "행사기획자 모집 (입찰·제안·현장운영)",
+      "region": "제주",
+      "place": "제주 제주시 남녕로 40",
+      "career": "신입·경력 2년↑ · 정규직(수습 3개월)",
+      "newbie": true,
+      "deadline": "상시채용",
+      "pay": "면접 후 결정",
+      "url": "https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=55693464",
+      "site": "사람인"
+    },
+    {
+      "company": "이알플러스",
+      "title": "[BTL Marketing & Mice] 2027 신입 및 경력 공개채용",
+      "region": "서울",
+      "place": "서울 강남구",
+      "career": "신입·경력 · 정규직(수습 3개월)",
+      "newbie": true,
+      "deadline": "2026-12-13",
+      "pay": "회사내규에 따름",
+      "url": "https://www.jobkorea.co.kr/Recruit/GI_Read/50410775",
+      "site": "잡코리아"
+    },
+    {
+      "company": "㈜제이피앤씨",
+      "title": "MICE/학술대회 기획자(PCO) 채용",
+      "region": "서울",
+      "place": "서울 중구",
+      "career": "경력무관 · 정규직(수습 3개월)",
+      "newbie": true,
+      "deadline": "2027-01-22",
+      "pay": "면접 후 결정",
+      "url": "https://www.jobkorea.co.kr/Recruit/GI_Read/50420987",
+      "site": "잡코리아"
+    },
+    {
       "company": "브랜드하이",
       "title": "행사 및 전시 기획 경력사원 채용 공고 - 정규직",
       "region": "서울",
